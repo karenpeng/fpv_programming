@@ -101,7 +101,7 @@ animate();
 function init() {
 
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 300);
-  camera.position.set(0, 15, 150);
+  camera.position.set(0, 0, 150);
   camera.lookAt(new THREE.Vector3());
 
   //scene
@@ -120,6 +120,7 @@ function init() {
 
   //lights
 
+  scene.add(new THREE.AmbientLight(0x111111));
   scene.add(new THREE.AmbientLight(0x111111));
 
   var intensity = 2.5;
@@ -210,7 +211,7 @@ function init() {
 
   }
 
-  //my little loneliness
+  //mr.lonely
   var mr = new THREE.Geometry();
   mr.vertices.push(
     new THREE.Vector3(0, 24, 20),
