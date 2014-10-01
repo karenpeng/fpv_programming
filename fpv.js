@@ -1,5 +1,5 @@
 var camera, scene, renderer;
-var geometry, material, mesh;
+var geometry, material, mesh, loader;
 var controls;
 
 var objects = [];
@@ -109,18 +109,17 @@ function init() {
   scene.fog = new THREE.Fog(0xffffff, 0, 350);
 
   // floor
-  var groundMaterial = new THREE.MeshPhongMaterial({
+  material = new THREE.MeshPhongMaterial({
     color: 0xffffff,
     ambient: 0xffffff
   });
-  var mesh = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 2, 2), groundMaterial);
+  mesh = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 2, 2), material);
   mesh.position.y = -5;
   mesh.rotation.x = -Math.PI / 2;
   scene.add(mesh);
 
   //lights
 
-  scene.add(new THREE.AmbientLight(0x111111));
   scene.add(new THREE.AmbientLight(0x111111));
 
   var intensity = 2.5;
@@ -133,7 +132,7 @@ function init() {
     c6 = 0xff1100;
   //var c1 = 0xffffff, c2 = 0xffffff, c3 = 0xffffff, c4 = 0xffffff, c5 = 0xffffff, c6 = 0xffffff;
 
-  var sphere = new THREE.SphereGeometry(0.5, 16, 8);
+  var sphere = new THREE.SphereGeometry(0.25, 16, 8);
 
   light1 = new THREE.PointLight(c1, intensity, distance);
   light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
@@ -196,23 +195,30 @@ function init() {
       //material = new THREE.MeshBasicMaterial({
       //material = new THREE.MeshNormalMaterial({
       //material = new THREE.MeshLamberMaterial({
-      //specular: 0xffffff,
-      //shading: THREE.FlatShading,
-      //vertexColors: THREE.VertexColors
+      specular: 0xffffff,
+      shading: THREE.FlatShading,
+      vertexColors: THREE.VertexColors
     });
 
-    var mesh = new THREE.Mesh(geometry, material);
+    mesh = new THREE.Mesh(geometry, material);
     mesh.position.x = Math.floor(Math.random() * 10 - 10) * 10;
     mesh.position.z = Math.floor(Math.random() * 10 - 10) * 20;
     mesh.position.y = Math.floor(Math.random() * 10) * 6;
-    //mesh.position.z = Math.floor(Math.random() * 20 - 10) * 20;
     scene.add(mesh);
-    //objects.push(mesh);
+    objects.push(mesh);
 
   }
 
   //mr.lonely
-  var mr = new THREE.Geometry();
+  //TODO:why it's not loading?
+  material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    ambient: 0xffffff
+  });
+  var loader = new THREE.JSONLoader();
+  loader.load("/model/test_polygon.js", createCharacter);
+  var mr;
+  /*
   mr.vertices.push(
     new THREE.Vector3(0, 24, 20),
     new THREE.Vector3(20, 24, 20),
@@ -240,15 +246,13 @@ function init() {
     // new THREE.Face4(0, 1, 4, 5),
     // new THREE.Face3(0, 3, 5)
   );
+*/
   //mr.computeBoundingSphere();
-  var mrMaterial = new THREE.MeshPhongMaterial({
-    color: 0xeeeeff,
-    ambient: 0xffffff
-  });
-  var mesh = new THREE.Mesh(mr, mrMaterial);
-  mesh.position.y = 20;
-  console.log(mesh.position);
-  scene.add(mesh);
+
+  // var mesh = new THREE.Mesh(mr, mrMaterial);
+  // mesh.position.y = 20;
+  // console.log(mesh.position);
+  // scene.add(mesh);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0xffffff);
@@ -271,22 +275,34 @@ function onWindowResize() {
 
 }
 
+function createCharacter(geometry) {
+  var materials = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    ambient: 0xffffff
+  });
+  //console.log(geometry);
+  mr = new THREE.Mesh(geometry, materials);
+  //mesh.position.y = 20;
+  console.log(mr.geometry.vertices)
+  scene.add(mr);
+}
+
 function animate() {
 
   requestAnimationFrame(animate);
 
   controls.isOnObject(false);
 
-  raycaster.ray.origin.copy(controls.getObject().position);
-  raycaster.ray.origin.y -= 100;
+  // raycaster.ray.origin.copy(controls.getObject().position);
+  // raycaster.ray.origin.y -= 100;
 
-  var intersections = raycaster.intersectObjects(objects);
+  // var intersections = raycaster.intersectObjects(objects);
 
-  if (intersections.length > 0) {
+  // if (intersections.length > 0) {
 
-    controls.isOnObject(true);
+  //   controls.isOnObject(true);
 
-  }
+  // }
 
   //update lights
   var time = Date.now() * 0.00025;
@@ -310,6 +326,12 @@ function animate() {
 
   light6.position.x = Math.cos(time * 0.7) * d;
   light6.position.z = Math.cos(time * 0.5) * d;
+
+  //animate character
+  //console.log(mr)
+  if (mr !== undefined) {
+    mr.geometry.vertices[0].y = Math.cos(time * 0.5) * d;
+  }
 
   controls.update();
 
