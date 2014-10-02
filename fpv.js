@@ -1,10 +1,22 @@
 var camera, scene, renderer;
 var geometry, material, mesh, loader;
 var controls;
+var mr;
+var SCREEN_WIDTH = window.innerWidth;
+var SCREEN_HEIGHT = window.innerHeight;
+var cameraOrtho, sceneRenderTarget;
 
 var objects = [];
 
 var raycaster;
+
+var stackCylinders = [];
+var queCylinders = [];
+
+var stackCylinder, queCylinder;
+
+var theta = 0;
+var test;
 
 var blocker = document.getElementById('blocker');
 var instructions = document.getElementById('instructions');
@@ -99,6 +111,13 @@ init();
 animate();
 
 function init() {
+  //lences is not that successful
+  // sceneRenderTarget = new THREE.Scene();
+
+  // cameraOrtho = new THREE.OrthographicCamera(SCREEN_WIDTH / -2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_HEIGHT / -2, -10000, 10000);
+  // cameraOrtho.position.z = 100;
+
+  // sceneRenderTarget.add(cameraOrtho);
 
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 300);
   camera.position.set(0, 0, 150);
@@ -113,7 +132,10 @@ function init() {
     color: 0xffffff,
     ambient: 0xffffff
   });
-  mesh = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 2, 2), material);
+  geometry = new THREE.PlaneGeometry(1000, 1000, 2, 2);
+  geometry.computeTangents();
+  mesh = new THREE.Mesh(geometry, material);
+
   mesh.position.y = -5;
   mesh.rotation.x = -Math.PI / 2;
   scene.add(mesh);
@@ -121,6 +143,9 @@ function init() {
   //lights
 
   scene.add(new THREE.AmbientLight(0x111111));
+
+  addShadowedLight(1, 1, 1, 0xffffff, 0.35);
+  addShadowedLight(0.5, 1, -1, 0x94d4d4, 0.35);
 
   var intensity = 2.5;
   var distance = 100;
@@ -139,41 +164,41 @@ function init() {
     color: c1
   })));
   light1.position.y = Math.random() * 10;
-  scene.add(light1);
+  //scene.add(light1);
 
   light2 = new THREE.PointLight(c2, intensity, distance);
   light2.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c2
   })));
   light2.position.y = Math.random() * 10;
-  scene.add(light2);
+  //scene.add(light2);
 
   light3 = new THREE.PointLight(c3, intensity, distance);
   light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c3
   })));
   light3.position.y = Math.random() * 10;
-  scene.add(light3);
+  //scene.add(light3);
 
   light4 = new THREE.PointLight(c4, intensity, distance);
   light4.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c4
   })));
   light4.position.y = Math.random() * 10;
-  scene.add(light4);
+  //scene.add(light4);
 
   light5 = new THREE.PointLight(c5, intensity, distance);
   light5.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c5
   })));
   light5.position.y = Math.random() * 10;
-  scene.add(light5);
+  //scene.add(light5);
 
   light6 = new THREE.PointLight(c6, intensity, distance);
   light6.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c6
   })));
-  scene.add(light6);
+  //scene.add(light6);
 
   var dlight = new THREE.DirectionalLight(0xffffff, 0.1);
   dlight.position.set(0.5, -1, 0).normalize();
@@ -185,6 +210,14 @@ function init() {
   raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
   // objects
+  //mr.lonely
+  material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    ambient: 0xffffff
+  });
+  var loader = new THREE.JSONLoader();
+  //var mr;
+  loader.load("/model/test_polygon.js", createCharacter);
 
   geometry = new THREE.BoxGeometry(10, 10, 10);
 
@@ -209,50 +242,44 @@ function init() {
 
   }
 
-  //mr.lonely
-  //TODO:why it's not loading?
+  //for stack
+  geometry = new THREE.CylinderGeometry(10, 10, 6, 32);
   material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    ambient: 0xffffff
+    color: 0xffffff
   });
-  var loader = new THREE.JSONLoader();
-  loader.load("/model/test_polygon.js", createCharacter);
-  var mr;
-  /*
-  mr.vertices.push(
-    new THREE.Vector3(0, 24, 20),
-    new THREE.Vector3(20, 24, 20),
-    new THREE.Vector3(20, 24, 0),
-    new THREE.Vector3(0, 24, 0),
-    new THREE.Vector3(14, 0, 10),
-    new THREE.Vector3(6, 0, 10)
-  );
-  mr.faces.push(
-    new THREE.Face3(2, 1, 0),
-    new THREE.Face3(3, 2, 0),
+  for (i = 0; i < 6; i++) {
+    stackCylinder = new THREE.Mesh(geometry, material);
+    stackCylinder.position.x = 60;
+    stackCylinder.position.z = 60;
+    stackCylinder.position.y = i * 8 - 3;
+    if (i === 5) {
+      //stackCylinder.rotation.x = Math.PI / 2;
+    }
+    stackCylinder.whatever = Math.random();
+    stackCylinders.push(stackCylinder);
+    scene.add(stackCylinder);
+  }
 
-    new THREE.Face3(4, 2, 3),
-    new THREE.Face3(5, 4, 3),
+  for (i = 0; i < 6; i++) {
+    queCylinder = new THREE.Mesh(geometry, material);
+    queCylinder.position.x = 100;
+    queCylinder.position.z = 60;
+    queCylinder.position.y = 5;
+    queCylinder.rotation.x = Math.PI / 2;
+    queCylinder.position.z = i * 8 - 16;
+    if (i === 5) {
+      //stackCylinder.rotation.x = Math.PI / 2;
+    }
+    queCylinder.whatever = Math.random();
+    queCylinders.push(queCylinder);
+    scene.add(queCylinder);
+  }
 
-    new THREE.Face3(5, 0, 3),
-
-    new THREE.Face3(0, 4, 5),
-    new THREE.Face3(1, 4, 0),
-
-    new THREE.Face3(4, 1, 2)
-    // new THREE.Face4(0, 1, 2, 3),
-    // new THREE.Face4(2, 3, 4, 5),
-    // new THREE.Face3(1, 2, 4),
-    // new THREE.Face4(0, 1, 4, 5),
-    // new THREE.Face3(0, 3, 5)
-  );
-*/
   //mr.computeBoundingSphere();
-
-  // var mesh = new THREE.Mesh(mr, mrMaterial);
-  // mesh.position.y = 20;
-  // console.log(mesh.position);
-  // scene.add(mesh);
+  geometry = new THREE.SphereGeometry(5, 30, 30);
+  geometry.dynamic = true;
+  test = new THREE.MeshPhongMaterial(geometry, material);
+  scene.add(test);
 
   renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0xffffff);
@@ -275,15 +302,43 @@ function onWindowResize() {
 
 }
 
+function addShadowedLight(x, y, z, color, intensity) {
+
+  var directionalLight = new THREE.DirectionalLight(color, intensity);
+  directionalLight.position.set(x, y, z);
+  scene.add(directionalLight);
+
+  directionalLight.castShadow = true;
+  // directionalLight.shadowCameraVisible = true;
+
+  var d = 1;
+  directionalLight.shadowCameraLeft = -d;
+  directionalLight.shadowCameraRight = d;
+  directionalLight.shadowCameraTop = d;
+  directionalLight.shadowCameraBottom = -d;
+
+  directionalLight.shadowCameraNear = 1;
+  directionalLight.shadowCameraFar = 4;
+
+  directionalLight.shadowMapWidth = 1024;
+  directionalLight.shadowMapHeight = 1024;
+
+  directionalLight.shadowBias = -0.005;
+  directionalLight.shadowDarkness = 0.15;
+
+}
+
 function createCharacter(geometry) {
   var materials = new THREE.MeshPhongMaterial({
     color: 0xffffff,
     ambient: 0xffffff
   });
   //console.log(geometry);
+  //geometry.attributes.position.needsUpdate = true;
+  //geometry.dynamic = true;
   mr = new THREE.Mesh(geometry, materials);
   //mesh.position.y = 20;
-  console.log(mr.geometry.vertices)
+  console.log(mr.geometry.vertices);
   scene.add(mr);
 }
 
@@ -309,29 +364,64 @@ function animate() {
   var z = 20,
     d = 100;
 
-  light1.position.x = Math.sin(time * 0.7) * d;
-  light1.position.z = Math.cos(time * 0.3) * d;
+  // light1.position.x = Math.sin(time * 0.7) * d;
+  // light1.position.z = Math.cos(time * 0.3) * d;
 
-  light2.position.x = Math.cos(time * 0.3) * d;
-  light2.position.z = Math.sin(time * 0.7) * d;
+  // light2.position.x = Math.cos(time * 0.3) * d;
+  // light2.position.z = Math.sin(time * 0.7) * d;
 
-  light3.position.x = Math.sin(time * 0.7) * d;
-  light3.position.z = Math.sin(time * 0.5) * d;
+  // light3.position.x = Math.sin(time * 0.7) * d;
+  // light3.position.z = Math.sin(time * 0.5) * d;
 
-  light4.position.x = Math.sin(time * 0.3) * d;
-  light4.position.z = Math.sin(time * 0.5) * d;
+  // light4.position.x = Math.sin(time * 0.3) * d;
+  // light4.position.z = Math.sin(time * 0.5) * d;
 
-  light5.position.x = Math.cos(time * 0.3) * d;
-  light5.position.z = Math.sin(time * 0.5) * d;
+  // light5.position.x = Math.cos(time * 0.3) * d;
+  // light5.position.z = Math.sin(time * 0.5) * d;
 
-  light6.position.x = Math.cos(time * 0.7) * d;
-  light6.position.z = Math.cos(time * 0.5) * d;
+  // light6.position.x = Math.cos(time * 0.7) * d;
+  // light6.position.z = Math.cos(time * 0.5) * d;
 
   //animate character
   //console.log(mr)
   if (mr !== undefined) {
-    mr.geometry.vertices[0].y = Math.cos(time * 0.5) * d;
+    //mr.geometry.vertices[0].y = Math.cos(time * 0.5) * d;
+    mr.position.y = Math.cos(time * 4) * d / 4 + d / 4;
+    //geometry.vertices[0].y = Math.cos(time * 4) * d / 8 + 20;
+    //console.log(geometry.vertices[0])
+    //mr.geometry.verticesNeedUpdate = true;
   }
+
+  // var i = 0;
+  // stackCylinders.forEach(function (c) {
+  //   //noise.seed(Math.random());
+  //   c.position.y = noise.simplex2(c.whatever, time) + 10 * i;
+  //   c.whatever += 0.001;
+  //   i++;
+  // });
+  /* so weird to use noise
+  var i = 0;
+  stackCylinders.forEach(function (c) {
+    //noise.seed(Math.random());
+    c.position.y = noise.simplex2(c.whatever, time) + 10 * i;
+    c.whatever += 0.001;
+    i++;
+  });
+
+  var j = 0;
+  queCylinders.forEach(function (c) {
+    //noise.seed(Math.random());
+    c.position.x = noise.simplex2(c.whatever, time) + 10 * j + 30;
+    c.whatever += 0.001;
+    i++;
+  });
+  //queCylinder.position.x = noise.simplex2(time, time);
+*/
+
+  //TODO: why the hell test does not show up?
+  geometry.vertices[0].y = Math.cos(time * 4) * d / 10 + d / 10;
+  //test.geometry.verticesNeedUpdate = true;
+  console.log(camera.position)
 
   controls.update();
 
