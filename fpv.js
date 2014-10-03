@@ -253,7 +253,7 @@ function init() {
     stackCylinder.position.z = 60;
     stackCylinder.position.y = i * 8 - 3;
     if (i === 5) {
-      //stackCylinder.rotation.x = Math.PI / 2;
+      stackCylinder.position.y = 100;
     }
     stackCylinder.whatever = Math.random();
     stackCylinders.push(stackCylinder);
@@ -268,7 +268,7 @@ function init() {
     queCylinder.rotation.x = Math.PI / 2;
     queCylinder.position.z = i * 8 - 16;
     if (i === 5) {
-      //stackCylinder.rotation.x = Math.PI / 2;
+      queCylinder.position.z = -100;
     }
     queCylinder.whatever = Math.random();
     queCylinders.push(queCylinder);
@@ -342,6 +342,9 @@ function createCharacter(geometry) {
   scene.add(mr);
 }
 
+var startTime;
+var count = 0;
+
 function animate() {
 
   requestAnimationFrame(animate);
@@ -361,6 +364,11 @@ function animate() {
 
   //update lights
   var time = Date.now() * 0.00025;
+  if (count === 0) {
+    startTime = time;
+    count++;
+  }
+
   var z = 20,
     d = 100;
 
@@ -421,7 +429,24 @@ function animate() {
   //TODO: why the hell test does not show up?
   geometry.vertices[0].y = Math.cos(time * 4) * d / 10 + d / 10;
   //test.geometry.verticesNeedUpdate = true;
-  console.log(camera.position)
+  //console.log(camera.position);
+  //console.log(time)
+  if (time - startTime > 1 && time - startTime <= 2) {
+    if (stackCylinders[5].position.y > 5 * 8 - 3) {
+      //console.log("ooh")
+      stackCylinders[5].position.y--;
+    }
+    if (queCylinders[5].position.z < 5 * 8 - 16) {
+      //console.log("ooh")
+      queCylinders[5].position.z++;
+    }
+  }
+
+  if (time - startTime > 2) {
+    stackCylinders[5].position.y++;
+    //console.log(stackCylinders[5].position.y)
+    queCylinders[0].position.z++;
+  }
 
   controls.update();
 
