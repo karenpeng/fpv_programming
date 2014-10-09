@@ -217,21 +217,24 @@ function init() {
   });
   var loader = new THREE.JSONLoader();
   //var mr;
-  loader.load("/model/test_polygon.js", createCharacter);
+  loader.load("model/test_polygon.js", createCharacter);
 
   geometry = new THREE.BoxGeometry(10, 10, 10);
 
   for (var i = 0; i < 20; i++) {
-
+    var ka = 0.4;
     //material = new THREE.MeshDepthMaterial({
-    material = new THREE.MeshPhongMaterial({
-      //material = new THREE.MeshBasicMaterial({
-      //material = new THREE.MeshNormalMaterial({
-      //material = new THREE.MeshLamberMaterial({
-      specular: 0xffffff,
-      shading: THREE.FlatShading,
-      vertexColors: THREE.VertexColors
+    //material = new THREE.MeshPhongMaterial({
+    //material = new THREE.MeshBasicMaterial({
+    //material = new THREE.MeshNormalMaterial({
+    material = new THREE.MeshLambertMaterial({
+      //specular: 0xffffff,
+      color: 0x80FC66,
+      shading: THREE.FlatShading
+      //vertexColors: THREE.VertexColors
+
     });
+    material.ambient.setRGB(material.color.r * ka, material.color.g * ka, material.color.b * ka)
 
     mesh = new THREE.Mesh(geometry, material);
     mesh.position.x = Math.floor(Math.random() * 10 - 10) * 10;
@@ -334,8 +337,8 @@ function createCharacter(geometry) {
     ambient: 0xffffff
   });
   //console.log(geometry);
-  //geometry.attributes.position.needsUpdate = true;
-  //geometry.dynamic = true;
+  geometry.attributes.position.needsUpdate = true;
+  geometry.dynamic = true;
   mr = new THREE.Mesh(geometry, materials);
   //mesh.position.y = 20;
   console.log(mr.geometry.vertices);
@@ -451,5 +454,6 @@ function animate() {
   controls.update();
 
   renderer.render(scene, camera);
+  //just want to take a break...
 
 }
