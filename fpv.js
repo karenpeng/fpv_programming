@@ -164,41 +164,41 @@ function init() {
     color: c1
   })));
   light1.position.y = Math.random() * 10;
-  //scene.add(light1);
+  scene.add(light1);
 
   light2 = new THREE.PointLight(c2, intensity, distance);
   light2.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c2
   })));
   light2.position.y = Math.random() * 10;
-  //scene.add(light2);
+  scene.add(light2);
 
   light3 = new THREE.PointLight(c3, intensity, distance);
   light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c3
   })));
   light3.position.y = Math.random() * 10;
-  //scene.add(light3);
+  scene.add(light3);
 
   light4 = new THREE.PointLight(c4, intensity, distance);
   light4.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c4
   })));
   light4.position.y = Math.random() * 10;
-  //scene.add(light4);
+  scene.add(light4);
 
   light5 = new THREE.PointLight(c5, intensity, distance);
   light5.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c5
   })));
   light5.position.y = Math.random() * 10;
-  //scene.add(light5);
+  scene.add(light5);
 
   light6 = new THREE.PointLight(c6, intensity, distance);
   light6.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c6
   })));
-  //scene.add(light6);
+  scene.add(light6);
 
   var dlight = new THREE.DirectionalLight(0xffffff, 0.1);
   dlight.position.set(0.5, -1, 0).normalize();
@@ -229,7 +229,7 @@ function init() {
     //material = new THREE.MeshNormalMaterial({
     material = new THREE.MeshLambertMaterial({
       //specular: 0xffffff,
-      color: 0x80FC66,
+      color: 0xffffff,
       shading: THREE.FlatShading
       //vertexColors: THREE.VertexColors
 
@@ -337,7 +337,7 @@ function createCharacter(geometry) {
     ambient: 0xffffff
   });
   //console.log(geometry);
-  geometry.attributes.position.needsUpdate = true;
+  //geometry.attributes.needsUpdate = true;
   geometry.dynamic = true;
   mr = new THREE.Mesh(geometry, materials);
   //mesh.position.y = 20;
@@ -375,23 +375,23 @@ function animate() {
   var z = 20,
     d = 100;
 
-  // light1.position.x = Math.sin(time * 0.7) * d;
-  // light1.position.z = Math.cos(time * 0.3) * d;
+  light1.position.x = Math.sin(time * 0.7) * d;
+  light1.position.z = Math.cos(time * 0.3) * d;
 
-  // light2.position.x = Math.cos(time * 0.3) * d;
-  // light2.position.z = Math.sin(time * 0.7) * d;
+  light2.position.x = Math.cos(time * 0.3) * d;
+  light2.position.z = Math.sin(time * 0.7) * d;
 
-  // light3.position.x = Math.sin(time * 0.7) * d;
-  // light3.position.z = Math.sin(time * 0.5) * d;
+  light3.position.x = Math.sin(time * 0.7) * d;
+  light3.position.z = Math.sin(time * 0.5) * d;
 
-  // light4.position.x = Math.sin(time * 0.3) * d;
-  // light4.position.z = Math.sin(time * 0.5) * d;
+  light4.position.x = Math.sin(time * 0.3) * d;
+  light4.position.z = Math.sin(time * 0.5) * d;
 
-  // light5.position.x = Math.cos(time * 0.3) * d;
-  // light5.position.z = Math.sin(time * 0.5) * d;
+  light5.position.x = Math.cos(time * 0.3) * d;
+  light5.position.z = Math.sin(time * 0.5) * d;
 
-  // light6.position.x = Math.cos(time * 0.7) * d;
-  // light6.position.z = Math.cos(time * 0.5) * d;
+  light6.position.x = Math.cos(time * 0.7) * d;
+  light6.position.z = Math.cos(time * 0.5) * d;
 
   //animate character
   //console.log(mr)
