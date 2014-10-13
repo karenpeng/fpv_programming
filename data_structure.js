@@ -16,6 +16,7 @@ Stack.prototype.init = function (number) {
     stackCylinder.position.y = i * 8 - 3;
     stackCylinder.whatever = Math.random();
     this.stackCylinders.push(stackCylinder);
+    scene.add(queCylinder);
   }
   console.log(stackCylinder);
 };
@@ -36,13 +37,4 @@ function Node(mGeometry) {
 
 Node.prototype.init = function () {
 
-}
-
-function Whatever() {
-
-}
-
-Whatever.prototype.whatever = function () {
-  this.geometry = new THREE.BoxGeometry(20, 20, 20);
-  //this.geometry.dynamic = true;
 }
