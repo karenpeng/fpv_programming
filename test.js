@@ -15,7 +15,7 @@ function init() {
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
   //camera.position.z = 500;
-  camera.position.z = 1000;
+  camera.position.z = 50;
 
   controls = new THREE.TrackballControls(camera);
 
@@ -56,7 +56,7 @@ function init() {
   //scene.add(plane2);
 
   geometry = new THREE.BoxGeometry(200, 2000, 100);
-  geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+  //geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
   for (var i = 0, l = geometry.faces.length; i < l; i++) {
 
     var face = geometry.faces[i];
@@ -70,6 +70,14 @@ function init() {
   giantBox = new THREE.Mesh(geometry, material);
   //giantBox.position.y = 1000;
   //scene.add(giantBox);
+
+  geometry = new THREE.SphereGeometry(20, 30, 20);
+  //geometry.position.z = -10;
+  var ball = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
+    shading: THREE.FlatShading
+  }));
+  ball.position.z = -100;
+  scene.add(ball);
 
   // lights
 
@@ -100,10 +108,22 @@ function init() {
     color: c1
   })));
   light1.position.y = Math.random() * 10;
+  light1.castShadow = true;
+  light1.shadowCameraNear = 1200;
+  light1.shadowCameraFar = 2500;
+  light1.shadowCameraFov = 50;
+
+  //light.shadowCameraVisible = true;
+
+  light1.shadowBias = 0.0001;
+  light1.shadowDarkness = 0.5;
+
+  light1.shadowMapWidth = window.innerWidth;
+  light1.shadowMapHeight = window.innerHeight;
   scene.add(light1);
 
   light2 = new THREE.PointLight(c2, intensity, distance);
-  light2.add(new THREE.Mesh(sphere, new THREE.MeshPhongMaterial({
+  light2.add(new THREE.Mesh(sphere, new THREE.MeshLambertMaterial({
     color: c2
   })));
   light2.position.y = Math.random() * 10;
@@ -117,21 +137,21 @@ function init() {
   scene.add(light3);
 
   light4 = new THREE.PointLight(c4, intensity, distance);
-  light4.add(new THREE.Mesh(sphere, new THREE.MeshPhongMaterial({
+  light4.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({
     color: c4
   })));
   light4.position.y = Math.random() * 10;
   scene.add(light4);
 
   light5 = new THREE.PointLight(c5, intensity, distance);
-  light5.add(new THREE.Mesh(sphere, new THREE.MeshPhongMaterial({
+  light5.add(new THREE.Mesh(sphere, new THREE.MeshLambertMaterial({
     color: c5
   })));
   light5.position.y = Math.random() * 10;
   scene.add(light5);
 
   light6 = new THREE.PointLight(c6, intensity, distance);
-  light6.add(new THREE.Mesh(sphere, new THREE.MeshPhongMaterial({
+  light6.add(new THREE.Mesh(sphere, new THREE.MeshLambertMaterial({
     color: c6
   })));
   scene.add(light6);
@@ -139,9 +159,11 @@ function init() {
   // renderer
 
   renderer = new THREE.WebGLRenderer({
-    antialias: false
+    antialias: true
   });
-  renderer.setClearColor(scene.fog.color, 1);
+  renderer.shadowMapEnabled = true;
+  // renderer.shadowMapType = THREE.PCFShadowMap;
+  // renderer.setClearColor(scene.fog.color, 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   container = document.getElementById('container');
@@ -186,7 +208,9 @@ function animate() {
 
   var time = Date.now() * 0.00025;
 
-  camera.position.z--;
+  camera.position.z += 0.1;
+  camera.rotation.y -= Math.PI;
+  camera.rotateOnAxis((new THREE.Vector3(0, 1, 0)).normalize(), Math.PI);
   var z = 20,
     d = 100;
 
@@ -215,7 +239,11 @@ function animate() {
 }
 
 function render() {
-
+  // renderer = new THREE.WebGLRenderer({
+  //   antialias: true
+  // });
+  // renderer.shadowMapEnabled = true;
+  // renderer.shadowMapType = THREE.PCFShadowMap;
   renderer.render(scene, camera);
   stats.update();
 
