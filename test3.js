@@ -8,6 +8,47 @@ var loader;
 var guyGeometry;
 var guys = [];
 var box;
+var colorChoice = [
+  /* green */
+  0x1abc9c,
+
+  /* yellow */
+  0xf1c40f,
+
+  /* rust */
+  0xd35400,
+
+  /* dark green */
+  0x27ae60,
+
+  /* dark blue */
+  0x006CB7,
+
+  /* light blue */
+  0x3498db,
+
+  /* violet */
+  0x8e44ad,
+
+  /* brick */
+  0xe74c3c,
+
+  /* peach */
+  0xF47E43,
+
+  /* dark violet */
+  0x752763,
+
+  /* dull green */
+  0x4D947A,
+
+  /* raspberry */
+  0xDA4952,
+
+  /* navy blue */
+  0x2E4DA7
+
+];
 noise.seed(Math.random());
 
 init();
@@ -21,7 +62,7 @@ function init() {
   camera.position.z = 160;
   camera.position.y = 50;
   camera.position.x = 10;
-  camera.target = new THREE.Vector3(0, -10, 0);
+  //camera.target = new THREE.Vector3(0, -10, 0);
 
   controls = new THREE.TrackballControls(camera);
 
@@ -96,9 +137,9 @@ function init() {
     for (var i = 0; i < 10; i++) {
       guy = new Guy();
       if (i < 4) {
-        guy.init(-30, i * 10 + 8, 0);
+        guy.init(-30, i * 10 + 8, 0, colorChoice[i]);
       } else {
-        guy.init(i * 10 - 30, 8, 0);
+        guy.init(i * 10 - 30, 8, 0, colorChoice[i]);
       }
       guys.push(guy);
     }
@@ -149,13 +190,13 @@ function Guy() {
   this.stop0 = false;
   this.interalClock = 0;
 
-  this.init = function (_x, _y, _z) {
+  this.init = function (_x, _y, _z, _color) {
     this.x = _x;
     this.y = _y;
     this.z = _z;
     this.geometry = guyGeometry;
     this.material = new THREE.MeshLambertMaterial({
-      color: 0xaaffff
+      color: _color
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.scale.set(2, 2, 2);
@@ -216,7 +257,7 @@ function popPop() {
   }
   if (popPop2) {
     guys.forEach(function (g, index) {
-      if (index > 3 && g.mesh.position.x - g.x < 10) {
+      if (index > 3 && g.mesh.position.x - g.x < 8) {
         g.mesh.position.x += 0.4;
       }
     });
