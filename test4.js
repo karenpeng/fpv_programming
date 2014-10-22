@@ -267,9 +267,9 @@ function init() {
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   container.appendChild(stats.domElement);
-  /*
-  document.addEventListener('mousemove', onDocumentMouseMove, false);
-  document.addEventListener('mousedown', onDocumentMouseDown, false);*/
+
+  container.addEventListener('mousemove', onDocumentMouseMove, false);
+  container.addEventListener('mousedown', onDocumentMouseDown, false);
   document.addEventListener('keydown', onDocumentKeyDown, false);
   document.addEventListener('keyup', onDocumentKeyUp, false);
 
