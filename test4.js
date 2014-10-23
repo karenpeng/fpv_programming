@@ -69,13 +69,13 @@ function init() {
   container = document.createElement('div');
   document.body.appendChild(container);
 
-  var info = document.createElement('div');
-  info.style.position = 'absolute';
-  info.style.top = '10px';
-  info.style.width = '100%';
-  info.style.textAlign = 'center';
-  info.innerHTML = '<a href="http://threejs.org" target="_blank">three.js</a> - voxel painter - webgl<br><strong>click</strong>: add voxel, <strong>shift + click</strong>: remove voxel, <strong>control</strong>: rotate';
-  container.appendChild(info);
+  // var info = document.createElement('div');
+  // info.style.position = 'absolute';
+  // info.style.top = '10px';
+  // info.style.width = '100%';
+  // info.style.textAlign = 'center';
+  // info.innerHTML = '<a href="http://threejs.org" target="_blank">three.js</a> - voxel painter - webgl<br><strong>click</strong>: add voxel, <strong>shift + click</strong>: remove voxel, <strong>control</strong>: rotate';
+  // container.appendChild(info);
 
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.x = 200;

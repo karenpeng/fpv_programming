@@ -1,5 +1,10 @@
+function myQue() {
+
+}
+
 function myStack(number, x, y, z) {
   this.stackBoxes = [];
+  this.spareBoxes = [];
   this.init(number, x, y, z);
   this.isPop = false;
   this.isPush = false;
@@ -74,7 +79,7 @@ myStack.prototype.init = function (number, x, y, z) {
   scene.add(this.gianBox);
 };
 
-myStack.prototype.push = function (time) {
+myStack.prototype.push = function () {
   //this.stackCylinders[0]
   //this.stackCylinders.push(something);
 
@@ -82,11 +87,13 @@ myStack.prototype.push = function (time) {
 
 myStack.prototype.pop = function () {
   if (this.isPop) {
-    if (this.stackBoxes[this.stackBoxes.length - 1].mesh.position.y < 400) {
-      this.stackBoxes[this.stackBoxes.length - 1].mesh.position.y++;
+    if (this.stackBoxes[this.stackBoxes.length - 1].mesh.position.y < 400 - this.spareBoxes.length * 50) {
+      this.stackBoxes[this.stackBoxes.length - 1].mesh.position.y += 2;
     } else {
-      this.stackBoxes.splice(this.stackBoxes.length - 1, 0);
+      this.spareBoxes.push(this.stackBoxes[this.stackBoxes.length - 1]);
+      this.stackBoxes.splice(this.stackBoxes.length - 1, 1);
       this.isPop = false;
+      console.log(this.stackBoxes.length, this.spareBoxes.length)
     }
     //this.stackCylinders[0]
     // return this.stackCylinders[0];
