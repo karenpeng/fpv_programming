@@ -205,6 +205,25 @@ function init() {
   //
 */
 
+  //Create a sine-like wave
+  var curve = new THREE.SplineCurve([
+    new THREE.Vector2(-10, 0),
+    new THREE.Vector2(-5, 5),
+    new THREE.Vector2(0, 0),
+    new THREE.Vector2(5, -5),
+    new THREE.Vector2(10, 0)
+  ]);
+
+  var path = new THREE.Path(curve.getPoints(50));
+
+  var geometry = path.createPointsGeometry(50);
+  var material = new THREE.LineBasicMaterial({
+    color: 0xff0000
+  });
+
+  var object3d = new THREE.Line(geometry, material);
+  scene.add(object3d);
+
   var geometry = new THREE.PlaneGeometry(2000, 2000);
   geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
 
@@ -356,7 +375,7 @@ function init() {
     //object.position.z = 40;
     object.position.y = -10;
     scene.add(object);
-    object.receiveShadow = true;
+    object.receiveShadow = true;k
 
   });
 

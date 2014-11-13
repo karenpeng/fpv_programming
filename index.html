@@ -1,135 +1,25 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>!!!</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-      body {
-        color: #000;
-        font-family:Monospace;
-        font-size:13px;
-        font-weight: bold;
-
-        background-color: #fff;
-        margin: 0px;
-        overflow: hidden;
-      }
-
-      #info {
-        color:#000;
-        position: absolute;
-        top: 0px; width: 100%;
-        padding: 5px;
-        text-align: center;
-
-      }
-
-      a {
-        color: red;
-      }
-      #wrap{
-        position: absolute;
-        top:0;
-        right: 0;
-        width: 370px;
-        height: 100%;
-        z-index: 1;
-        color: white;
-      }
-      #instruction{
-        /*background-color: #222;*/
-      }
-      #canvas2d{
-        position: absolute;
-        display: none;
-        background-color: black;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.4;
-        z-index: 1;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div id="wrap">
-      <div id="instruction">
-        <p>Here're cube A & B.</p>
-        <p>Try comparing their position, hit enter and see what happers:</p>
-        <p>And try changing the code:)</p>
-      </div>
-      <div id="editor">
-if(A.z === B.z){
-  A.z--;
-}
-if(A.z < B.z){
- B.z--;
-}
-      </div>
-    </div>
-    <div id="container"></div>
-    <div id="hint"></div>
-    <canvas id="canvas2d"></canvas>
-    <!--<canvas id="textureCanvas"></canvas>-->
-
-    <script src="three.min.js"></script>
-
-    <script src="lib/TrackballControls.js"></script>
-    <script type="text/javascript" src="lib/controls/OrbitControls.js"></script>
-    <script type="text/javascript" src="lib/loaders/BinaryLoader.js"></script>
-    <script src="lib/Detector.js"></script>
-    <script src="lib/stats.min.js"></script>
-    <!--<script type="text/javascript" src="ace.js"></script>-->
-    <script type="text/javascript" src="lib/ShaderGodRays.js"></script>
-    <script type="text/javascript" src="lib/loaders/PLYLoader.js"></script>
-    <script type="text/javascript" src="lib/loaders/OBJLoader.js"></script>
-
-    <!--<script src="test.js"></script>-->
-    <!--<script type="text/javascript" src="test2.js"></script>-->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
-    <script type="text/javascript" src="perlin.js"></script>
-    <script type="text/javascript" src="data_structure.js"></script>
-    <script type="text/javascript" src="drawing.js"></script>
-    <!--<script type="text/javascript" src="test3.js"></script>-->
-
-
-    <!-- Nov5-->
-    <script type="text/javascript" src="fuckingCube.js"></script>
-    <script type="text/javascript" src="parse.js"></script>
-    <script type="text/javascript" src="test6.js"></script>
-    <!--<script type="text/javascript" src="copyDomtoCanvas.js"></script>-->
-    <script>
-      var h = window.innerHeight;
-      var h1 = document.getElementById('instruction').offsetHeight;
-      var h2 = h-h1;
-      document.getElementById('editor').style.height= h2+'px';
-      var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/monokai");
-      editor.getSession().setMode("ace/mode/javascript");
-      //on enter?
-      window.onkeydown = function(e){
-        if(e.which === 13){
-          //e.preventDefault();
-          var content = editor.getValue();
-          //console.log(content);
-          var postContent = change(content);
-          console.log(postContent);
-          //eval(postContent);
-        }
-      }
-      // editor.on('change',function(e){
-      //   //console.log(e);
-      //   var content = editor.getValue();
-      //   //console.log(content);
-      //   var postContent = change(content);
-      //   console.log(postContent);
-      //   //content.eval();
-      // })
-    </script>
-
-  </body>
-</html>
+<style type="text/css">
+  #editor{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 400px;
+    height: 100%;
+    opacity: 0.8;
+  }
+</style>
+<div id="container"></div>
+<div id="editor">function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}</div>
+<script type="text/javascript" src="three.min.js"></script>
+<script type="text/javascript" src="lib/TrackballControls.js"></script>
+<!--<script type="text/javascript" src="ace.js"></script>-->
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
