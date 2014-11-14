@@ -146,8 +146,8 @@ function animate() {
   theta += 0.1;
   // note: three.js includes requestAnimationFrame shim
   requestAnimationFrame(animate);
-  controls.update();
-  guy.walk(theta);
+  //controls.update();
+  //guy.walk(theta);
   render();
 }
 
