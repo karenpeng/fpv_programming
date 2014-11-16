@@ -102,11 +102,10 @@ function init() {
   objects.push(plane);
 
   //target
-  geometry = new THREE.BoxGeometry(50, 50, 50);
   material = new THREE.MeshLambertMaterial({
     color: 0xbb2222
   });
-  target = new THREE.Mesh(geometry, material);
+  target = new THREE.Mesh(cubeGeo, material);
   target.position.x = -475;
   target.position.y = 25;
   target.position.z = -475;
@@ -114,9 +113,18 @@ function init() {
   objects.push(target);
 
   //you
-  loader = new THREE.JSONLoader();
-  you = new Guy();
-  you.loadThings();
+  // loader = new THREE.JSONLoader();
+  // you = new Guy();
+  // you.loadThings();
+  material = new THREE.MeshLambertMaterial({
+    color: 0x0000bb
+  });
+  you = new THREE.Mesh(cubeGeo, material);
+  you.position.x = 475;
+  you.position.y = 25;
+  you.position.z = 475;
+  scene.add(you);
+  objects.push(you);
 
   //obstacles
 
@@ -292,9 +300,8 @@ function animate() {
 
   var now = new Date().getTime();
   target.position.y = Math.sin(now * 0.005) * 10 + 35;
-  if (you.loaded) {
-    you.mesh.position.y = Math.sin(now * 0.005) * 12 + 12;
-  }
+  you.position.y = Math.sin(now * 0.005) * 10 + 35;
+
   render();
   controls.update();
 }
