@@ -123,6 +123,7 @@ function init() {
   you.position.x = 475;
   you.position.y = 25;
   you.position.z = 475;
+  you.idle = true;
   scene.add(you);
   objects.push(you);
 
@@ -300,7 +301,9 @@ function animate() {
 
   var now = new Date().getTime();
   target.position.y = Math.sin(now * 0.005) * 10 + 35;
-  you.position.y = Math.sin(now * 0.005) * 10 + 35;
+  if (you.idle) {
+    you.position.y = Math.sin(now * 0.005) * 10 + 35;
+  }
 
   render();
   controls.update();

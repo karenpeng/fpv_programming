@@ -9,11 +9,29 @@ document.getElementById('run').onclick = function evaluate() {
   var str = editor1.getValue();
   //console.log(value);
   eval(str);
+  // var value = parse(str);
+  // eval(value);
+
+  // camera.position.x = 0;
+  // camera.position.y = 0;
+  // camera.position.z = 0;
+  // you.add(camera);
+
+};
+
+function attachCamera() {
   camera.position.x = 0;
   camera.position.y = 0;
   camera.position.z = 0;
   you.add(camera);
-};
+}
+
+function releaseCamera() {
+  you.remove(camera);
+  camera.position.x = 500;
+  camera.position.y = 800;
+  camera.position.z = 1300;
+}
 
 // var dictionary = {
 //   'forward': 'you.position.z -= 50;',
@@ -24,53 +42,51 @@ document.getElementById('run').onclick = function evaluate() {
 //   'down': 'you.position.y -= 50;'
 // };
 
-function forward() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.z -= 0.25;
-      //change color here
+// non-sense
+var unit = 0.25;
 
-    }, i);
+function beginExecution(callback) {
+  attachCamera();
+  //how do i create a callback myself?!
+  callback();
+}
+
+function endExecution() {
+  releaseCamera();
+}
+
+function forward(callback) {
+  var step = 0;
+  //attachCamera();
+  for (var i = step; i < step + 50 / unit + 1; i++) {
+    console.log(i)
+    if (i < step + 50 / unit) {
+      setTimeout(function () {
+        you.idle = false;
+        you.position.z -= unit;
+        //change color here
+      }, i);
+    } else {
+      console.log("yay!");
+      setTimeout(function () {
+        you.idle = true;
+        // releaseCamera();
+        console.log("yay!");
+        if (callback) {
+          callback();
+        }
+      }, step + 50 / unit + 1000);
+    }
   }
   //you.position.z -= 50;
 }
 
-function backward() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.z += 0.25;
-    }, i);
-  }
+function parse(str) {
+  // pattern = //g;
+  // if you see the word "forward()", change it into "forward(counter)"
+  //   so i nee to count how many times i encounter it, to increase counter
 }
 
-function left() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.x -= 0.25;
-    }, i);
-  }
-}
-
-function right() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.z += 0.25;
-    }, i);
-  }
-}
-
-function up() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.y += 0.25;
-    }, i);
-  }
-}
-
-function down() {
-  for (var i = 0; i < 200; i++) {
-    setTimeout(function () {
-      you.position.y -= 0.25;
-    }, i);
-  }
-}
+// var dictionary = {
+//   "":
+// }
