@@ -9,6 +9,9 @@ document.getElementById('run').onclick = function evaluate() {
   var str = editor1.getValue();
   //console.log(value);
   eval(str);
+  camera.position.x = 0;
+  camera.position.y = 0;
+  camera.position.z = 0;
   you.add(camera);
 };
 
@@ -25,6 +28,8 @@ function forward() {
   for (var i = 0; i < 200; i++) {
     setTimeout(function () {
       you.position.z -= 0.25;
+      //change color here
+
     }, i);
   }
   //you.position.z -= 50;

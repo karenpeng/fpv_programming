@@ -1,0 +1,21 @@
+Welcome, see the purple geometry? That's your character.
+
+//try move it
+//forward / backward / left /  right / up / down
+//that's it
+
+
+//try make a loop
+//modern computers are super fast, won't block
+//here's just an exaggaration
+//so that you could see it's executing in a loop
+
+//wrap it as function
+//you could wrap function, make it like a tool that you could use later
+//all your functions are saved here
+
+//try it with timing
+//tough hah?
+
+//complete with your friend!
+
