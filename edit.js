@@ -7,8 +7,9 @@ editor2.getSession().setMode("ace/mode/javascript");
 
 document.getElementById('run').onclick = function evaluate() {
   var str = editor1.getValue();
-  //console.log(value);
-  eval(str);
+  //console.log(str);
+  parse(str);
+  //eval(str);
   // var value = parse(str);
   // eval(value);
 
@@ -18,6 +19,8 @@ document.getElementById('run').onclick = function evaluate() {
   // you.add(camera);
 
 };
+
+//(function (exports) {
 
 function attachCamera() {
   camera.position.x = 0;
@@ -56,37 +59,56 @@ function endExecution() {
 }
 
 function forward(callback) {
-  var step = 0;
-  //attachCamera();
-  for (var i = step; i < step + 50 / unit + 1; i++) {
-    console.log(i)
-    if (i < step + 50 / unit) {
+
+  for (var i = 0; i < 50 / unit + 1; i++) {
+
+    if (i < 50 / unit) {
       setTimeout(function () {
         you.idle = false;
         you.position.z -= unit;
-        //change color here
       }, i);
     } else {
-      console.log("yay!");
       setTimeout(function () {
         you.idle = true;
-        // releaseCamera();
-        console.log("yay!");
+        //if callback is passed in
         if (callback) {
           callback();
         }
-      }, step + 50 / unit + 1000);
+      }, 50 / unit + 1000);
     }
   }
-  //you.position.z -= 50;
 }
 
 function parse(str) {
-  // pattern = //g;
-  // if you see the word "forward()", change it into "forward(counter)"
-  //   so i nee to count how many times i encounter it, to increase counter
+  var tasks = []
+  var postStr = str.replace(/forward\(\)/g, "tasks.push('f')");
+  //console.log(postStr);
+  eval(postStr);
+  console.log(tasks)
+  var hellStr = "";
+  //for (var i = 0; i < tasks.length; i++) {
+  if (tasks.length < 1) {
+    return;
+  } else if (tasks.length === 1) {
+    hellStr += "forward()";
+  } else if (tasks.length === 2) {
+    hellStr += "forward(forward)";
+  } else {
+    for (var j = 2; j < tasks.length; j++) {
+      hellStr += "forward(function(){";
+    }
+    hellStr += "forward(forward)";
+    for (var k = 2; k < tasks.length; k++) {
+      hellStr += "})";
+    }
+  }
+  //}
+  console.log(hellStr);
+  eval(hellStr);
 }
 
 // var dictionary = {
 //   "":
 // }
+
+//})(this);
