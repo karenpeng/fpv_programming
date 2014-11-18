@@ -79,14 +79,35 @@ function forward(callback) {
   }
 }
 
+function backward(callback) {
+
+  for (var i = 0; i < 50 / unit + 1; i++) {
+
+    if (i < 50 / unit) {
+      setTimeout(function () {
+        you.idle = false;
+        you.position.z += unit;
+      }, i);
+    } else {
+      setTimeout(function () {
+        you.idle = true;
+        //if callback is passed in
+        if (callback) {
+          callback();
+        }
+      }, 50 / unit + 1000);
+    }
+  }
+}
+
 function parse(str) {
-  var tasks = []
+  var tasks = [];
   var postStr = str.replace(/forward\(\)/g, "tasks.push('f')");
+  postStr = str.replace(/backward\(\)/g, "tasks.push('b')");
   //console.log(postStr);
   eval(postStr);
-  console.log(tasks)
+  console.log(tasks + tasks.length);
   var hellStr = "";
-  //for (var i = 0; i < tasks.length; i++) {
   if (tasks.length < 1) {
     return;
   } else if (tasks.length === 1) {
@@ -102,13 +123,17 @@ function parse(str) {
       hellStr += "})";
     }
   }
-  //}
   console.log(hellStr);
   eval(hellStr);
 }
 
-// var dictionary = {
-//   "":
-// }
+var dictionary = {
+  "f": "forward",
+  "b": "backward",
+  "l": "left",
+  "r": "right",
+  "u": "up",
+  "d": "down"
+}
 
 //})(this);
