@@ -8,6 +8,21 @@
   var editor2 = ace.edit("editor2");
   editor2.setTheme("ace/theme/monokai");
   editor2.getSession().setMode("ace/mode/javascript");
+  var consoleLog = ace.edit("console");
+  consoleLog.setReadOnly(true);
+  consoleLog.setOptions({
+    highlightActiveLine: false,
+    highlightGutterLine: false
+  });
+  consoleLog.renderer.$cursorLayer.element.style.opacity = 0
+  resize();
+
+  function resize() {
+    var h = window.innerHeight;
+    document.getElementById('editor1').style.height = (h - 160) + "px";
+    document.getElementById('console').style.top = (h - 160) + "px";
+  }
+  window.addEventListener('resize', resize, false);
 
   //when run is clicked, parse the string input
   document.getElementById('run').onclick = function evaluate() {
@@ -24,11 +39,11 @@
   var tasks = [];
 
   function parse(strArray) {
-    var endStr = ""; //= [];
+    var endStr = "";
     strArray.forEach(function (str, index) {
       endStr += (replace(str, index));
     });
-    console.log(endStr);
+    //console.log(endStr);
 
     function replace(str, index) {
       var postStr = str;
@@ -41,17 +56,19 @@
       return postStr;
     }
 
-    // //postStr
-    // //console.log(postStr);
+    //postStr
+    //console.log(postStr);
     try {
       eval(endStr);
     } catch (err) {
-
+      console.log(err);
+      consoleLog.insert(err + '\n');
     }
-    // //console.log(tasks + " " + tasks.length);
-    console.log(tasks);
+    //console.log(tasks + " " + tasks.length);
+    //console.log(tasks);
     try {
       taskManager.executeTasks(tasks);
+      consoleLog.insert(err + '\n');
     } catch (err) {
 
     }
@@ -70,20 +87,29 @@
 
   TaskManager.prototype.executeTasks = function (tasks, callback) {
     this.tasks = tasks;
+    this.tasksNum = tasks.length;
     this.taskCallback = callback;
     this._execute();
   };
 
   TaskManager.prototype._execute = function () {
+    var that = this;
     if (marker) {
       editor1.session.removeMarker(marker);
       marker = null;
     }
     if (!this.tasks.length) {
-      endExecution();
+      transit(false);
       return;
+    } else if (this.tasks.length === this.tasksNum) {
+      transit(true, function () {
+        var ta = that.tasks.shift();
+        var direction = ta[0];
+        var lineNum = ta[1];
+        marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
+        that.move(direction);
+      });
     } else {
-      beginExecution();
       var ta = this.tasks.shift();
       var direction = ta[0];
       var lineNum = ta[1];
@@ -130,20 +156,60 @@
   //---------------------- move the camera --------------------
   //-----------------------------------------------------------
 
-  function beginExecution() {
-    camera.position.x = 50;
-    camera.position.y = 80;
-    camera.position.z = 130;
-    you.add(camera);
-    you.idle = false;
-  }
+  function transit(timeSpeed, callback) {
+    var deltaX = 500 - 50;
+    var deltaY = 800 - 80;
+    var deltaZ = 1300 - 130;
+    var TIME_PERIOD = 600;
+    if (timeSpeed) {
+      you.idle = false;
+      you.add(camera);
+      for (var j = 0; j < TIME_PERIOD + 1; j++) {
+        if (j === TIME_PERIOD / 2) {
 
-  function endExecution() {
-    you.remove(camera);
-    camera.position.x = 500;
-    camera.position.y = 800;
-    camera.position.z = 1300;
-    you.idle = true;
+        }
+        if (j < TIME_PERIOD) {
+          setTimeout(function () {
+
+            camera.position.x -= (deltaX / TIME_PERIOD);
+            camera.position.y -= (deltaY / TIME_PERIOD);
+            camera.position.z -= (deltaZ / TIME_PERIOD);
+
+          }, j);
+        } else {
+          setTimeout(function () {
+            //you.add(camera);
+            if (callback) {
+              callback();
+            }
+          }, TIME_PERIOD + 500);
+        }
+      }
+    } else {
+      you.remove(camera);
+      for (var j = 0; j < TIME_PERIOD + 1; j++) {
+        if (j === TIME_PERIOD / 2) {
+
+        }
+        if (j < TIME_PERIOD) {
+          setTimeout(function () {
+
+            camera.position.x += (deltaX / TIME_PERIOD);
+            camera.position.y += (deltaY / TIME_PERIOD);
+            camera.position.z += (deltaZ / TIME_PERIOD);
+
+          }, j);
+        } else {
+          setTimeout(function () {
+            you.idle = true;
+            //you.remove(camera);
+            if (callback) {
+              callback();
+            }
+          }, TIME_PERIOD + 500);
+        }
+      }
+    }
   }
 
 })(this);

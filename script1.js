@@ -1,6 +1,6 @@
 (function (exports) {
   var container;
-  var camera, scene, controls, renderer;
+  var camera, scene, controls, renderer, stats;
   var plane, cube;
 
   var vector, raycaster, isShiftDown = false;
@@ -190,6 +190,11 @@
     // document.addEventListener('keyup', onDocumentKeyUp, false);
 
     //
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    stats.domElement.style.left = '0px';
+    document.body.appendChild(stats.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
 
@@ -307,7 +312,7 @@
     if (you.idle) {
       you.position.y = Math.sin(now * 0.005) * 10 + 35;
     }
-
+    stats.update();
     render();
     controls.update();
   }
