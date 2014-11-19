@@ -40,23 +40,27 @@
     color: white;
     background-color: green;
   }
+  .highlight{
+    background-color: yellow;
+  }
 </style>
 <div id="container"></div>
 <div class="edi" id="editor1">
 forward();
 forward();
-backward();
+left();
 for(var i = 0; i< 3; i++){
  forward();
+ up();
 }
-backward();
-//function f(n){
-//  for(var i = 0; i < n; i++){
-//    forward();
-//  }
-//}
-
-//forward(forward);
+function f(n){
+  for(var i = 0; i < n; i++){
+    forward();
+    down();
+    left();
+  }
+}
+f(2);
 </div>
 <div class="edi" id="editor2"></div>
 <button id="run">run</button>

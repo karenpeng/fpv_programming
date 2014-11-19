@@ -1,7 +1,7 @@
-var container;
-var camera, scene, controls, renderer;
-var plane, cube;
 (function (exports) {
+  var container;
+  var camera, scene, controls, renderer;
+  var plane, cube;
 
   var vector, raycaster, isShiftDown = false;
 
@@ -42,16 +42,16 @@ var plane, cube;
     controls.addEventListener('change', render);
 
     // roll-over helpers
-
-    rollOverGeo = new THREE.BoxGeometry(50, 50, 50);
-    rollOverMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff0000,
-      opacity: 0.5,
-      transparent: true
-    });
-    rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
-    scene.add(rollOverMesh);
-
+    /*
+        rollOverGeo = new THREE.BoxGeometry(50, 50, 50);
+        rollOverMaterial = new THREE.MeshBasicMaterial({
+          color: 0xff0000,
+          opacity: 0.5,
+          transparent: true
+        });
+        rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+        scene.add(rollOverMesh);
+    */
     // cubes
 
     cubeGeo = new THREE.BoxGeometry(50, 50, 50);
@@ -126,6 +126,7 @@ var plane, cube;
     you.position.y = 25;
     you.position.z = 475;
     you.idle = true;
+    you.direction = 'front';
     scene.add(you);
     objects.push(you);
 
@@ -183,10 +184,10 @@ var plane, cube;
 
     container.appendChild(renderer.domElement);
 
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
-    document.addEventListener('mousedown', onDocumentMouseDown, false);
-    document.addEventListener('keydown', onDocumentKeyDown, false);
-    document.addEventListener('keyup', onDocumentKeyUp, false);
+    // document.addEventListener('mousemove', onDocumentMouseMove, false);
+    // document.addEventListener('mousedown', onDocumentMouseDown, false);
+    // document.addEventListener('keydown', onDocumentKeyDown, false);
+    // document.addEventListener('keyup', onDocumentKeyUp, false);
 
     //
 

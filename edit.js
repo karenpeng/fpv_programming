@@ -11,26 +11,51 @@
 
   //when run is clicked, parse the string input
   document.getElementById('run').onclick = function evaluate() {
-    parse(editor1.getValue());
+    //console.log(editor1.getValue())
+    //parse(editor1.getValue());
+    parse(editor1.session.doc.getAllLines());
   };
+
+  var Range = ace.require("ace/range").Range;
+
+  // function Marker(lineNum) {
+  //   var r = new Range(lineNum, 0, 1, 200, "highlight", "fullLine");
+  //   return r;
+  // }
+  // var marker = new Marker(1);
+  // console.log(marker);
+  // editor1.session.addMarker(marker);
+  editor1.session.addMarker(new Range(2, 0, 1, 100, "highlight", "fullLine"));
+  //editor1.getSession().removeMarker(marker);
 
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
   //---------------------------------------------------------------
   var tasks = [];
 
-  function parse(str) {
-    tasks = [];
-    var postStr = str.replace(/forward\(\)/g, "tasks.push('f')");
-    postStr = postStr.replace(/backward\(\)/g, "tasks.push('b')");
-    postStr = postStr.replace(/left\(\)/g, "tasks.push('l')");
-    postStr = postStr.replace(/right\(\)/g, "tasks.push('r')");
-    postStr = postStr.replace(/up\(\)/g, "tasks.push('u')");
-    postStr = postStr.replace(/down\(\)/g, "tasks.push('d')");
-    //postStr
-    console.log(postStr);
-    eval(postStr);
-    console.log(tasks + " " + tasks.length);
+  function parse(strArray) {
+    var endStr = ""; //= [];
+    strArray.forEach(function (str, index) {
+      endStr += (replace(str, index));
+    });
+    console.log(endStr);
+
+    function replace(str, index) {
+      var postStr = str;
+      postStr = str.replace(/forward\(\)/, "tasks.push(['f'," + (index + 1) + "])");
+      postStr = postStr.replace(/backward\(\)/, "tasks.push(['b'," + (index + 1) + "])");
+      postStr = postStr.replace(/left\(\)/, "tasks.push(['l'," + (index + 1) + "])");
+      postStr = postStr.replace(/right\(\)/, "tasks.push(['r'," + (index + 1) + "])");
+      postStr = postStr.replace(/up\(\)/, "tasks.push(['u'," + (index + 1) + "])");
+      postStr = postStr.replace(/down\(\)/, "tasks.push(['d'," + (index + 1) + "])");
+      return postStr;
+    }
+
+    // //postStr
+    // //console.log(postStr);
+    eval(endStr);
+    // //console.log(tasks + " " + tasks.length);
+    console.log(tasks);
     taskManager.executeTasks(tasks);
   }
 
@@ -57,26 +82,59 @@
     } else {
       beginExecution();
       var ta = this.tasks.shift();
-      this.move(ta);
+      this.move(ta[0], ta[1]);
     }
   };
 
-  TaskManager.prototype.move = function (direction) {
+  TaskManager.prototype.move = function (direction, lineNum) {
     var that = this;
+    var marker;
     for (var i = 0; i < 50 / UNIT + 1; i++) {
       if (i < 50 / UNIT) {
         setTimeout(function () {
+          marker = new Marker(lineNum);
+          editor1.session.addMarker(marker);
           switch (direction) {
           case 'f':
+            // if (you.direction === 'left') {
+            //   you.rotation.y = -Math.PI / 2;
+
+            // } else if (you.direction === 'right') {
+            //   you.rotation.y = Math.PI / 2;
+            // }
+            // you.direction = 'front';
             you.position.z -= UNIT;
+
             break;
           case 'b':
-            you.position.z += UNIT;
+            // if (you.direction === 'left') {
+            //   you.rotation.y = -Math.PI / 2;
+
+            // } else if (you.direction === 'right') {
+            //   you.rotation.y = Math.PI / 2;
+            // }
+            // you.direction = 'front';
             break;
           case 'r':
-            you.position.x += UNIT;
+            // if (you.direction === 'front') {
+            //   you.rotation.y = -Math.PI / 2;
+            //   you.direction = 'right';
+            // } else if (you.direction === 'left') {
+            //   you.rotation.y = Math.PI / 2;
+            //   you.direction = 'right';
+            // }
+            // you.direction = 'right';
+
             break;
           case 'l':
+            // if (you.direction === 'front') {
+            //   you.rotation.y = Math.PI / 2;
+            //   you.direction = 'left';
+            // } else if (you.direction === 'right') {
+            //   you.rotation.y = -Math.PI / 2;
+            //   you.direction = 'left';
+            // }
+            // you.direction = 'left';
             you.position.x -= UNIT;
             break;
           case 'u':
@@ -86,16 +144,20 @@
             you.position.y -= UNIT;
             break;
           }
-
         }, i);
       } else {
         setTimeout(function () {
           //if callback is passed in
+          editor1.getSession().removeMarker(marker);
           that._execute();
         }, 50 / UNIT + 1000);
       }
     }
   };
+
+  //-----------------------------------------------------------
+  //---------------------- move the camera --------------------
+  //-----------------------------------------------------------
 
   function beginExecution() {
     camera.position.x = 0;
