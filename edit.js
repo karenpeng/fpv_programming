@@ -18,14 +18,7 @@
 
   var Range = ace.require("ace/range").Range;
 
-  // function Marker(lineNum) {
-  //   var r = new Range(lineNum, 0, 1, 200), "highlight", "fullLine");
-  //   return r;
-  // }
-  // var marker = new Marker(1);
-  // console.log(marker);
-  // editor1.session.addMarker(marker);
-  editor1.session.addMarker(new Range(1, 0, 1, 200), "highlight", "fullLine");
+  editor1.session.addMarker(new Range(4, 0, 4, 2000), "highlight", "fullLine", true);
   // editor1.session.addMarker(new Range(2, 0, 1, 200), "highlight", "fullLine", false);
   //editor1.getSession().removeMarker(marker);
 
@@ -54,10 +47,18 @@
 
     // //postStr
     // //console.log(postStr);
-    eval(endStr);
+    try {
+      eval(endStr);
+    } catch (err) {
+
+    }
     // //console.log(tasks + " " + tasks.length);
     console.log(tasks);
-    taskManager.executeTasks(tasks);
+    try {
+      taskManager.executeTasks(tasks);
+    } catch (err) {
+
+    }
   }
 
   //----------------------------------------------------------------
@@ -88,13 +89,13 @@
   };
 
   TaskManager.prototype.move = function (direction, lineNum) {
+    console.log(lineNum);
     var that = this;
     var marker;
     for (var i = 0; i < 50 / UNIT + 1; i++) {
       if (i < 50 / UNIT) {
         setTimeout(function () {
-          marker = new Marker(lineNum);
-          editor1.session.addMarker(marker);
+          marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 200), "highlight", "fullLine", false);
           switch (direction) {
           case 'f':
             // if (you.direction === 'left') {
@@ -105,6 +106,7 @@
             // }
             // you.direction = 'front';
             you.position.z -= UNIT;
+            editor1.getSession().removeMarker(marker);
 
             break;
           case 'b':
@@ -115,6 +117,8 @@
             //   you.rotation.y = Math.PI / 2;
             // }
             // you.direction = 'front';
+            you.position.z += UNIT;
+            editor1.getSession().removeMarker(marker);
             break;
           case 'r':
             // if (you.direction === 'front') {
@@ -125,7 +129,8 @@
             //   you.direction = 'right';
             // }
             // you.direction = 'right';
-
+            you.position.x += UNIT;
+            editor1.getSession().removeMarker(marker);
             break;
           case 'l':
             // if (you.direction === 'front') {
@@ -137,12 +142,15 @@
             // }
             // you.direction = 'left';
             you.position.x -= UNIT;
+            editor1.getSession().removeMarker(marker);
             break;
           case 'u':
             you.position.y += UNIT;
+            editor1.getSession().removeMarker(marker);
             break;
           case 'd':
             you.position.y -= UNIT;
+            editor1.getSession().removeMarker(marker);
             break;
           }
         }, i);
