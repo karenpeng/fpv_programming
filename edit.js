@@ -35,12 +35,12 @@
 
     function replace(str, index) {
       var postStr = str;
-      postStr = str.replace(/forward\(\)/, "tasks.push(['f'," + (index + 1) + "])");
-      postStr = postStr.replace(/backward\(\)/, "tasks.push(['b'," + (index + 1) + "])");
-      postStr = postStr.replace(/left\(\)/, "tasks.push(['l'," + (index + 1) + "])");
-      postStr = postStr.replace(/right\(\)/, "tasks.push(['r'," + (index + 1) + "])");
-      postStr = postStr.replace(/up\(\)/, "tasks.push(['u'," + (index + 1) + "])");
-      postStr = postStr.replace(/down\(\)/, "tasks.push(['d'," + (index + 1) + "])");
+      postStr = str.replace(/forward\(\)/, "tasks.push(['f'," + index + "])");
+      postStr = postStr.replace(/backward\(\)/, "tasks.push(['b'," + index + "])");
+      postStr = postStr.replace(/left\(\)/, "tasks.push(['l'," + index + "])");
+      postStr = postStr.replace(/right\(\)/, "tasks.push(['r'," + index + "])");
+      postStr = postStr.replace(/up\(\)/, "tasks.push(['u'," + index + "])");
+      postStr = postStr.replace(/down\(\)/, "tasks.push(['d'," + index + "])");
       return postStr;
     }
 
@@ -90,8 +90,7 @@
       var ta = this.tasks.shift();
       var direction = ta[0];
       var lineNum = ta[1];
-      console.log(lineNum);
-      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000, 'highlight', 'fullLine', false));
+      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'ace_active-line', 'fullLine', false);
       this.move(direction);
     }
   };
