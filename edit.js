@@ -19,13 +19,14 @@
   var Range = ace.require("ace/range").Range;
 
   // function Marker(lineNum) {
-  //   var r = new Range(lineNum, 0, 1, 200, "highlight", "fullLine");
+  //   var r = new Range(lineNum, 0, 1, 200), "highlight", "fullLine");
   //   return r;
   // }
   // var marker = new Marker(1);
   // console.log(marker);
   // editor1.session.addMarker(marker);
-  editor1.session.addMarker(new Range(2, 0, 1, 100, "highlight", "fullLine"));
+  editor1.session.addMarker(new Range(1, 0, 1, 200), "highlight", "fullLine");
+  // editor1.session.addMarker(new Range(2, 0, 1, 200), "highlight", "fullLine", false);
   //editor1.getSession().removeMarker(marker);
 
   //---------------------------------------------------------------
