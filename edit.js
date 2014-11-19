@@ -18,9 +18,8 @@
 
   var Range = ace.require("ace/range").Range;
 
-  editor1.session.addMarker(new Range(4, 0, 4, 2000), "highlight", "fullLine", true);
+  //editor1.session.addMarker(new Range(4, 0, 4, 2000), "highlight", "fullLine", true);
   // editor1.session.addMarker(new Range(2, 0, 1, 200), "highlight", "fullLine", false);
-  //editor1.getSession().removeMarker(marker);
 
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
@@ -66,6 +65,7 @@
   //----------------------------------------------------------------
   var UNIT = 0.25;
   var taskManager = new TaskManager();
+  var marker = null;
 
   function TaskManager() {
     this.tasks = [];
@@ -78,24 +78,29 @@
   };
 
   TaskManager.prototype._execute = function () {
+    if (marker) {
+      editor1.session.removeMarker(marker);
+      marker = null;
+    }
     if (!this.tasks.length) {
       endExecution();
       return;
     } else {
       beginExecution();
       var ta = this.tasks.shift();
-      this.move(ta[0], ta[1]);
+      var direction = ta[0];
+      var lineNum = ta[1];
+      console.log(lineNum);
+      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000, 'highlight', 'fullLine', false));
+      this.move(direction);
     }
   };
 
-  TaskManager.prototype.move = function (direction, lineNum) {
-    console.log(lineNum);
+  TaskManager.prototype.move = function (direction) {
     var that = this;
-    var marker;
     for (var i = 0; i < 50 / UNIT + 1; i++) {
       if (i < 50 / UNIT) {
         setTimeout(function () {
-          marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 200), "highlight", "fullLine", false);
           switch (direction) {
           case 'f':
             // if (you.direction === 'left') {
@@ -106,8 +111,6 @@
             // }
             // you.direction = 'front';
             you.position.z -= UNIT;
-            editor1.getSession().removeMarker(marker);
-
             break;
           case 'b':
             // if (you.direction === 'left') {
@@ -118,7 +121,6 @@
             // }
             // you.direction = 'front';
             you.position.z += UNIT;
-            editor1.getSession().removeMarker(marker);
             break;
           case 'r':
             // if (you.direction === 'front') {
@@ -130,7 +132,6 @@
             // }
             // you.direction = 'right';
             you.position.x += UNIT;
-            editor1.getSession().removeMarker(marker);
             break;
           case 'l':
             // if (you.direction === 'front') {
@@ -142,22 +143,17 @@
             // }
             // you.direction = 'left';
             you.position.x -= UNIT;
-            editor1.getSession().removeMarker(marker);
             break;
           case 'u':
             you.position.y += UNIT;
-            editor1.getSession().removeMarker(marker);
             break;
           case 'd':
             you.position.y -= UNIT;
-            editor1.getSession().removeMarker(marker);
             break;
           }
         }, i);
       } else {
         setTimeout(function () {
-          //if callback is passed in
-          editor1.getSession().removeMarker(marker);
           that._execute();
         }, 50 / UNIT + 1000);
       }
@@ -169,9 +165,9 @@
   //-----------------------------------------------------------
 
   function beginExecution() {
-    camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 0;
+    camera.position.x = 50;
+    camera.position.y = 80;
+    camera.position.z = 130;
     you.add(camera);
     you.idle = false;
   }
