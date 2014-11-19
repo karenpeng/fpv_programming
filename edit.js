@@ -18,9 +18,6 @@
 
   var Range = ace.require("ace/range").Range;
 
-  //editor1.session.addMarker(new Range(4, 0, 4, 2000), "highlight", "fullLine", true);
-  // editor1.session.addMarker(new Range(2, 0, 1, 200), "highlight", "fullLine", false);
-
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
   //---------------------------------------------------------------
@@ -90,7 +87,7 @@
       var ta = this.tasks.shift();
       var direction = ta[0];
       var lineNum = ta[1];
-      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'ace_active-line', 'fullLine', false);
+      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
       this.move(direction);
     }
   };
@@ -102,45 +99,15 @@
         setTimeout(function () {
           switch (direction) {
           case 'f':
-            // if (you.direction === 'left') {
-            //   you.rotation.y = -Math.PI / 2;
-
-            // } else if (you.direction === 'right') {
-            //   you.rotation.y = Math.PI / 2;
-            // }
-            // you.direction = 'front';
             you.position.z -= UNIT;
             break;
           case 'b':
-            // if (you.direction === 'left') {
-            //   you.rotation.y = -Math.PI / 2;
-
-            // } else if (you.direction === 'right') {
-            //   you.rotation.y = Math.PI / 2;
-            // }
-            // you.direction = 'front';
             you.position.z += UNIT;
             break;
           case 'r':
-            // if (you.direction === 'front') {
-            //   you.rotation.y = -Math.PI / 2;
-            //   you.direction = 'right';
-            // } else if (you.direction === 'left') {
-            //   you.rotation.y = Math.PI / 2;
-            //   you.direction = 'right';
-            // }
-            // you.direction = 'right';
             you.position.x += UNIT;
             break;
           case 'l':
-            // if (you.direction === 'front') {
-            //   you.rotation.y = Math.PI / 2;
-            //   you.direction = 'left';
-            // } else if (you.direction === 'right') {
-            //   you.rotation.y = -Math.PI / 2;
-            //   you.direction = 'left';
-            // }
-            // you.direction = 'left';
             you.position.x -= UNIT;
             break;
           case 'u':
