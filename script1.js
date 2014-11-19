@@ -12,6 +12,7 @@
   var obstacles = [];
 
   var objects = [];
+  var frameRate = 0;
 
   init();
   animate();
@@ -198,6 +199,8 @@
 
     window.addEventListener('resize', onWindowResize, false);
 
+    render();
+
   }
 
   function onWindowResize() {
@@ -306,14 +309,17 @@
 
   function animate() {
     requestAnimationFrame(animate);
+    if (frameRate % 2 === 0) {
+      render();
+    }
 
+    frameRate++;
     var now = new Date().getTime();
     target.position.y = Math.sin(now * 0.005) * 10 + 35;
     if (you.idle) {
       you.position.y = Math.sin(now * 0.005) * 10 + 35;
     }
     stats.update();
-    render();
     controls.update();
   }
 
@@ -325,5 +331,6 @@
 
   exports.you = you;
   exports.camera = camera;
+  //exports.render = render;
 
 })(this);

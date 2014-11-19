@@ -143,6 +143,7 @@
             you.position.y -= UNIT;
             break;
           }
+          //render();
         }, i);
       } else {
         setTimeout(function () {
@@ -174,7 +175,7 @@
             camera.position.x -= (deltaX / TIME_PERIOD);
             camera.position.y -= (deltaY / TIME_PERIOD);
             camera.position.z -= (deltaZ / TIME_PERIOD);
-
+            //render();
           }, j);
         } else {
           setTimeout(function () {
@@ -197,7 +198,7 @@
             camera.position.x += (deltaX / TIME_PERIOD);
             camera.position.y += (deltaY / TIME_PERIOD);
             camera.position.z += (deltaZ / TIME_PERIOD);
-
+            //render();
           }, j);
         } else {
           setTimeout(function () {
