@@ -124,10 +124,13 @@
     var that = this;
     for (var i = 0; i < 50 / UNIT + 1; i++) {
       if (i < 50 / UNIT) {
+        checkBounce()
         setTimeout(function () {
           switch (direction) {
           case 'f':
+            // if (!checkBounce()) {
             you.position.z -= UNIT;
+            // }
             break;
           case 'b':
             you.position.z += UNIT;
@@ -146,7 +149,8 @@
             break;
           }
           //render();
-          checkBounce();
+          // checkBounce();
+          //}
         }, i);
       } else {
         setTimeout(function () {

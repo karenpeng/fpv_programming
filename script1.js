@@ -173,6 +173,14 @@
 
     }
 
+    var c = new THREE.Mesh(cubeGeo, cubeMaterial);
+    c.position.x = 425;
+    c.position.y = 25;
+    c.position.z = 475;
+    c.name = "obstacle";
+    scene.add(c);
+    objects.push(c);
+
     // Lights
 
     var ambientLight = new THREE.AmbientLight(0x606060);
@@ -190,8 +198,8 @@
 
     container.appendChild(renderer.domElement);
 
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
-    document.addEventListener('mousedown', onDocumentMouseDown, false);
+    // document.addEventListener('mousemove', onDocumentMouseMove, false);
+    // document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     //
     stats = new Stats();
@@ -220,26 +228,33 @@
     var rays = [
       new THREE.Vector3(0, 0, 1),
       new THREE.Vector3(0, 0, -1),
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, -1, 0),
       new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(-1, 0, 0)
-    ];
+      new THREE.Vector3(-1, 0, 0),
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, -1, 0)
 
-    rays.forEach(function (_ray) {
+    ];
+    var count;
+    for (var i = 0; i < rays.length; i++) {
       //face.unproject(camera);
-      raycaster.ray.set(you.position, _ray);
+      count = 0;
+      raycaster.ray.set(you.position, rays[i]);
+      console.log(rays[i])
       var intersects = raycaster.intersectObjects(objects);
-      if (intersects.length > 0) {
-        var intersect = intersects[0];
-        if (intersect.distance < 25) {
-          console.log(intersect.object.name + " " + intersect.distance);
-          return true;
-        } else {
-          return false;
-        }
+      //console.log(intersects)
+      if (intersects.length > 0 /*&& intersects[0].distance < 25*/ ) {
+
+        intersects.forEach(function (ii) {
+          console.log(ii.object.name + " " + ii.distance);
+        });
+        // console.log(intersects[0].object.name + " " + intersects[0].distance);
+        //count++;
+        //cant use break in forEach loop, why?
+        //break;
       }
-    });
+    }
+
+    //return count !== 0;
 
   }
 
