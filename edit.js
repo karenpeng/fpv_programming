@@ -79,7 +79,6 @@
   //----------------------------------------------------------------
   //------------------------ task manager --------------------------
   //----------------------------------------------------------------
-  var UNIT = 0.25;
   var taskManager = new TaskManager();
   var marker = null;
 
@@ -87,10 +86,9 @@
     this.tasks = [];
   }
 
-  TaskManager.prototype.executeTasks = function (tasks, callback) {
+  TaskManager.prototype.executeTasks = function (tasks) {
     this.tasks = tasks;
     this.tasksNum = tasks.length;
-    this.taskCallback = callback;
     this._execute();
   };
 
@@ -120,38 +118,72 @@
     }
   };
 
+  //move one grid
   TaskManager.prototype.move = function (direction) {
+    var x_copy = you.position.x;
+    var y_copy = you.position.y;
+    var z_copy = you.position.z;
+
+    var UNIT = 0.25;
     var that = this;
+
     for (var i = 0; i < 50 / UNIT + 1; i++) {
+
       if (i < 50 / UNIT) {
-        checkBounce()
+
         setTimeout(function () {
+          //if (!isHit()) {
           switch (direction) {
           case 'f':
-            // if (!checkBounce()) {
-            you.position.z -= UNIT;
-            // }
+            if (!isHit(1)) {
+              you.position.z -= UNIT;
+            } else {
+              you.posiiton.z = z_copy;
+            }
             break;
           case 'b':
-            you.position.z += UNIT;
+            if (!isHit(0)) {
+              you.position.z += UNIT;
+            } else {
+              you.position.z = z_copy;
+            }
             break;
           case 'r':
-            you.position.x += UNIT;
+            if (!isHit(2)) {
+              you.position.x += UNIT;
+            } else {
+              you.position.x = x_copy;
+            }
             break;
           case 'l':
-            you.position.x -= UNIT;
+            //var ray = isHit();
+            if (!isHit(3)) {
+              you.position.x -= UNIT;
+            } else {
+              //you.position.x += UNIT;
+              you.position.x = x_copy;
+            }
             break;
           case 'u':
-            you.position.y += UNIT;
+            if (!isHit(4)) {
+              you.position.y += UNIT;
+            } else {
+              you.position.y = y_copy;
+            }
             break;
           case 'd':
-            you.position.y -= UNIT;
+            if (!isHit(5)) {
+              you.position.y -= UNIT;
+            } else {
+              you.position.y = y_copy;
+            }
             break;
           }
           //render();
-          // checkBounce();
           //}
+
         }, i);
+
       } else {
         setTimeout(function () {
           that._execute();
@@ -169,13 +201,12 @@
     var deltaY = 800 - 80;
     var deltaZ = 1300 - 130;
     var TIME_PERIOD = 600;
+
     if (timeSpeed) {
       you.idle = false;
       you.add(camera);
       for (var j = 0; j < TIME_PERIOD + 1; j++) {
-        if (j === TIME_PERIOD / 2) {
 
-        }
         if (j < TIME_PERIOD) {
           setTimeout(function () {
 
@@ -193,12 +224,11 @@
           }, TIME_PERIOD + 500);
         }
       }
+
     } else {
       you.remove(camera);
       for (var j = 0; j < TIME_PERIOD + 1; j++) {
-        if (j === TIME_PERIOD / 2) {
 
-        }
         if (j < TIME_PERIOD) {
           setTimeout(function () {
 

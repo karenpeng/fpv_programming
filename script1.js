@@ -51,7 +51,7 @@
       transparent: true
     });
     rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
-    scene.add(rollOverMesh);
+    //scene.add(rollOverMesh);
 
     // cubes
 
@@ -223,38 +223,48 @@
 
   }
 
-  function checkBounce() {
+  function isHit(_index) {
 
     var rays = [
+      //backward
       new THREE.Vector3(0, 0, 1),
+      //forward
       new THREE.Vector3(0, 0, -1),
+      //right
       new THREE.Vector3(1, 0, 0),
+      //left
       new THREE.Vector3(-1, 0, 0),
+      //up
       new THREE.Vector3(0, 1, 0),
+      //down
       new THREE.Vector3(0, -1, 0)
 
     ];
-    var count;
-    for (var i = 0; i < rays.length; i++) {
-      //face.unproject(camera);
-      count = 0;
-      raycaster.ray.set(you.position, rays[i]);
-      console.log(rays[i])
-      var intersects = raycaster.intersectObjects(objects);
-      //console.log(intersects)
-      if (intersects.length > 0 /*&& intersects[0].distance < 25*/ ) {
 
-        intersects.forEach(function (ii) {
-          console.log(ii.object.name + " " + ii.distance);
-        });
-        // console.log(intersects[0].object.name + " " + intersects[0].distance);
-        //count++;
-        //cant use break in forEach loop, why?
-        //break;
-      }
+    //var count;
+    //for (var i = 0; i < rays.length; i++) {
+
+    //count = 0;
+
+    raycaster.ray.set(you.position, rays[_index]);
+
+    var intersects = raycaster.intersectObjects(objects);
+
+    if (intersects.length > 0 && intersects[0].distance < 25) {
+
+      console.log(intersects[0].object.name + " " + intersects[0].distance);
+      //count++;
+      //cant use break in forEach loop, why?
+      //return rays[i];
+      //break;
+      return true;
+    } else {
+      return false;
     }
+    //}
 
     //return count !== 0;
+    //return null;
 
   }
 
@@ -361,6 +371,6 @@
   exports.you = you;
   exports.camera = camera;
   //exports.render = render;
-  exports.checkBounce = checkBounce;
+  exports.isHit = isHit;
 
 })(this);
