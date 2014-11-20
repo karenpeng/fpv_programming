@@ -43,15 +43,15 @@
     controls.addEventListener('change', render);
 
     // roll-over helpers
-    /*
-        rollOverGeo = new THREE.BoxGeometry(50, 50, 50);
-        rollOverMaterial = new THREE.MeshBasicMaterial({
-          color: 0xff0000,
-          opacity: 0.5,
-          transparent: true
-        });
-        rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
-        scene.add(rollOverMesh);
+
+    rollOverGeo = new THREE.BoxGeometry(50, 50, 50);
+    rollOverMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff0000,
+      opacity: 0.5,
+      transparent: true
+    });
+    rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+    scene.add(rollOverMesh);
 
     // cubes
 
@@ -62,7 +62,6 @@
       shading: THREE.FlatShading
     });
     cubeMaterial.ambient = cubeMaterial.color;
-    */
 
     // grid
 
@@ -112,7 +111,7 @@
     });
     target = new THREE.Mesh(cubeGeo, material);
     target.position.x = -475;
-    target.position.y = 56;
+    target.position.y = 40;
     target.position.z = -475;
     target.name = "target";
     scene.add(target);
@@ -128,7 +127,7 @@
     you = new THREE.Mesh(cubeGeo, material);
     you.position.x = 475;
     // you.position.y = 56;
-    you.position.y = 26;
+    you.position.y = 25;
     you.position.z = 475;
     you.idle = true;
     you.direction = 'front';
@@ -217,16 +216,31 @@
   }
 
   function checkBounce() {
-    var test = new THREE.Vector3(you.position.x, you.position.y, you.position.z);
-    test.unproject(camera);
-    raycaster.ray.set(camera.position, test.sub(camera.position).normalize());
-    var intersects = raycaster.intersectObjects(objects);
-    if (intersects.length > 0) {
-      console.log(intersects[0]);
-      //return true;
-    } else {
-      //return false;
-    }
+
+    var rays = [
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(0, 0, -1),
+      new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(1, 0, 0),
+      new THREE.Vector3(-1, 0, 0)
+    ];
+
+    rays.forEach(function (_ray) {
+      //face.unproject(camera);
+      raycaster.ray.set(you.position, _ray);
+      var intersects = raycaster.intersectObjects(objects);
+      if (intersects.length > 0) {
+        var intersect = intersects[0];
+        if (intersect.distance < 25) {
+          console.log(intersect.object.name + " " + intersect.distance);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+
   }
 
   function onDocumentMouseMove(event) {
@@ -246,8 +260,8 @@
 
       //console.log(intersect);
 
-      //rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
-      //rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+      rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
+      rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
 
     }
 
