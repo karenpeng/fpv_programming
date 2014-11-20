@@ -52,7 +52,7 @@
         });
         rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
         scene.add(rollOverMesh);
-    */
+
     // cubes
 
     cubeGeo = new THREE.BoxGeometry(50, 50, 50);
@@ -62,6 +62,7 @@
       shading: THREE.FlatShading
     });
     cubeMaterial.ambient = cubeMaterial.color;
+    */
 
     // grid
 
@@ -100,6 +101,7 @@
 
     plane = new THREE.Mesh(geometry);
     plane.visible = false;
+    plane.name = "floor";
     scene.add(plane);
 
     objects.push(plane);
@@ -110,8 +112,9 @@
     });
     target = new THREE.Mesh(cubeGeo, material);
     target.position.x = -475;
-    target.position.y = 25;
+    target.position.y = 56;
     target.position.z = -475;
+    target.name = "target";
     scene.add(target);
     objects.push(target);
 
@@ -124,12 +127,13 @@
     });
     you = new THREE.Mesh(cubeGeo, material);
     you.position.x = 475;
-    you.position.y = 25;
+    // you.position.y = 56;
+    you.position.y = 26;
     you.position.z = 475;
     you.idle = true;
     you.direction = 'front';
     scene.add(you);
-    objects.push(you);
+    //objects.push(you);
 
     //obstacles
 
@@ -151,6 +155,7 @@
           mesh.position.x = x;
           mesh.position.y = y;
           mesh.position.z = z;
+          mesh.name = "obstacle";
           scene.add(mesh);
           objects.push(mesh);
         }
@@ -162,6 +167,7 @@
         // if (Math.random() > 0.5) {
         //    upMesh.position.x += 50;
         // }
+        upMesh.name = "obstacle";
         scene.add(upMesh);
         objects.push(upMesh);
       }
@@ -185,10 +191,8 @@
 
     container.appendChild(renderer.domElement);
 
-    // document.addEventListener('mousemove', onDocumentMouseMove, false);
-    // document.addEventListener('mousedown', onDocumentMouseDown, false);
-    // document.addEventListener('keydown', onDocumentKeyDown, false);
-    // document.addEventListener('keyup', onDocumentKeyUp, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
+    document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     //
     stats = new Stats();
@@ -212,6 +216,19 @@
 
   }
 
+  function checkBounce() {
+    var test = new THREE.Vector3(you.position.x, you.position.y, you.position.z);
+    test.unproject(camera);
+    raycaster.ray.set(camera.position, test.sub(camera.position).normalize());
+    var intersects = raycaster.intersectObjects(objects);
+    if (intersects.length > 0) {
+      console.log(intersects[0]);
+      //return true;
+    } else {
+      //return false;
+    }
+  }
+
   function onDocumentMouseMove(event) {
 
     event.preventDefault();
@@ -227,8 +244,10 @@
 
       var intersect = intersects[0];
 
-      rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
-      rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+      //console.log(intersect);
+
+      //rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
+      //rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
 
     }
 
@@ -250,6 +269,8 @@
     if (intersects.length > 0) {
 
       var intersect = intersects[0];
+
+      console.log(intersect);
 
       // delete cube
 
@@ -283,42 +304,21 @@
 
   }
 
-  function onDocumentKeyDown(event) {
-
-    switch (event.keyCode) {
-
-    case 16:
-      isShiftDown = true;
-      break;
-
-    }
-
-  }
-
-  function onDocumentKeyUp(event) {
-
-    switch (event.keyCode) {
-
-    case 16:
-      isShiftDown = false;
-      break;
-
-    }
-
-  }
-
   function animate() {
     requestAnimationFrame(animate);
+
     if (frameRate % 2 === 0) {
       render();
     }
 
     frameRate++;
     var now = new Date().getTime();
-    target.position.y = Math.sin(now * 0.005) * 10 + 35;
-    if (you.idle) {
-      you.position.y = Math.sin(now * 0.005) * 10 + 35;
-    }
+    target.position.y += Math.sin(now * 0.002);
+    // if (you.idle) {
+    //   you.position.y += Math.sin(now * 0.002);
+    // } else {
+    //   you.position.y = 25;
+    // }
     stats.update();
     controls.update();
   }
@@ -332,5 +332,6 @@
   exports.you = you;
   exports.camera = camera;
   //exports.render = render;
+  exports.checkBounce = checkBounce;
 
 })(this);

@@ -53,24 +53,26 @@
       postStr = postStr.replace(/right\(\)/, "tasks.push(['r'," + index + "])");
       postStr = postStr.replace(/up\(\)/, "tasks.push(['u'," + index + "])");
       postStr = postStr.replace(/down\(\)/, "tasks.push(['d'," + index + "])");
+      //making it as separate line again
+      postStr += '\n';
       return postStr;
     }
 
-    //postStr
     //console.log(postStr);
     try {
+      //console.log(endStr);
       eval(endStr);
     } catch (err) {
-      console.log(err);
       consoleLog.insert(err + '\n');
+      console.log(err);
     }
     //console.log(tasks + " " + tasks.length);
     //console.log(tasks);
     try {
       taskManager.executeTasks(tasks);
-      consoleLog.insert(err + '\n');
     } catch (err) {
-
+      consoleLog.insert(err + '\n');
+      console.log(err);
     }
   }
 
@@ -144,6 +146,7 @@
             break;
           }
           //render();
+          checkBounce();
         }, i);
       } else {
         setTimeout(function () {
