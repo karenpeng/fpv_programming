@@ -59,14 +59,10 @@ function changeContent(number) {
     break;
   case 4:
     strs = level4;
+    question.style.display = "none";
     break;
   case 5:
     strs = level5;
-    question.style.display = "none";
-    break;
-  case 6:
-    strs = level6;
-    start.style.display = "block";
     break;
   default:
     str = "";
@@ -90,8 +86,9 @@ var level1 = [
   "left()",
   "right()",
   "up()",
+  "down()",
   "That's it.",
-  "Try type some of them in the editor, when you finish, click the 'run' button."
+  "Try type them in the editor, when you finish, click the 'run' button."
 ];
 
 var level2 = [
@@ -99,7 +96,7 @@ var level2 = [
   "Well, you don't have to type it 10 times.",
   "Here's how a 'loop' can help you:",
   "",
-  "for(var i = 0; i < 6; i++){",
+  "for(var i = 0; i < 10; i++){",
   " forward()",
   "}",
   "Try it in the editor, if you like, try with different iterate times and instrunctions"
@@ -108,39 +105,25 @@ var level2 = [
 var level3 = [
   "If you make the iterator as a reusable tool, you don't have to remake it over and over again.",
   "Here's how a 'function' works as a 'tool':",
-  "function myLoop(steps){",
+  "function f(steps){",
   " for(var i = 0; i < steps; i++){",
   "   forward()",
   " }",
   "}",
   "And here's how to 'use' this tool:",
-  "myLoop(4)",
-  "myLoop(6)"
+  "f(4)",
+  "f(6)"
 ];
 
 var level4 = [
-  "You could also make the direction changable, making this tool more flexible:",
-  "function myStep(steps, direction){",
-  " for(var i = 0; i < steps; i++){",
-  "if(direction === 'f'){",
-  "   forward()",
-  " }",
-  "if(direction === 'l'){",
-  "   left()",
-  " }",
-  "}",
-  "}",
-];
-
-var level5 = [
   "There's always obstacles:)",
   "See the yellow cubes? They're obstacles which will get in your way.",
   "Try to go through them and see what happens."
 ];
 
-var level6 = [
-  "Clock Ticking!",
-  "In the real game, you need to get to the target as soon as possible.",
+var level5 = [
+  "Clock's Ticking!",
+  "In the real game, you need to compete with other to get to the target as soon as possible.",
   "Wanna give it a try?",
   "Click 'start' when you're ready."
 ];

@@ -10,6 +10,16 @@
   // editor2.setTheme("ace/theme/monokai");
   // editor2.getSession().setMode("ace/mode/javascript");
 
+  //get elementsssss
+  var canvas = document.getElementsByTagName("CANVAS")[0];
+  canvas.onmousedown = function () {
+    canvas.style.cursor = "grabbing";
+  };
+
+  canvas.onmouseover = function () {
+    canvas.style.cursor = "grab";
+  };
+
   var consoleLog = ace.edit("console");
   consoleLog.setReadOnly(true);
   consoleLog.setOptions({
@@ -253,10 +263,49 @@
   }
 
   //-----------------------------------------------------------
+  //------------------------ run result -----------------------
+  //-----------------------------------------------------------
+  function result() {
+    if (you.position === new THREE.Vector3(-475, 40, -475)) {
+      youWin();
+    } else {
+      backToSquareOne();
+    }
+  }
+
+  //-----------------------------------------------------------
   //-------------------- back to square one -------------------
   //-----------------------------------------------------------
-  function backToSquareOne() {
+  function backToSquareOne(callback) {
+    //shakehand();
+    var deltaX = you.position.x - 475;
+    var deltaY = you.position.y - 25;
+    var deltaZ = you.position.z - 475;
+    var TIME_PERIOD = 400;
 
+    for (var i = 0; i < TIME_PERIOD + 1; i++) {
+      if (i < TIME_PERIOD) {
+        setTimeout(function () {
+          you.position.x -= (deltaX / TIME_PERIOD);
+          you.position.y -= (deltaY / TIME_PERIOD);
+          you.position.z -= (deltaZ / TIME_PERIOD);
+        }, i);
+      } else {
+        setTimeout(function () {
+          if (callback) {
+            callback();
+          }
+        }, TIME_PERIOD + 300);
+      }
+    }
+  }
+
+  //-----------------------------------------------------------
+  //-----------------------     you win     -------------------
+  //-----------------------------------------------------------
+
+  function youWin() {
+    alert("yay!");
   }
 
 })(this);

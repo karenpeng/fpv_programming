@@ -115,7 +115,7 @@
     target.position.z = -475;
     target.name = "target";
     scene.add(target);
-    objects.push(target);
+    //objects.push(target);
 
     //you
     // loader = new THREE.JSONLoader();
@@ -242,11 +242,6 @@
 
     ];
 
-    //var count;
-    //for (var i = 0; i < rays.length; i++) {
-
-    //count = 0;
-
     raycaster.ray.set(you.position, rays[_index]);
 
     var intersects = raycaster.intersectObjects(objects);
@@ -254,18 +249,10 @@
     if (intersects.length > 0 && intersects[0].distance < 25) {
 
       console.log(intersects[0].object.name + " " + intersects[0].distance);
-      //count++;
-      //cant use break in forEach loop, why?
-      //return rays[i];
-      //break;
       return true;
     } else {
       return false;
     }
-    //}
-
-    //return count !== 0;
-    //return null;
 
   }
 
@@ -369,8 +356,12 @@
 
   }
 
+  function restart() {
+
+  }
+
   exports.you = you;
-  exports.init = init;
+  //exports.init = init;
   exports.camera = camera;
   //exports.render = render;
   exports.isHit = isHit;
