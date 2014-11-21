@@ -173,13 +173,14 @@
 
     }
 
-    var c = new THREE.Mesh(cubeGeo, cubeMaterial);
-    c.position.x = 425;
-    c.position.y = 25;
-    c.position.z = 475;
-    c.name = "obstacle";
-    scene.add(c);
-    objects.push(c);
+    // //for testing
+    // var c = new THREE.Mesh(cubeGeo, cubeMaterial);
+    // c.position.x = 425;
+    // c.position.y = 25;
+    // c.position.z = 475;
+    // c.name = "obstacle";
+    // scene.add(c);
+    // objects.push(c);
 
     // Lights
 
@@ -201,12 +202,12 @@
     // document.addEventListener('mousemove', onDocumentMouseMove, false);
     // document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-    //
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    stats.domElement.style.left = '0px';
-    document.body.appendChild(stats.domElement);
+    // STATS
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // stats.domElement.style.left = '0px';
+    // document.body.appendChild(stats.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
 
@@ -358,7 +359,7 @@
     // } else {
     //   you.position.y = 25;
     // }
-    stats.update();
+    //stats.update();
     controls.update();
   }
 
@@ -369,6 +370,7 @@
   }
 
   exports.you = you;
+  exports.init = init;
   exports.camera = camera;
   //exports.render = render;
   exports.isHit = isHit;

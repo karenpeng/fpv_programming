@@ -1,85 +1,27 @@
-<style type="text/css">
-  body, html{
-    padding: 0;
-    margin: 0;
-    top: 0;
-    left: 0;
-  }
-  .edi{
-    position: absolute;
-    top: 0;
-    width: 360px;
-    height: 100%;
-  /*  opacity: 0.8;*/
-  }
-  #editor1{
-    position: absolute;
-    right: 0;
-    top: 20px;
-    width: 360px;
-    opacity: 0.9;
-  }
-  #editor2{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 360px;
-    height: 10px;
-    height: 100%;
-    opacity: 0.6;
-  }
-  #console{
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 360px;
-    height: 160px;
-    z-index: 2;
-  }
-  #run{
-    position: absolute;
-    top: 0;
-    width: 60px;
-    height: 20px;
-    right: 300px;
-    z-index: 10;
-    padding: 2px 20px;
-    color: white;
-    background-color: green;
-  }
-  .highlight{
-    position: absolute;
-    background-color: #A4C402;
-   /* background-color: yellow;*/
-  }
-</style>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="style.css"/>
 <div id="container"></div>
-<div class="edi" id="editor1">
-  /*
-forward();
-forward();
-left();
-for(var i = 0; i< 3; i++){
- forward();
- //up();
-}
-function f(n){
-  for(var i = 0; i < n; i++){
-    forward();
-    //down();
-    left();
-  }
-}
-f(2);
-*/
-left()
+<div class="edi" id="editor1">//Here goes your code:</div>
+<!--<div class="edi" id="editor2"></div>-->
+<div id="instruction">
+  <div id="content">
+    <p>Welcome!</p>
+    <p>See the blue cube? That's your character.</p>
+    <p>And the red cube? That's your target.</p>
+    <p>To play this game, you need to move your character to the target.</p>
+    <p>To do that, you need to write some instructions for your character.</p>
+    <p>Wanna learn how to do it?</p>
+    <p>Let's go!!!</p>
+  </div>
+  <p id="question">What does this mean?</p>
+  <button id="next">next</button>
+  <p class="bar" id="backgroundBar">i</p>
+  <p class="bar" id="processBar">i</p>
 </div>
-<div class="edi" id="editor2"></div>
-<div class="edi" id="console"></div>
+<div class="edi" id="console">//Here goes your console:</div>
 <button id="run">run</button>
-<!--
-<script type="text/javascript" src="three.min.js"></script>
-<script type="text/javascript" src="ace.js"></script>-->
+<button id="start">start</button>
+<p id="timer"></p>
 
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
@@ -87,3 +29,4 @@ left()
 <script type="text/javascript" src="stats.min.js"></script>
 <script type="text/javascript" src="script1.js"></script>
 <script type="text/javascript" src="edit.js"></script>
+<script type="text/javascript" src="instruction.js"></script>

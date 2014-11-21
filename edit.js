@@ -5,9 +5,11 @@
   var editor1 = ace.edit("editor1");
   editor1.setTheme("ace/theme/monokai");
   editor1.getSession().setMode("ace/mode/javascript");
-  var editor2 = ace.edit("editor2");
-  editor2.setTheme("ace/theme/monokai");
-  editor2.getSession().setMode("ace/mode/javascript");
+
+  // var editor2 = ace.edit("editor2");
+  // editor2.setTheme("ace/theme/monokai");
+  // editor2.getSession().setMode("ace/mode/javascript");
+
   var consoleLog = ace.edit("console");
   consoleLog.setReadOnly(true);
   consoleLog.setOptions({
@@ -19,8 +21,8 @@
 
   function resize() {
     var h = window.innerHeight;
-    document.getElementById('editor1').style.height = (h - 160) + "px";
-    document.getElementById('console').style.top = (h - 160) + "px";
+    document.getElementById('editor1').style.height = (h - 120) + "px";
+    document.getElementById('console').style.top = (h - 120) + "px";
   }
   window.addEventListener('resize', resize, false);
 
@@ -138,7 +140,7 @@
             if (!isHit(1)) {
               you.position.z -= UNIT;
             } else {
-              you.posiiton.z = z_copy;
+              you.position.z = z_copy;
             }
             break;
           case 'b':
@@ -248,6 +250,13 @@
         }
       }
     }
+  }
+
+  //-----------------------------------------------------------
+  //-------------------- back to square one -------------------
+  //-----------------------------------------------------------
+  function backToSquareOne() {
+
   }
 
 })(this);
