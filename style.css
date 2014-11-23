@@ -10,7 +10,7 @@
   .edi{
     position: absolute;
     top: 0;
-    width: 360px;
+    width: 340px;
     height: 100%;
   /*  opacity: 0.8;*/
   }
@@ -18,14 +18,14 @@
     position: absolute;
     right: 0;
     top: 20px;
-    width: 360px;
+    width: 340px;
     opacity: 0.9;
   }
   #editor2{
     position: absolute;
     left: 0;
     top: 0;
-    width: 360px;
+    width: 340px;
     height: 10px;
     height: 100%;
     opacity: 0.5;
@@ -34,7 +34,7 @@
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 360px;
+    width: 340px;
     height: 120px;
     z-index: 2;
     opacity: 0.5;
@@ -64,7 +64,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 300px;
+    width: 280px;
     height: 10px;
     height: 100%;
     background-color: white;

@@ -98,8 +98,15 @@
     geometry = new THREE.PlaneBufferGeometry(1000, 1000);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
 
-    plane = new THREE.Mesh(geometry);
-    plane.visible = false;
+    plane = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+      color: 0xffffff,
+      map: THREE.ImageUtils.loadTexture("img/test_ground.jpg")
+        //,
+        // transparent: true,
+        // opacity: 0.2
+    }));
+    plane.receiveShaow = true;
+    //plane.visible = false;
     plane.name = "floor";
     scene.add(plane);
 
@@ -107,7 +114,7 @@
 
     //target
     material = new THREE.MeshLambertMaterial({
-      color: 0xbb2222
+      color: 0x000000
     });
     target = new THREE.Mesh(cubeGeo, material);
     target.position.x = -475;
@@ -122,7 +129,7 @@
     // you = new Guy();
     // you.loadThings();
     material = new THREE.MeshLambertMaterial({
-      color: 0x0000bb
+      color: 0x0000ff
     });
     you = new THREE.Mesh(cubeGeo, material);
     you.position.x = 475;
@@ -148,9 +155,15 @@
       }
       var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
 
-      if ((x === target.position.x && z === target.position.z) && (y === target.position.y || y === target.position.y + 50)) {} else {
+      if ((x === -475 && y === 25 & z === -475) || (x === -475 && y === 75 & z === 475)) {} else {
         if (x === -475 && y === 25 & z === 475) {} else {
-          mesh = new THREE.Mesh(cubeGeo, cubeMaterial);
+          mesh = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+            shading: THREE.FlatShading
+              //,
+              // map: THREE.ImageUtils.loadTexture("img/pixel" + Math.round(Math.random() * 17) + ".jpg")
+              // map: THREE.ImageUtils.loadTexture("img/mario-box-question-mark1.gif")
+          }));
           mesh.position.x = x;
           mesh.position.y = y;
           mesh.position.z = z;
@@ -184,7 +197,7 @@
 
     // Lights
 
-    var ambientLight = new THREE.AmbientLight(0x606060);
+    var ambientLight = new THREE.AmbientLight(0x666666);
     scene.add(ambientLight);
 
     var directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -194,7 +207,7 @@
     renderer = new THREE.WebGLRenderer({
       antialias: true
     });
-    renderer.setClearColor(0xf0f0f0);
+    renderer.setClearColor(0xfafafa);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     container.appendChild(renderer.domElement);
@@ -202,12 +215,12 @@
     // document.addEventListener('mousemove', onDocumentMouseMove, false);
     // document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-    // STATS
-    // stats = new Stats();
-    // stats.domElement.style.position = 'absolute';
-    // stats.domElement.style.top = '0px';
-    // stats.domElement.style.left = '0px';
-    // document.body.appendChild(stats.domElement);
+    //STATS
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    stats.domElement.style.left = '0px';
+    document.body.appendChild(stats.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
 
@@ -346,7 +359,7 @@
     // } else {
     //   you.position.y = 25;
     // }
-    //stats.update();
+    stats.update();
     controls.update();
   }
 
