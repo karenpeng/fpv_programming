@@ -7,6 +7,9 @@
   p, button{
     font-family: 'Open Sans', sans-serif;
   }
+  button:hover{
+    cursor: pointer;
+  }
   .edi{
     position: absolute;
     top: 0;
@@ -17,9 +20,9 @@
   #editor1{
     position: absolute;
     right: 0;
-    top: 20px;
+    top: 0;
     width: 340px;
-    opacity: 0.9;
+    opacity: 0.6;
   }
   #editor2{
     position: absolute;
@@ -35,20 +38,35 @@
     right: 0;
     bottom: 0;
     width: 340px;
-    height: 120px;
+    height: 110px;
     z-index: 2;
-    opacity: 0.5;
+    opacity: 0.6;
+  }
+  #gap{
+    position: absolute;
+    bottom: 110px;
+    right: 0;
+    height: 30px;
+    width: 340px;
+    background-color: #222;
+    opacity: 0.6;
   }
   #run{
-    position: absolute;
-    top: 0;
-    width: 60px;
-    height: 20px;
-    right: 300px;
-    z-index: 10;
-    padding: 2px 20px;
+    width: 170px;
+    height: 30px;
+    font-size: 14px;
     color: white;
-    background-color: green;
+    background: #A4C402;
+  }
+  #reset{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 170px;
+    height: 30px;
+    font-size: 14px;
+    color: #aaa;
+    background: #222;
   }
   .highlight{
     position: absolute;
@@ -58,7 +76,7 @@
   #content p{
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    margin: 10px;
+    margin: 12px;
   }
   #instruction{
     position: absolute;
@@ -67,8 +85,6 @@
     width: 280px;
     height: 10px;
     height: 100%;
-    background-color: white;
-    opacity: 0.8;
   }
   #next{
     position: absolute;

@@ -3,16 +3,17 @@
   //------------------------set up editor--------------------------
   //---------------------------------------------------------------
   var Range = ace.require("ace/range").Range;
+  var isRunning = false;
 
   var editor1 = ace.edit("editor1");
   editor1.setTheme("ace/theme/monokai");
   editor1.getSession().setMode("ace/mode/javascript");
-
-  // var editor2 = ace.edit("editor2");
-  // editor2.setTheme("ace/theme/monokai");
-  // editor2.getSession().setMode("ace/mode/javascript");
-
-  //get elementsssss
+  editor1.session.selection.moveCursorDown();
+  editor1.on('focus', function () {
+    document.getElementById('editor1').style.opacity = '0.9';
+    document.getElementById('console').style.opacity = '0.9';
+    document.getElementById('gap').style.opacity = '0.9';
+  });
 
   var consoleLog = ace.edit("console");
   consoleLog.setReadOnly(true);
@@ -25,30 +26,38 @@
 
   function resize() {
     var h = window.innerHeight;
-    document.getElementById('editor1').style.height = (h - 120) + "px";
-    document.getElementById('console').style.top = (h - 120) + "px";
+    document.getElementById('editor1').style.height = (h - 140) + "px";
+    document.getElementById('console').style.top = (h - 110) + "px";
   }
   window.addEventListener('resize', resize, false);
 
   //when run is clicked, parse the string input
-  document.getElementById('run').onclick = function evaluate() {
+  document.getElementById('run').onclick = function () {
     //console.log(editor1.getValue())
     //parse(editor1.getValue());
-    parse(editor1.session.doc.getAllLines());
+    if (!isRunning) {
+      parse(editor1.session.doc.getAllLines());
+      isRunning = true;
+    }
+  };
+
+  document.getElementById('reset').onclick = function () {
+    editor1.setValue("");
   };
 
   var canvas = document.getElementsByTagName("CANVAS")[0];
-  canvas.onmousedown = function () {
-    canvas.style.cursor = "url('img/grabbing.png'), default";
-  };
+  canvas.style.cursor = "url('img/drag.png'), default";
+  // canvas.onmousedown = function () {
+  //   canvas.style.cursor = "url('img/grabbing.png'), default";
+  // };
 
-  canvas.onmouseover = function () {
-    canvas.style.cursor = "url('img/grab.png'), default";
-  };
+  // canvas.onmouseover = function () {
+  //   canvas.style.cursor = "url('img/grab.png'), default";
+  // };
 
-  canvas.onmouseup = function () {
-    canvas.style.cursor = "url('img/grab.png'), default";
-  };
+  // canvas.onmouseup = function () {
+  //   canvas.style.cursor = "url('img/grab.png'), default";
+  // };
 
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
@@ -60,7 +69,7 @@
     strArray.forEach(function (str, index) {
       endStr += (replace(str, index));
     });
-    //console.log(endStr);
+    // console.log(endStr);
 
     function replace(str, index) {
       var postStr = str;
@@ -75,7 +84,6 @@
       return postStr;
     }
 
-    //console.log(postStr);
     try {
       //console.log(endStr);
       eval(endStr);
@@ -83,8 +91,7 @@
       consoleLog.insert(err + '\n');
       console.log(err);
     }
-    //console.log(tasks + " " + tasks.length);
-    //console.log(tasks);
+
     try {
       taskManager.executeTasks(tasks);
     } catch (err) {
@@ -116,24 +123,48 @@
       editor1.session.removeMarker(marker);
       marker = null;
     }
-    if (!this.tasks.length) {
-      transit(false, result);
-      return;
-    } else if (this.tasks.length === this.tasksNum) {
-      transit(true, function () {
-        var ta = that.tasks.shift();
+
+    //if there's no tasks, no need to zoom the camera
+    if (this.tasksNum > 0) {
+
+      if (!this.tasks.length) {
+        transit(false, function () {
+          result();
+          editor1.setReadOnly(false);
+          editor1.setOptions({
+            highlightActiveLine: true,
+            highlightGutterLine: true
+          });
+          editor1.renderer.$cursorLayer.element.style.opacity = 1;
+          isRunning = false;
+        });
+        return;
+      } else if (this.tasks.length === this.tasksNum) {
+        transit(true, function () {
+          var ta = that.tasks.shift();
+          var direction = ta[0];
+          var lineNum = ta[1];
+          marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
+          that.move(direction);
+          editor1.setReadOnly(true);
+          editor1.setOptions({
+            highlightActiveLine: false,
+            highlightGutterLine: false
+          });
+          editor1.renderer.$cursorLayer.element.style.opacity = 0;
+          // document.getElementById('editor1').style.opacity = '0.7';
+        });
+      } else {
+        var ta = this.tasks.shift();
         var direction = ta[0];
         var lineNum = ta[1];
+
         marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
-        that.move(direction);
-      });
+        this.move(direction);
+      }
     } else {
-      var ta = this.tasks.shift();
-      var direction = ta[0];
-      var lineNum = ta[1];
-      console.log(lineNum);
-      marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
-      this.move(direction);
+      //nothing is running
+      isRunning = false;
     }
   };
 
@@ -142,6 +173,7 @@
     var x_copy = you.position.x;
     var y_copy = you.position.y;
     var z_copy = you.position.z;
+    var reported = false;
 
     var UNIT = 0.25;
     var that = this;
@@ -149,37 +181,51 @@
     for (var i = 0; i < 50 / UNIT + 1; i++) {
 
       if (i < 50 / UNIT) {
-
         setTimeout(function () {
           //if (!isHit()) {
           switch (direction) {
           case 'f':
-            if (!isHit(1)) {
+            if (isHit(1) === null) {
               you.position.z -= UNIT;
+
             } else {
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(1) + ".\n");
+                reported = true;
+              }
               you.position.z = z_copy;
             }
             break;
           case 'b':
-            if (!isHit(0)) {
+            if (isHit(0) === null) {
               you.position.z += UNIT;
             } else {
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(0) + ".\n");
+                reported = true;
+              }
               you.position.z = z_copy;
             }
             break;
           case 'r':
-            if (!isHit(2)) {
+            if (isHit(2) === null) {
               you.position.x += UNIT;
             } else {
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(2) + ".\n");
+                reported = true;
+              }
               you.position.x = x_copy;
             }
             break;
           case 'l':
-            //var ray = isHit();
-            if (!isHit(3)) {
+            if (isHit(3) === null) {
               you.position.x -= UNIT;
             } else {
-              //you.position.x += UNIT;
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(3) + ".\n");
+                reported = true;
+              }
               you.position.x = x_copy;
             }
             break;
@@ -187,6 +233,10 @@
             if (!isHit(4)) {
               you.position.y += UNIT;
             } else {
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(4) + ".\n");
+                reported = true;
+              }
               you.position.y = y_copy;
             }
             break;
@@ -194,15 +244,15 @@
             if (!isHit(5)) {
               you.position.y -= UNIT;
             } else {
+              if (!reported) {
+                consoleLog.insert("Ouch, hit " + isHit(5) + ".\n");
+                reported = true;
+              }
               you.position.y = y_copy;
             }
             break;
           }
-          //render();
-          //}
-
         }, i);
-
       } else {
         setTimeout(function () {
           that._execute();
@@ -232,11 +282,11 @@
             camera.position.x -= (deltaX / TIME_PERIOD);
             camera.position.y -= (deltaY / TIME_PERIOD);
             camera.position.z -= (deltaZ / TIME_PERIOD);
-            //render();
+
           }, i);
         } else {
           setTimeout(function () {
-            //you.add(camera);
+
             if (callback) {
               callback();
             }
@@ -254,12 +304,12 @@
             camera.position.x += (deltaX / TIME_PERIOD);
             camera.position.y += (deltaY / TIME_PERIOD);
             camera.position.z += (deltaZ / TIME_PERIOD);
-            //render();
+
           }, j);
         } else {
           setTimeout(function () {
             you.idle = true;
-            //you.remove(camera);
+
             if (callback) {
               callback();
             }
@@ -272,8 +322,9 @@
   //-----------------------------------------------------------
   //------------------------ run result -----------------------
   //-----------------------------------------------------------
+
   function result() {
-    if (you.position === new THREE.Vector3(-475, 40, -475)) {
+    if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
       youWin();
     } else {
       backToSquareOne();
@@ -283,31 +334,15 @@
   //-----------------------------------------------------------
   //-------------------- back to square one -------------------
   //-----------------------------------------------------------
+
   function backToSquareOne(callback) {
     //shakehand();
-    console.log('back to square one');
+    consoleLog.insert('T_T Miss target. Back to square one.\n');
     var deltaX = you.position.x - 475;
     var deltaY = you.position.y - 25;
     var deltaZ = you.position.z - 475;
     var TIME_PERIOD = 400;
 
-    // for (var i = 0; i < TIME_PERIOD + 61; i++) {
-    //   if (i < TIME_PERIOD + 60) {
-    //     setTimeout(function () {
-    //       if (i > 70) {
-    //         you.position.x -= (deltaX / TIME_PERIOD);
-    //         you.position.y -= (deltaY / TIME_PERIOD);
-    //         you.position.z -= (deltaZ / TIME_PERIOD);
-    //       }
-    //     }, i);
-    //   } else {
-    //     setTimeout(function () {
-    //       if (callback) {
-    //         callback();
-    //       }
-    //     }, TIME_PERIOD + 600);
-    //   }
-    // }
     for (var i = 0; i < TIME_PERIOD + 1; i++) {
       if (i < TIME_PERIOD) {
         setTimeout(function () {
@@ -328,6 +363,7 @@
   //-----------------------------------------------------------
   //-----------------------     you win     -------------------
   //-----------------------------------------------------------
+
   function youWin() {
     alert("yay!");
   }

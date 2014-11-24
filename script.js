@@ -81,8 +81,8 @@
     }
 
     var material = new THREE.LineBasicMaterial({
-      color: 0x000000,
-      opacity: 0.2,
+      color: 0xffffff,
+      opacity: 0.1,
       transparent: true
     });
 
@@ -112,13 +112,64 @@
 
     objects.push(plane);
 
+    //back wall
+    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    var backWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+      color: 0xffffff
+    }));
+    backWall.name = "backBounce";
+    backWall.position.z = -500;
+    backWall.position.y = 250;
+    backWall.visible = false;
+    scene.add(backWall);
+    objects.push(backWall);
+
+    //left wall
+    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 2));
+    var leftWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+      color: 0xffffff
+    }));
+    leftWall.name = "leftBounce";
+    leftWall.position.x = -500;
+    leftWall.position.y = 250;
+    leftWall.visible = false;
+    scene.add(leftWall);
+    objects.push(leftWall);
+
+    //right wall
+    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry.applyMatrix(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
+    var rightWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+      color: 0xffffff
+    }));
+    rightWall.name = "rightBounce";
+    rightWall.position.x = 500;
+    rightWall.position.y = 250;
+    rightWall.visible = false;
+    scene.add(rightWall);
+    objects.push(rightWall);
+
+    //front wall
+    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI));
+    var frontWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+      color: 0xffffff
+    }));
+    frontWall.name = "frontBounce";
+    frontWall.position.y = 250;
+    frontWall.position.z = 500;
+    frontWall.visible = false;
+    scene.add(frontWall);
+    objects.push(frontWall);
+
     //target
     material = new THREE.MeshLambertMaterial({
-      color: 0x000000
+      color: 0xff0000
     });
     target = new THREE.Mesh(cubeGeo, material);
     target.position.x = -475;
-    target.position.y = 40;
+    target.position.y = 50;
     target.position.z = -475;
     target.name = "target";
     scene.add(target);
@@ -129,7 +180,7 @@
     // you = new Guy();
     // you.loadThings();
     material = new THREE.MeshLambertMaterial({
-      color: 0x0000ff
+      color: 0xffff00
     });
     you = new THREE.Mesh(cubeGeo, material);
     you.position.x = 475;
@@ -155,14 +206,13 @@
       }
       var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
 
-      if ((x === -475 && y === 25 & z === -475) || (x === -475 && y === 75 & z === 475)) {} else {
+      if (x === -475 && z === -475 && y < 150) {} else {
         if (x === -475 && y === 25 & z === 475) {} else {
           mesh = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
             color: 0xffffff,
-            shading: THREE.FlatShading
-              //,
-              // map: THREE.ImageUtils.loadTexture("img/pixel" + Math.round(Math.random() * 17) + ".jpg")
-              // map: THREE.ImageUtils.loadTexture("img/mario-box-question-mark1.gif")
+            //shading: THREE.FlatShading,
+            // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
+            map: THREE.ImageUtils.loadTexture("img/meow.jpg")
           }));
           mesh.position.x = x;
           mesh.position.y = y;
@@ -175,13 +225,14 @@
 
       if (Math.random() > 0.5) {
         upMesh = mesh.clone();
-        upMesh.position.y = 50;
+        upMesh.position.y = 75;
         // if (Math.random() > 0.5) {
         //    upMesh.position.x += 50;
         // }
         upMesh.name = "obstacle";
         scene.add(upMesh);
         objects.push(upMesh);
+
       }
 
     }
@@ -208,12 +259,10 @@
       antialias: true
     });
     renderer.setClearColor(0xfafafa);
+    //renderer.setClearColor(0x2cc8ff);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     container.appendChild(renderer.domElement);
-
-    // document.addEventListener('mousemove', onDocumentMouseMove, false);
-    // document.addEventListener('mousedown', onDocumentMouseDown, false);
 
     //STATS
     stats = new Stats();
@@ -261,86 +310,10 @@
 
     if (intersects.length > 0 && intersects[0].distance < 25) {
 
-      console.log(intersects[0].object.name + " " + intersects[0].distance);
-      return true;
-    } else {
-      return false;
-    }
+      //console.log(intersects[0].object.name + " " + intersects[0].distance);
+      return intersects[0].object.name;
 
-  }
-
-  function onDocumentMouseMove(event) {
-
-    event.preventDefault();
-
-    vector.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
-    vector.unproject(camera);
-
-    raycaster.ray.set(camera.position, vector.sub(camera.position).normalize());
-
-    var intersects = raycaster.intersectObjects(objects);
-
-    if (intersects.length > 0) {
-
-      var intersect = intersects[0];
-
-      //console.log(intersect);
-
-      rollOverMesh.position.copy(intersect.point).add(intersect.face.normal);
-      rollOverMesh.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-
-    }
-
-    render();
-
-  }
-
-  function onDocumentMouseDown(event) {
-
-    event.preventDefault();
-
-    vector.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
-    vector.unproject(camera);
-
-    raycaster.ray.set(camera.position, vector.sub(camera.position).normalize());
-
-    var intersects = raycaster.intersectObjects(objects);
-
-    if (intersects.length > 0) {
-
-      var intersect = intersects[0];
-
-      console.log(intersect);
-
-      // delete cube
-
-      if (isShiftDown) {
-
-        if (intersect.object != plane) {
-
-          scene.remove(intersect.object);
-
-          objects.splice(objects.indexOf(intersect.object), 1);
-
-        }
-
-        // create cube
-
-      } else {
-
-        var voxel = new THREE.Mesh(cubeGeo, cubeMaterial);
-        voxel.position.copy(intersect.point).add(intersect.face.normal);
-        //console.log(voxel.position.x, voxel.position.y, voxel.position.z);
-        voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-        //console.log(voxel.position.x, voxel.position.y, voxel.position.z);
-        scene.add(voxel);
-        objects.push(voxel);
-
-      }
-
-      render();
-
-    }
+    } else return null;
 
   }
 
@@ -353,7 +326,7 @@
 
     frameRate++;
     var now = new Date().getTime();
-    target.position.y += Math.sin(now * 0.002);
+    target.position.y = Math.sin(now * 0.002) * 20 + 45;
     // if (you.idle) {
     //   you.position.y += Math.sin(now * 0.002);
     // } else {
@@ -370,13 +343,12 @@
   }
 
   function restart() {
-
+    init();
   }
 
   exports.you = you;
-  //exports.init = init;
   exports.camera = camera;
-  //exports.render = render;
   exports.isHit = isHit;
+  exports.restart = restart;
 
 })(this);

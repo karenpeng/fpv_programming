@@ -1,18 +1,18 @@
-//direction
-//draggerale
-//plane is also obstacle
 
 //sound effect for step
-//go back
-//fewer code to each the goal
-//what's game and what's tutorial
 
 
 //gaming:
-//freeze the editor when executing
-//back to square one
+//restart
 //timer for coding timer for running
 
-//target doesn't hit others
 
-f(2); means forward two steps...
+//character steps?? character turn around??
+//direction
+
+
+
+//what's game and what's tutorial
+//go back
+
+
