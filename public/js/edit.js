@@ -18,7 +18,7 @@
   });
 
   editor1.on("change", function (e) {
-    console.log(editor1.getValue());
+    //console.log(editor1.getValue());
   });
 
   var editor2 = ace.edit("editor2");
@@ -36,8 +36,8 @@
 
   function resize() {
     var h = window.innerHeight;
-    document.getElementById('editor1').style.height = (h - 140) + "px";
-    document.getElementById('console').style.top = (h - 110) + "px";
+    document.getElementById('editor1').style.height = (h - 150) + "px";
+    document.getElementById('console').style.top = (h - 120) + "px";
   }
   window.addEventListener('resize', resize, false);
 
@@ -49,25 +49,12 @@
       parse(editor1.session.doc.getAllLines());
       isRunning = true;
     }
+    clockclockclock();
   };
 
   document.getElementById('reset').onclick = function () {
     editor1.setValue("");
   };
-
-  var canvas = document.getElementsByTagName("CANVAS")[0];
-  canvas.style.cursor = "url('img/drag.png'), default";
-  // canvas.onmousedown = function () {
-  //   canvas.style.cursor = "url('img/grabbing.png'), default";
-  // };
-
-  // canvas.onmouseover = function () {
-  //   canvas.style.cursor = "url('img/grab.png'), default";
-  // };
-
-  // canvas.onmouseup = function () {
-  //   canvas.style.cursor = "url('img/grab.png'), default";
-  // };
 
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
@@ -365,6 +352,7 @@
           if (callback) {
             callback();
           }
+          tryAgain();
         }, TIME_PERIOD + 300);
       }
     }

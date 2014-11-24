@@ -217,7 +217,7 @@
           mesh.position.x = x;
           mesh.position.y = y;
           mesh.position.z = z;
-          mesh.name = "obstacle";
+          mesh.name = "cat";
           scene.add(mesh);
           objects.push(mesh);
         }
@@ -229,7 +229,7 @@
         // if (Math.random() > 0.5) {
         //    upMesh.position.x += 50;
         // }
-        upMesh.name = "obstacle";
+        upMesh.name = "cat";
         scene.add(upMesh);
         objects.push(upMesh);
 
