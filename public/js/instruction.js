@@ -91,7 +91,11 @@
       startH = currentTime.getHours();
       startM = currentTime.getMinutes();
       startS = currentTime.getSeconds();
-      clock2 = new MyClock(startH, startM, startS, "timer2");
+      if (clock2 === undefined) {
+        clock2 = new MyClock(startH, startM, startS, "timer2");
+      } else {
+        clock2.isTicking = true;
+      }
       clock2.update();
     }
   }
@@ -140,6 +144,19 @@
       strs = level6;
       document.getElementById('instruction').style.display = "none";
       document.getElementById('editor2').style.display = "block";
+      if (clock1 !== undefined) {
+        clock1.isTicking = false;
+        clock1 = undefined;
+      }
+      if (clock2 !== undefined) {
+        clock2.isTicking = false;
+        clock2 = undefined;
+      }
+      document.getElementById('timer1').innerHTML = "00:00:00";
+      document.getElementById('timer2').innerHTML = "00:00:00";
+      document.getElementById('timer1').style.display = "none";
+      document.getElementById('timer2').style.display = "none";
+      restart();
       break;
     default:
       str = "";

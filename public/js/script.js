@@ -344,8 +344,8 @@
 
   function restart() {
 
-    //oh no dispose things...
-    init();
+    //oh no how could i dispose things...
+    //init();
   }
 
   exports.you = you;

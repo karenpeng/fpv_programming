@@ -18,9 +18,22 @@ app.get('/', function (req, res) {
 });
 
 //how can i set url?
+var players = 0;
+//var ids = [];
 io.on('connection', function (socket) {
-  socket.on('event', function (data) {});
-  socket.on('disconnect', function () {});
+  players++;
+  //ids.push(socket.id);
+  if (players === 2) {
+    console.log("they're together.( ˘ ³˘)♥");
+    socket.emit('everybody is here');
+    socket.broadcast.emit('everybody is here');
+  }
+  socket.on('typing code', function (data) {
+    socket.broadcast.emit('code', data);
+  });
+  socket.on('disconnect', function () {
+    players--;
+  });
 });
 
 server.listen(port);

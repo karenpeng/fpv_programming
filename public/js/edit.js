@@ -17,8 +17,15 @@
     document.getElementById('gap').style.opacity = '0.9';
   });
 
-  editor1.on("change", function (e) {
-    //console.log(editor1.getValue());
+  socket.on('everybody is here', function () {
+    console.log("i'm with you.( ˘ ³˘)♥");
+    editor1.on("change", function () {
+      //console.log(editor1.getValue());
+      socket.emit('typing code', editor1.getValue());
+    });
+    socket.on('code', function (data) {
+      editor2.setValue(data);
+    });
   });
 
   var editor2 = ace.edit("editor2");
@@ -187,7 +194,7 @@
 
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(1) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(1) + ".\n");
                 reported = true;
               }
               you.position.z = z_copy;
@@ -198,7 +205,7 @@
               you.position.z += UNIT;
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(0) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(0) + ".\n");
                 reported = true;
               }
               you.position.z = z_copy;
@@ -209,7 +216,7 @@
               you.position.x += UNIT;
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(2) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(2) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
@@ -220,7 +227,7 @@
               you.position.x -= UNIT;
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(3) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(3) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
@@ -231,7 +238,7 @@
               you.position.y += UNIT;
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(4) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(4) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
@@ -242,7 +249,7 @@
               you.position.y -= UNIT;
             } else {
               if (!reported) {
-                consoleLog.insert("Ouch, hit " + isHit(5) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(5) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
@@ -333,8 +340,8 @@
   //-----------------------------------------------------------
 
   function backToSquareOne(callback) {
-    //shakehand();
-    consoleLog.insert('T_T Miss target. Back to square one.\n');
+    //shakeHead();
+    consoleLog.insert('Miss target. Back to square one. T-T\n');
     var deltaX = you.position.x - 475;
     var deltaY = you.position.y - 25;
     var deltaZ = you.position.z - 475;
@@ -363,7 +370,7 @@
   //-----------------------------------------------------------
 
   function youWin() {
-    alert("yay!");
+    alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
   }
 
 })(this);
