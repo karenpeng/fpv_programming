@@ -1,18 +1,24 @@
-
 //sound effect for step
 
 
 //gaming:
-//restart
-//timer for coding timer for running
+restart??? TODO: dispose stuff
+timer for coding timer for running
+
+//server
+how could i generate random url for player couple?
+
+//interface
+what's game and what's tutorial
+go back
 
 
-//character steps?? character turn around??
-//direction
+//character
+character turn around??
+indicates direction
 
 
 
-//what's game and what's tutorial
-//go back
+
 
 
