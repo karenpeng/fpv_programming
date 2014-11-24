@@ -25,12 +25,19 @@
     });
     socket.on('code', function (data) {
       editor2.setValue(data);
+      editor2.focus();
     });
   });
 
   var editor2 = ace.edit("editor2");
   editor2.setTheme("ace/theme/monokai");
   editor2.getSession().setMode("ace/mode/javascript");
+  editor2.setReadOnly(true);
+  editor2.setOptions({
+    highlightActiveLine: false,
+    highlightGutterLine: false
+  });
+  editor2.renderer.$cursorLayer.element.style.opacity = 0;
 
   var consoleLog = ace.edit("console");
   consoleLog.setReadOnly(true);
