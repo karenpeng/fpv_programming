@@ -20,13 +20,18 @@
     this.startH = _h;
     this.startM = _m;
     this.startS = _s;
-    this.recordH = _h;
-    this.recordM = _m;
-    this.recordS = _s;
+    this.recordH = 0;
+    this.recordM = 0;
+    this.recordS = 0;
     this.selector = document.getElementById(_id);
     //console.log(this.selector);
     this.isTicking = true;
   }
+  MyClock.prototype.setStart = function (_h, _m, _s) {
+    this.startH = _h;
+    this.startM = _m;
+    this.startS = _s;
+  };
   MyClock.prototype.update = function () {
     var s, m, h;
     var that = this;
@@ -37,15 +42,18 @@
       requestAnimationFrame(function () {
         that.update();
       });
+    } else {
+      this.recordS = s;
+      this.recordM = m;
+      this.recordH = h;
     }
-    // if (this.isTicking) {
 
     var currentTime = new Date();
     var currentHours = currentTime.getHours();
     var currentMinutes = currentTime.getMinutes();
     var currentSeconds = currentTime.getSeconds();
 
-    s = currentSeconds - this.startS;
+    s = currentSeconds - this.startS + this.recordS;
 
     if (s < 0) {
       s += 60;
@@ -54,7 +62,7 @@
       s = "0" + s;
     }
 
-    m = currentMinutes - this.startM;
+    m = currentMinutes - this.startM + this.recordM;
     if (m < 0) {
       m += 60;
       currentHours--;
@@ -62,9 +70,10 @@
       m = "0" + m;
     }
 
-    h = currentHours - this.startH;
+    h = currentHours - this.startH + this.recordH;
     if (h < 10) {
       h = "0" + h;
+
     }
 
     // }
@@ -94,6 +103,7 @@
       if (clock2 === undefined) {
         clock2 = new MyClock(startH, startM, startS, "timer2");
       } else {
+        clock2.setStart(startH, startM, startS);
         clock2.isTicking = true;
       }
       clock2.update();
@@ -102,6 +112,12 @@
   exports.clockclockclock = clockclockclock;
 
   function tryAgain() {
+
+    var currentTime = new Date();
+    startH = currentTime.getHours();
+    startM = currentTime.getMinutes();
+    startS = currentTime.getSeconds();
+    clock1.setStart(startH, startM, startS);
     clock1.isTicking = true;
     clock1.update();
     clock2.isTicking = false;

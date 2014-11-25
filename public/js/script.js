@@ -1,14 +1,15 @@
 (function (exports) {
   var container;
   var camera, scene, controls, renderer, stats;
-  var plane, cube;
+  var cube;
 
   var vector, raycaster, isShiftDown = false;
 
   var rollOverMesh, rollOverMaterial;
   var cubeGeo, cubeMaterial;
+  var line, plane, frontWall, backWall, leftWall, rightWall;
   var loader;
-  var target, you;
+  var target, you, obstacle, upObstacle;
   var obstacles = [];
 
   var objects = [];
@@ -86,7 +87,7 @@
       transparent: true
     });
 
-    var line = new THREE.Line(geometry, material);
+    line = new THREE.Line(geometry, material);
     line.type = THREE.LinePieces;
     scene.add(line);
 
@@ -114,7 +115,7 @@
 
     //back wall
     geometry = new THREE.PlaneBufferGeometry(1000, 500);
-    var backWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+    backWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     backWall.name = "backBounce";
@@ -127,7 +128,7 @@
     //left wall
     geometry = new THREE.PlaneBufferGeometry(1000, 500);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 2));
-    var leftWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+    leftWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     leftWall.name = "leftBounce";
@@ -140,7 +141,7 @@
     //right wall
     geometry = new THREE.PlaneBufferGeometry(1000, 500);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
-    var rightWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+    rightWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     rightWall.name = "rightBounce";
@@ -153,7 +154,7 @@
     //front wall
     geometry = new THREE.PlaneBufferGeometry(1000, 500);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI));
-    var frontWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
+    frontWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     frontWall.name = "frontBounce";
@@ -208,30 +209,30 @@
 
       if (x === -475 && z === -475 && y < 150) {} else {
         if (x === -475 && y === 25 & z === 475) {} else {
-          mesh = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
+          obstacle = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
             color: 0xffffff,
             //shading: THREE.FlatShading,
             // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
             map: THREE.ImageUtils.loadTexture("img/meow.jpg")
           }));
-          mesh.position.x = x;
-          mesh.position.y = y;
-          mesh.position.z = z;
-          mesh.name = "cat";
-          scene.add(mesh);
-          objects.push(mesh);
+          obstacle.position.x = x;
+          obstacle.position.y = y;
+          obstacle.position.z = z;
+          obstacle.name = "cat";
+          scene.add(obstacle);
+          objects.push(obstacle);
         }
       }
 
       if (Math.random() > 0.5) {
-        upMesh = mesh.clone();
-        upMesh.position.y = 75;
+        upObstacle = obstacle.clone();
+        upObstacle.position.y = 75;
         // if (Math.random() > 0.5) {
         //    upMesh.position.x += 50;
         // }
-        upMesh.name = "cat";
-        scene.add(upMesh);
-        objects.push(upMesh);
+        upObstacle.name = "cat";
+        scene.add(upObstacle);
+        objects.push(upObstacle);
 
       }
 
@@ -345,6 +346,24 @@
   function restart() {
 
     //oh no how could i dispose things...
+    // scene.remove(rollOverMesh);
+    // line
+    // plane
+    // frontWall
+    // leftWall
+    // rightWall
+    // target
+    // you
+    // obstacle
+    // upObstacle
+    // lines.traverse(function (obj) {
+    //   if (obj instanceof THREE.Mesh) {
+    //     obj.geometry.dispose();
+    //     obj.material.dispose();
+    //   }
+    //   obj = null;
+    // });
+    // objects = [];
     //init();
   }
 

@@ -4,6 +4,7 @@
 //gaming:
 restart??? TODO: dispose stuff
 timer for coding timer for running
+clock没有freeze时间啦。。
 
 //server
 how could i generate random url for player couple?
