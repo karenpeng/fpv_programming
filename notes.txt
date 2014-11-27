@@ -1,26 +1,17 @@
 //sound effect for step
 
-
 //gaming:
 restart??? TODO: dispose stuff
-timer for coding timer for running
-clock没有freeze时间啦。。
 
 //server
 how could i generate random url for player couple?
 
 //interface
 what's game and what's tutorial
-go back
+go back menu
 让用户选择恢复最佳镜头
 
 
 //character
 character turn around??
 indicates direction
-
-
-
-
-
-

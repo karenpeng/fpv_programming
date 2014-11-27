@@ -1,8 +1,26 @@
 (function (exports) {
+
+  //---------------------------------------------------------------
+  //------------------------set up socket--------------------------
+  //---------------------------------------------------------------
+
+  var socket = io.connect('http://localhost');
+
+  socket.on('everybody is here', function () {
+    console.log("i'm with you.( ˘ ³˘)♥");
+    editor1.on("change", function () {
+      //console.log(editor1.getValue());
+      socket.emit('typing code', editor1.getValue());
+    });
+    socket.on('code', function (data) {
+      editor2.setValue(data);
+      editor2.focus();
+    });
+  });
+
   //---------------------------------------------------------------
   //------------------------set up editor--------------------------
   //---------------------------------------------------------------
-  var socket = io.connect('http://localhost');
 
   var Range = ace.require("ace/range").Range;
   var isRunning = false;
@@ -15,18 +33,6 @@
     document.getElementById('editor1').style.opacity = '0.9';
     document.getElementById('console').style.opacity = '0.9';
     document.getElementById('gap').style.opacity = '0.9';
-  });
-
-  socket.on('everybody is here', function () {
-    console.log("i'm with you.( ˘ ³˘)♥");
-    editor1.on("change", function () {
-      //console.log(editor1.getValue());
-      socket.emit('typing code', editor1.getValue());
-    });
-    socket.on('code', function (data) {
-      editor2.setValue(data);
-      editor2.focus();
-    });
   });
 
   var editor2 = ace.edit("editor2");
@@ -128,18 +134,18 @@
   };
 
   TaskManager.prototype._execute = function () {
-    var that = this;
     //console.log(marker)
     if (marker) {
       editor1.session.removeMarker(marker);
       marker = null;
     }
 
-    //if there's no tasks, no need to zoom the camera
+    //only if there's task to complete
     if (this.tasksNum > 0) {
 
+      // the last task
       if (!this.tasks.length) {
-        transit(false, function () {
+        transitCamera(false, function () {
           result();
           editor1.setReadOnly(false);
           editor1.setOptions({
@@ -150,29 +156,38 @@
           isRunning = false;
         });
         return;
-      } else if (this.tasks.length === this.tasksNum) {
-        transit(true, function () {
-          var ta = that.tasks.shift();
+
+      } else {
+
+        //the first task
+        if (this.tasks.length === this.tasksNum) {
+          var that = this;
+          transitCamera(true, function () {
+            var ta = that.tasks.shift();
+            var direction = ta[0];
+            var lineNum = ta[1];
+            marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
+            that.move(direction);
+          });
+
+        } else {
+          var ta = this.tasks.shift();
           var direction = ta[0];
           var lineNum = ta[1];
           marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
-          that.move(direction);
-          editor1.setReadOnly(true);
-          editor1.setOptions({
-            highlightActiveLine: false,
-            highlightGutterLine: false
-          });
-          editor1.renderer.$cursorLayer.element.style.opacity = 0;
-          // document.getElementById('editor1').style.opacity = '0.7';
-        });
-      } else {
-        var ta = this.tasks.shift();
-        var direction = ta[0];
-        var lineNum = ta[1];
+          this.move(direction);
+        }
 
-        marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
-        this.move(direction);
+        editor1.setReadOnly(true);
+        editor1.setOptions({
+          highlightActiveLine: false,
+          highlightGutterLine: false
+        });
+        editor1.renderer.$cursorLayer.element.style.opacity = 0;
+        // document.getElementById('editor1').style.opacity = '0.7';
       }
+
+      //if there's no tasks, no need to zoom the camera
     } else {
       //nothing is running
       isRunning = false;
@@ -187,7 +202,6 @@
     var reported = false;
 
     var UNIT = 0.25;
-    var that = this;
 
     for (var i = 0; i < 50 / UNIT + 1; i++) {
 
@@ -265,6 +279,7 @@
           }
         }, i);
       } else {
+        var that = this;
         setTimeout(function () {
           that._execute();
         }, 50 / UNIT + 1000);
@@ -276,58 +291,44 @@
   //---------------------- move the camera --------------------
   //-----------------------------------------------------------
 
-  function transit(timeSpeed, callback) {
-    var deltaX = 500 - 50;
-    var deltaY = 800 - 80;
-    var deltaZ = 1300 - 130;
-    var TIME_PERIOD = 600;
-
+  function transitCamera(timeSpeed, callback) {
+    var TIME_PERIOD = 400;
+    var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
+      deltaX = camera.position.x - 50;
+      deltaY = camera.position.y - 80;
+      deltaZ = camera.position.z - 130;
       you.idle = false;
       you.add(camera);
-      for (var i = 0; i < TIME_PERIOD + 1; i++) {
-
-        if (i < TIME_PERIOD) {
-          setTimeout(function () {
-
-            camera.position.x -= (deltaX / TIME_PERIOD);
-            camera.position.y -= (deltaY / TIME_PERIOD);
-            camera.position.z -= (deltaZ / TIME_PERIOD);
-
-          }, i);
-        } else {
-          setTimeout(function () {
-
-            if (callback) {
-              callback();
-            }
-          }, TIME_PERIOD + 500);
-        }
-      }
 
     } else {
+      deltaX = camera.position.x - 500;
+      deltaY = camera.position.y - 800;
+      deltaZ = camera.position.z - 1300;
+
       you.remove(camera);
-      for (var j = 0; j < TIME_PERIOD + 1; j++) {
+    }
 
-        if (j < TIME_PERIOD) {
-          setTimeout(function () {
+    for (var i = 0; i < TIME_PERIOD + 1; i++) {
 
-            camera.position.x += (deltaX / TIME_PERIOD);
-            camera.position.y += (deltaY / TIME_PERIOD);
-            camera.position.z += (deltaZ / TIME_PERIOD);
+      if (i < TIME_PERIOD) {
+        setTimeout(function () {
 
-          }, j);
-        } else {
-          setTimeout(function () {
-            you.idle = true;
+          camera.position.x -= (deltaX / TIME_PERIOD);
+          camera.position.y -= (deltaY / TIME_PERIOD);
+          camera.position.z -= (deltaZ / TIME_PERIOD);
 
-            if (callback) {
-              callback();
-            }
-          }, TIME_PERIOD + 500);
-        }
+        }, i);
+      } else {
+        setTimeout(function () {
+
+          if (callback) {
+            callback();
+          }
+        }, TIME_PERIOD + 500);
       }
     }
+
   }
 
   //-----------------------------------------------------------
