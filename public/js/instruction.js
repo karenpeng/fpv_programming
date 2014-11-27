@@ -12,7 +12,7 @@
   var level = 0;
   var clock1, clock2;
 
-  //----------------------------------------------------------------
+  //-----------------------------------------------------------------
   //---------------------  set up clock logic   ---------------------
   //-----------------------------------------------------------------
 
@@ -34,19 +34,7 @@
   };
   MyClock.prototype.update = function () {
     var s, m, h;
-    var that = this;
     // console.log(that)
-
-    //Weird requestAnimationFrame Scope problem!!!
-    if (this.isTicking) {
-      requestAnimationFrame(function () {
-        that.update();
-      });
-    } else {
-      this.recordS = s;
-      this.recordM = m;
-      this.recordH = h;
-    }
 
     var currentTime = new Date();
     var currentHours = currentTime.getHours();
@@ -58,26 +46,39 @@
     if (s < 0) {
       s += 60;
       currentMinutes--;
-    } else if (s < 10) {
+    }
+    if (s < 10) {
       s = "0" + s;
     }
 
     m = currentMinutes - this.startM + this.recordM;
+
     if (m < 0) {
       m += 60;
       currentHours--;
-    } else if (m < 10) {
+    }
+    if (m < 10) {
       m = "0" + m;
     }
 
     h = currentHours - this.startH + this.recordH;
+
     if (h < 10) {
       h = "0" + h;
-
     }
-
-    // }
     this.selector.innerHTML = h + ":" + m + ":" + s;
+
+    var that = this;
+    //Weird requestAnimationFrame Scope problem!!!
+    if (this.isTicking) {
+      requestAnimationFrame(function () {
+        that.update();
+      });
+    } else {
+      this.recordS = parseInt(s);
+      this.recordM = parseInt(m);
+      this.recordH = parseInt(h);
+    }
   };
 
   start.onclick = function () {
