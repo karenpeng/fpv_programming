@@ -1,7 +1,4 @@
 (function (exports) {
-  //-----------------------------------------------------------------
-  //---------------------  set up clock logic   ---------------------
-  //-----------------------------------------------------------------
 
   function MyClock(_h, _m, _s, _id) {
     this.startH = _h;
@@ -73,8 +70,23 @@
   //-----------------------------------------------------------------
   //---------------------  set up clock logic   ---------------------
   //-----------------------------------------------------------------
+  var clock1, clock2;
+  var start = document.getElementById('start');
 
-  function clockclockclock() {
+  start.onclick = function () {
+    start.style.display = "none";
+    document.getElementById('blackout').style.display = "none";
+    document.getElementById('timer1').style.display = "block";
+    var currentTime = new Date();
+    startH = currentTime.getHours();
+    startM = currentTime.getMinutes();
+    startS = currentTime.getSeconds();
+    clock1 = new MyClock(startH, startM, startS, "timer1");
+    clock1.update();
+    exports.clock1 = clock1;
+  };
+
+  function startRun() {
     if (document.getElementById('timer1').style.display === "block") {
       document.getElementById('timer2').style.display = "block";
       clock1.isTicking = false;
@@ -89,12 +101,11 @@
         clock2.isTicking = true;
       }
       clock2.update();
+      exports.clock2 = clock2;
     }
   }
-  exports.clockclockclock = clockclockclock;
 
   function tryAgain() {
-
     var currentTime = new Date();
     startH = currentTime.getHours();
     startM = currentTime.getMinutes();
@@ -104,6 +115,8 @@
     clock1.update();
     clock2.isTicking = false;
   }
+
+  exports.startRun = startRun;
   exports.tryAgain = tryAgain;
 
 })(this);
