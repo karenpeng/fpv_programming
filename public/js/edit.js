@@ -278,11 +278,14 @@
             break;
           }
         }, i);
+
       } else {
+        //moved one grid, execute the next task
         var that = this;
         setTimeout(function () {
           that._execute();
         }, 50 / UNIT + 1000);
+
       }
     }
   };
@@ -305,7 +308,6 @@
       deltaX = camera.position.x - 500;
       deltaY = camera.position.y - 800;
       deltaZ = camera.position.z - 1300;
-
       you.remove(camera);
     }
 

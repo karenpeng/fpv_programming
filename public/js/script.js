@@ -9,7 +9,7 @@
   var cubeGeo, cubeMaterial;
   var line, plane, frontWall, backWall, leftWall, rightWall;
   var loader;
-  var target, you, obstacle, upObstacle;
+  var target, you, obstacle, upObstacle, friend;
   var obstacles = [];
 
   var objects = [];
@@ -192,6 +192,8 @@
     you.direction = 'front';
     scene.add(you);
     //objects.push(you);
+    friend = you.clone();
+    friend.material.color.setHex(0x00ff00);
 
     //obstacles
 
@@ -343,28 +345,37 @@
 
   }
 
+  function getRidOf(something) {
+    scene.remove(something);
+    something.traverse(function (obj) {
+      if (obj instanceof THREE.Mesh) {
+        obj.geometry.dispose();
+        obj.material.dispose();
+      }
+      obj = null;
+    });
+  }
+
   function restart() {
 
     //oh no how could i dispose things...
-    // scene.remove(rollOverMesh);
-    // line
-    // plane
-    // frontWall
-    // leftWall
-    // rightWall
-    // target
-    // you
-    // obstacle
-    // upObstacle
-    // lines.traverse(function (obj) {
-    //   if (obj instanceof THREE.Mesh) {
-    //     obj.geometry.dispose();
-    //     obj.material.dispose();
-    //   }
-    //   obj = null;
-    // });
-    // objects = [];
-    //init();
+    var things = [
+      line,
+      plane,
+      frontWall,
+      leftWall,
+      rightWall,
+      target,
+      you,
+      obstacle,
+      upObstacle,
+    ];
+
+    things.forEach(function (t) {
+      getRidOf(t);
+    });
+
+    init();
   }
 
   exports.you = you;

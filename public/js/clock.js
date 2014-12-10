@@ -64,12 +64,14 @@
       this.recordS = parseInt(s);
       this.recordM = parseInt(m);
       this.recordH = parseInt(h);
+      return;
     }
   };
 
   //-----------------------------------------------------------------
   //---------------------  set up clock logic   ---------------------
   //-----------------------------------------------------------------
+
   var clock1, clock2;
   var start = document.getElementById('start');
 
