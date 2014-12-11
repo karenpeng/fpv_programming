@@ -1,24 +1,5 @@
 (function (exports) {
 
-  var realGame = false;
-  //---------------------------------------------------------------
-  //------------------------set up socket--------------------------
-  //---------------------------------------------------------------
-
-  var socket = io.connect('http://localhost');
-
-  socket.on('everybody is here', function () {
-    console.log("i'm with you.( ˘ ³˘)♥");
-    editor1.on("change", function () {
-      //console.log(editor1.getValue());
-      socket.emit('typing code', editor1.getValue());
-    });
-    socket.on('code', function (data) {
-      editor2.setValue(data);
-      editor2.focus();
-    });
-  });
-
   //---------------------------------------------------------------
   //------------------------set up editor--------------------------
   //---------------------------------------------------------------
@@ -76,6 +57,15 @@
   document.getElementById('reset').onclick = function () {
     editor1.setValue("");
   };
+
+  editor1.on("change", function () {
+    //console.log(editor1.getValue());
+    socket.emit('typing code', editor1.getValue());
+  });
+  socket.on('code', function (data) {
+    editor2.setValue(data);
+    editor2.focus();
+  });
 
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------

@@ -12,7 +12,6 @@
   //----------------------------------------------------------------
   //---------------------  change instruction   --------------------
   //----------------------------------------------------------------
-  document.getElementById('skip').onclick = startGame;
 
   next.onclick = function () {
     level++;
@@ -55,7 +54,7 @@
       next.innerHTML = "start game";
       break;
     case 6:
-      startGame();
+      waitingForReady();
       break;
     }
     var str = "";
@@ -67,14 +66,6 @@
     content.innerHTML = str;
     processBar.style.width = level * 35 + 35 + "px";
 
-  }
-
-  function startGame() {
-    document.getElementById('waiting').style.display = "block";
-    document.getElementById('blackout').style.display = "block";
-    document.getElementById('instruction').style.display = "none";
-    document.getElementById('editor2').style.display = "block";
-    restart();
   }
 
   var level1 = [

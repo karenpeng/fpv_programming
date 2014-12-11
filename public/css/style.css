@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
   }
-  p, button{
+  p, button, span{
     font-family: 'Open Sans', sans-serif;
   }
   button:hover{
@@ -180,4 +180,37 @@
     background-color: white;
     opacity: 0.9;
     display: none;
+  }
+  #ruready{
+    position: absolute;
+    width: 360px;
+    height: 100px;
+    left: 50%;
+    bottom: 50%;
+    margin-left: -180px;
+    text-align: center;
+    display: none;
+  }
+  #you, #yourfriend{
+    width: 170px;
+  }
+  #you{
+    margin-left: 200px;
+    margin-top: -100px;
+    float: right;
+  }
+  #yourfriend{
+    float: left;
+  }
+  .ready{
+    color: white;
+    width: 180px;
+    height: 30px;
+    font-size: 18px;
+  }
+  #ready1{
+    background-color: #A4C402;
+  }
+  #ready2{
+    background-color: #ccc;
   }

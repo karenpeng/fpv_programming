@@ -19,6 +19,7 @@ app.get('/', function (req, res) {
 
 //how can i set url?
 var players = 0;
+var playerReady = 0;
 //var ids = [];
 io.on('connection', function (socket) {
   players++;
@@ -28,6 +29,16 @@ io.on('connection', function (socket) {
     socket.emit('everybody is here');
     socket.broadcast.emit('everybody is here');
   }
+
+  socket.on("i'm ready", function () {
+    playerReady++;
+    console.log(playerReady);
+    if (playerReady === 2) {
+      socket.emit("Let's start!");
+      socket.broadcast.emit("Let's start!");
+    }
+  });
+
   socket.on('typing code', function (data) {
     socket.broadcast.emit('code', data);
   });

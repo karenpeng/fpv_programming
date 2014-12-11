@@ -20,7 +20,7 @@
   init();
   animate();
 
-  function init() {
+  function init(arr) {
 
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -376,9 +376,7 @@
     // things.forEach(function (t) {
     //   getRidOf(t);
     // });
-
     init();
-    //clock1Run();
   }
 
   exports.you = you;
