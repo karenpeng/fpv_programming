@@ -34,8 +34,9 @@ io.on('connection', function (socket) {
     playerReady++;
     console.log(playerReady);
     if (playerReady === 2) {
-      socket.emit("Let's start!");
-      socket.broadcast.emit("Let's start!");
+      var info = initObstacles();
+      socket.emit("Let's start!", info);
+      socket.broadcast.emit("Let's start!", info);
     }
   });
 
@@ -44,7 +45,46 @@ io.on('connection', function (socket) {
   });
   socket.on('disconnect', function () {
     players--;
+    playerReady--;
+    console.log(playerReady);
   });
 });
+
+function initObstacles() {
+  var obsInfo = [];
+  for (j = 0; j < 20; j++) {
+    var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+    //var y = 25 * (j % 2 + 1);
+    //var y = 25;
+    var y;
+    if (Math.random() > 0.7) {
+      y = 25 + Math.floor(Math.random() * 6) * 50;
+    } else {
+      y = 25;
+    }
+    var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+
+    if (x === -475 && z === -475 && y < 150) {} else {
+      if (x === -475 && y === 25 & z === 475) {} else {
+        obsInfo.push({
+          "x": x,
+          "y": y,
+          "z": z
+        });
+      }
+    }
+
+    if (Math.random() > 0.5) {
+      obsInfo.push({
+        "x": x,
+        "y": 75,
+        "z": z
+      });
+    }
+
+  }
+
+  return obsInfo;
+}
 
 server.listen(port);

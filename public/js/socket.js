@@ -9,8 +9,8 @@
     console.log("i'm with you.( ˘ ³˘)♥");
     exports.weRtogether = true;
 
-    socket.on("Let's start!", function () {
-      startGame();
+    socket.on("Let's start!", function (data) {
+      startGame(data);
     });
 
   });
@@ -32,12 +32,12 @@
   }
   exports.waitingForReady = waitingForReady;
 
-  function startGame() {
+  function startGame(data) {
     //document.getElementById('waiting').style.display = "block";
     document.getElementById('blackout').style.display = "none";
     document.getElementById('ruready').style.display = "none";
     exports.realGame = true;
-    restart();
+    restart(data);
     clock1Run();
   }
 

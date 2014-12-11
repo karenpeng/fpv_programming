@@ -49,7 +49,7 @@
     //parse(editor1.getValue());
     if (!isRunning) {
       parse(editor1.session.doc.getAllLines());
-      startRun();
+      clock2Run();
       isRunning = true;
     }
   };

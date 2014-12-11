@@ -13,6 +13,7 @@
   var obstacles = [];
 
   var objects = [];
+
   var frameRate = 0;
 
   var clock1, clock2;
@@ -20,7 +21,7 @@
   init();
   animate();
 
-  function init(arr) {
+  function init(info) {
 
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -198,50 +199,69 @@
     friend.material.color.setHex(0x00ff00);
 
     //obstacles
-
-    for (j = 0; j < 20; j++) {
-      var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
-      //var y = 25 * (j % 2 + 1);
-      //var y = 25;
-      var y;
-      if (Math.random() > 0.7) {
-        y = 25 + Math.floor(Math.random() * 6) * 50;
-      } else {
-        y = 25;
-      }
-      var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
-
-      if (x === -475 && z === -475 && y < 150) {} else {
-        if (x === -475 && y === 25 & z === 475) {} else {
-          obstacle = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
-            color: 0xffffff,
-            //shading: THREE.FlatShading,
-            // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
-            map: THREE.ImageUtils.loadTexture("img/meow.jpg")
-          }));
-          obstacle.position.x = x;
-          obstacle.position.y = y;
-          obstacle.position.z = z;
-          obstacle.name = "cat";
-          scene.add(obstacle);
-          objects.push(obstacle);
+    if (info === undefined) {
+      console.log("wat");
+      for (j = 0; j < 20; j++) {
+        var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+        //var y = 25 * (j % 2 + 1);
+        //var y = 25;
+        var y;
+        if (Math.random() > 0.7) {
+          y = 25 + Math.floor(Math.random() * 6) * 50;
+        } else {
+          y = 25;
         }
+        var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+
+        if (x === -475 && z === -475 && y < 150) {} else {
+          if (x === -475 && y === 25 & z === 475) {} else {
+            obstacle = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
+              color: 0xffffff,
+              //shading: THREE.FlatShading,
+              // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
+              map: THREE.ImageUtils.loadTexture("img/meow.jpg")
+            }));
+            obstacle.position.x = x;
+            obstacle.position.y = y;
+            obstacle.position.z = z;
+            obstacle.name = "cat";
+            scene.add(obstacle);
+            objects.push(obstacle);
+          }
+        }
+
+        if (Math.random() > 0.5) {
+          upObstacle = obstacle.clone();
+          upObstacle.position.y = 75;
+          // if (Math.random() > 0.5) {
+          //    upMesh.position.x += 50;
+          // }
+          upObstacle.name = "cat";
+          scene.add(upObstacle);
+          objects.push(upObstacle);
+
+        }
+
       }
+    } else {
 
-      if (Math.random() > 0.5) {
-        upObstacle = obstacle.clone();
-        upObstacle.position.y = 75;
-        // if (Math.random() > 0.5) {
-        //    upMesh.position.x += 50;
-        // }
-        upObstacle.name = "cat";
-        scene.add(upObstacle);
-        objects.push(upObstacle);
+      info.forEach(function (inf) {
+        console.log(inf.x, inf.y, inf.z);
+        // var obstacle = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
+        //   color: 0xffffff,
+        //   //shading: THREE.FlatShading,
+        //   // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
+        //   map: THREE.ImageUtils.loadTexture("img/meow.jpg")
+        // }));
+        // obstacle.position.x = inf.x;
+        // obstacle.position.y = inf.y;
+        // obstacle.position.z = inf.z;
+        // obstacle.name = "cat";
+        // scene.add(obstacle);
+        // objects.push(obstacle);
 
-      }
-
+      });
     }
-
     // //for testing
     // var c = new THREE.Mesh(cubeGeo, cubeMaterial);
     // c.position.x = 425;
@@ -347,36 +367,25 @@
 
   }
 
-  function getRidOf(something) {
-    scene.remove(something);
-    something.traverse(function (obj) {
-      if (obj instanceof THREE.Mesh) {
-        obj.geometry.dispose();
-        obj.material.dispose();
-      }
-      obj = null;
-    });
-  }
+  THREE.Object3D.prototype.clear = function () {
+    if (this instanceof THREE.Mesh) {
+      this.geometry.dispose();
+      this.material.dispose();
+      //this = null;
+    }
+    var children = this.children;
+    for (var i = children.length - 1; i >= 0; i--) {
+      var child = children[i];
+      child.clear();
+      this.remove(child);
+      child = null;
+    }
+    return this;
+  };
 
-  function restart() {
-
-    //oh no how could i dispose things...
-    var things = [
-      line,
-      plane,
-      frontWall,
-      leftWall,
-      rightWall,
-      target,
-      you,
-      obstacle,
-      upObstacle,
-    ];
-
-    // things.forEach(function (t) {
-    //   getRidOf(t);
-    // });
-    init();
+  function restart(data) {
+    scene.clear();
+    init(data);
   }
 
   exports.you = you;
