@@ -20,6 +20,7 @@ app.get('/', function (req, res) {
 //how can i set url?
 var players = 0;
 var playerReady = 0;
+var playing = false;
 //var ids = [];
 io.on('connection', function (socket) {
   players++;
@@ -37,6 +38,7 @@ io.on('connection', function (socket) {
       var info = initObstacles();
       socket.emit("Let's start!", info);
       socket.broadcast.emit("Let's start!", info);
+      playing = true;
     }
   });
 
@@ -53,20 +55,28 @@ io.on('connection', function (socket) {
   });
 
   socket.on('x', function (data) {
-    socket.broadcast.emit('x', data);
+    if (playing) {
+      socket.broadcast.emit('x', data);
+    }
     //console.log('z' + data);
   });
   socket.on('y', function (data) {
-    socket.broadcast.emit('y', data);
+    if (playing) {
+      socket.broadcast.emit('y', data);
+    }
     //console.log('z' + data);
   });
   socket.on('z', function (data) {
-    socket.broadcast.emit('z', data);
+    if (playing) {
+      socket.broadcast.emit('z', data);
+    }
     //console.log('z' + data);
   });
 
   socket.on('whole', function (data) {
-    socket.broadcast.emit('whole', data);
+    if (playing) {
+      socket.broadcast.emit('whole', data);
+    }
     //console.log('z' + data);
   });
 
@@ -81,8 +91,10 @@ function initObstacles() {
     var y;
     if (Math.random() > 0.7) {
       y = 25 + Math.floor(Math.random() * 6) * 50;
-    } else {
+    } else if (Math.random() > 0.4) {
       y = 25;
+    } else {
+      y = 75;
     }
     var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
 
@@ -94,14 +106,6 @@ function initObstacles() {
           "z": z
         });
       }
-    }
-
-    if (Math.random() > 0.5) {
-      obsInfo.push({
-        "x": x,
-        "y": 75,
-        "z": z
-      });
     }
 
   }
