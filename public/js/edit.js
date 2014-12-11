@@ -8,6 +8,7 @@
   var isRunning = false;
 
   var editor1 = ace.edit("editor1");
+  exports.editor1 = editor1;
   editor1.setTheme("ace/theme/monokai");
   editor1.getSession().setMode("ace/mode/javascript");
   editor1.session.selection.moveCursorDown();
@@ -28,6 +29,7 @@
   editor2.renderer.$cursorLayer.element.style.opacity = 0;
 
   var consoleLog = ace.edit("console");
+  exports.consoleLog = consoleLog;
   consoleLog.setReadOnly(true);
   consoleLog.setOptions({
     highlightActiveLine: false,
@@ -137,7 +139,7 @@
       // the last task
       if (!this.tasks.length) {
         transitCamera(false, function () {
-          result();
+          socket.emit('result', result());
           editor1.setReadOnly(false);
           editor1.setOptions({
             highlightActiveLine: true,
@@ -192,7 +194,10 @@
     var z_copy = you.position.z;
     var reported = false;
 
-    var UNIT = 0.25;
+    var UNIT = 0.4;
+
+    var sound_id = 'um' + Math.round(Math.random() * 4 + 1);
+    document.getElementById(sound_id).play();
 
     for (var i = 0; i < 50 / UNIT + 1; i++) {
 
@@ -207,6 +212,7 @@
 
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(1) + ".\n");
                 reported = true;
               }
@@ -220,6 +226,7 @@
               socket.emit('z', you.position.z);
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(0) + ".\n");
                 reported = true;
               }
@@ -233,6 +240,7 @@
               socket.emit('x', you.position.x);
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(2) + ".\n");
                 reported = true;
               }
@@ -246,6 +254,7 @@
               socket.emit('x', you.position.x);
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(3) + ".\n");
                 reported = true;
               }
@@ -259,6 +268,7 @@
               socket.emit('y', you.position.y);
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(4) + ".\n");
                 reported = true;
               }
@@ -272,6 +282,7 @@
               socket.emit('y', you.position.y);
             } else {
               if (!reported) {
+                document.getElementById('hit').play();
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(5) + ".\n");
                 reported = true;
               }
@@ -344,8 +355,11 @@
     if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
       youWin();
     } else {
+      document.getElementById('nope').play();
       backToSquareOne();
     }
+
+    return (you.position.x === -475 && you.position.y === 25 && you.position.z === -475);
   }
 
   //-----------------------------------------------------------
@@ -354,7 +368,7 @@
 
   function backToSquareOne(callback) {
     //shakeHead();
-    consoleLog.insert('Miss target. Back to square one. T-T\n');
+    consoleLog.insert('Missed target. Back to square one. ಠ~ಠ\n');
     var deltaX = you.position.x - 475;
     var deltaY = you.position.y - 25;
     var deltaZ = you.position.z - 475;
@@ -390,6 +404,7 @@
   //-----------------------------------------------------------
 
   function youWin() {
+    document.getElementById('yay').play();
     alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
   }
 

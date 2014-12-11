@@ -8,8 +8,12 @@ how could i generate random url for player couple?
 
 //interface
 what's game and what's tutorial
-go back menu
 
 //character
 character turn around??
 indicates direction
+
+//bug
+
+clock bug sometimes they both run
+hit target bug not hit?

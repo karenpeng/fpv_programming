@@ -211,7 +211,7 @@
     if (info === undefined) {
       console.log("wat");
 
-      for (j = 0; j < 20; j++) {
+      for (j = 0; j < 30; j++) {
         var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
         //var y = 25 * (j % 2 + 1);
         //var y = 25;
@@ -324,7 +324,7 @@
     renderer = new THREE.WebGLRenderer({
       antialias: true
     });
-    renderer.setClearColor(0xfafafa);
+    renderer.setClearColor(0xfafaff);
     //renderer.setClearColor(0x2cc8ff);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -427,10 +427,10 @@
   function restart(data) {
     // scene.clear();
     // init(data);
-    movePosition(data);
     friend = you.clone();
-    //friend.material.color.setHex(0x00ff00);
+    friend.material.color.setHex(0x00ff00);
     scene.add(friend);
+    movePosition(data);
   }
 
   socket.on('x', function (data) {
@@ -451,6 +451,16 @@
     friend.position.z = data.z;
     //console.log('z' + data);
   });
+
+  socket.on('result', function (data) {
+    if (data) {
+      youLose();
+    }
+  });
+
+  function youLose() {
+    alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
+  }
 
   function movePosition(info) {
     obstacles.forEach(function (ob, index) {

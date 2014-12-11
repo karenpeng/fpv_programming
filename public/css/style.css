@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
   }
-  p, button, span{
+  p, button{
     font-family: 'Open Sans', sans-serif;
   }
   button:hover{
@@ -34,7 +34,7 @@
     width: 340px;
     height: 10px;
     height: 100%;
-    opacity: 0.6;
+    opacity: 0.5;
     display: none;
   }
 
@@ -213,4 +213,15 @@
   }
   #ready2{
     background-color: #ccc;
+  }
+  #countDown{
+    position: absolute;
+    width: 200px;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    text-align: center;
+    font-size: 34;
+    color: red;
+    display: none;
   }

@@ -43,6 +43,7 @@
       <button class="ready" id="ready1">I'm Ready</button>
     </div>
   </div>
+  <p id="countDown"></p>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
 <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
@@ -51,17 +52,20 @@
 <script type="text/javascript" src="js/clock.js"></script>
 <script type="text/javascript" src="js/socket.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<!--<script type="text/javascript" src="js/move.js"></script>-->
 <script type="text/javascript" src="js/edit.js"></script>
 <script type="text/javascript" src="js/instruction.js"></script>
 <script type="text/javascript">
   console.log("(╯°□°）╯︵ ┻━┻ WHY SO SLOW");
 </script>
-<audio> <source src="sound/um1.wav" type="audio/wav"></audio>
-<audio> <source src="sound/um2.wav" type="audio/wav"></audio>
-<audio> <source src="sound/um3.wav" type="audio/wav"></audio>
-<audio> <source src="sound/um4.wav" type="audio/wav"></audio>
-<audio> <source src="sound/um5.wav" type="audio/wav"></audio>
-<audio> <source src="sound/nope.wav" type="audio/wav"></audio>
-<audio> <source src="sound/yay.wav" type="audio/wav"></audio>
+<audio id="bg" loop> <source src="sound/ComeAndFindMe.wav" type="audio/wav"></audio>
+<audio id="um1"> <source src="sound/um1.wav" type="audio/wav"></audio>
+<audio id="um2"> <source src="sound/um2.wav" type="audio/wav"></audio>
+<audio id="um3"> <source src="sound/um3.wav" type="audio/wav"></audio>
+<audio id="um4"> <source src="sound/um4.wav" type="audio/wav"></audio>
+<audio id="um5"> <source src="sound/um5.wav" type="audio/wav"></audio>
+<audio id="nope"> <source src="sound/nope.wav" type="audio/wav"></audio>
+<audio id="hit"> <source src="sound/hit.wav" type="audio/wav"></audio>
+<audio id="yay"> <source src="sound/yay.wav" type="audio/wav"></audio>
 </body>
 </html>

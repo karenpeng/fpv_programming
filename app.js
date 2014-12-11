@@ -48,10 +48,12 @@ io.on('connection', function (socket) {
 
   socket.on('disconnect', function () {
     players--;
-    if (playerReady < 0) {
+    playerReady--;
+    if (playerReady <= 0) {
       playerReady = 0;
+      playing = false;
     }
-    //console.log(playerReady);
+    console.log(playerReady);
   });
 
   socket.on('x', function (data) {
@@ -80,11 +82,18 @@ io.on('connection', function (socket) {
     //console.log('z' + data);
   });
 
+  socket.on('result', function (data) {
+    if (playing) {
+      socket.broadcast.emit('result', data);
+    }
+    //console.log('z' + data);
+  });
+
 });
 
 function initObstacles() {
   var obsInfo = [];
-  for (j = 0; j < 20; j++) {
+  for (j = 0; j < 30; j++) {
     var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
     //var y = 25 * (j % 2 + 1);
     //var y = 25;

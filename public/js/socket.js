@@ -29,18 +29,37 @@
     document.getElementById('ruready').style.display = "block";
     document.getElementById('instruction').style.display = "none";
     document.getElementById('editor2').style.display = "block";
+    editor1.setValue("");
+    consoleLog.setValue("");
   }
   exports.waitingForReady = waitingForReady;
 
   function startGame(data) {
     //document.getElementById('waiting').style.display = "block";
-    document.getElementById('blackout').style.display = "none";
     document.getElementById('ruready').style.display = "none";
-    exports.realGame = true;
-    restart(data);
-    document.getElementById('timer1').style.display = "block";
-    document.getElementById('timer2').style.display = "block";
-    clock1Run();
+    document.getElementById('countDown').style.display = "block";
+    setTimeout(function () {
+      document.getElementById('countDown').innerHTML = "3";
+    }, 2000);
+    setTimeout(function () {
+      document.getElementById('countDown').innerHTML = "2";
+    }, 4000);
+    setTimeout(function () {
+      document.getElementById('countDown').innerHTML = "1";
+    }, 6000);
+    setTimeout(function () {
+      document.getElementById('countDown').innerHTML = "start";
+    }, 8000);
+    setTimeout(function () {
+      document.getElementById('blackout').style.display = "none";
+      document.getElementById('countDown').style.display = "none";
+      exports.realGame = true;
+      document.getElementById('timer1').style.display = "block";
+      document.getElementById('timer2').style.display = "block";
+      document.getElementById('bg').play();
+      restart(data);
+      clock1Run();
+    }, 9000);
   }
 
   document.getElementById('ready1').onclick = function () {
