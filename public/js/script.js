@@ -10,6 +10,8 @@
   var line, plane, frontWall, backWall, leftWall, rightWall;
   var loader;
   var target, you, obstacle, upObstacle, friend;
+  var obstacleMaterial;
+  var va = 0;
 
   //>。<
   var obstacles = [];
@@ -198,11 +200,11 @@
     scene.add(you);
     //objects.push(you);
     friend = you.clone();
-    friend.material.color.setHex(0x00ff00);
+    //friend.material.color.setHex(0x00ff00);
     scene.add(friend);
 
     //obstacles
-    var obstacleMaterial = new THREE.MeshLambertMaterial({
+    obstacleMaterial = new THREE.MeshLambertMaterial({
       color: 0xffffff,
       //shading: THREE.FlatShading,
       // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
@@ -211,7 +213,7 @@
 
     if (info === undefined) {
       console.log("wat");
-      var va = 0;
+
       for (j = 0; j < 20; j++) {
         var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
         //var y = 25 * (j % 2 + 1);
@@ -234,16 +236,10 @@
             //obstacles.push(obstacle);
             scene.add(obstacles[j]);
             objects.push(obstacles[j]);
-
-            // obstacles.push({
-            //   "x": x,
-            //   "y": y,
-            //   "z": z
-            // });
           }
         }
 
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.5 && obstacles[j]) {
           va++;
           obstacles[19 + va] = obstacles[j].clone();
           obstacles[19 + va].position.y = 75;
@@ -254,12 +250,6 @@
           //obstacles.push(obstacle);
           scene.add(obstacles[19 + va]);
           objects.push(obstacles[19 + va]);
-          // obstacles.push({
-          //   "x": x,
-          //   "y": 75,
-          //   "z": z
-          // });
-
         }
 
       }
@@ -267,19 +257,6 @@
     } else {
 
       obstacles.forEach(function (ob, index) {
-        //console.log(inf.x, inf.y, inf.z);
-        // var obstacle = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
-        //   color: 0xffffff,
-        //   //shading: THREE.FlatShading,
-        //   // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
-        //   map: THREE.ImageUtils.loadTexture("img/meow.jpg")
-        // }));
-        // obstacle.position.x = inf.x;
-        // obstacle.position.y = inf.y;
-        // obstacle.position.z = inf.z;
-        // obstacle.name = "cat";
-        // scene.add(obstacle);
-        // objects.push(obstacle);
         if (info[index] !== undefined) {
           ob.position.x = info[index].x;
           ob.position.y = info[index].y;
@@ -449,10 +426,30 @@
   };
 
   function restart(data) {
-    scene.clear();
-    init();
-    movePosition(data);
+    // scene.clear();
+    // init(data);
+    // movePosition(data);
+    // animate();
   }
+
+  socket.on('x', function (data) {
+    friend.position.x = data;
+    //console.log('z' + data);
+  });
+  socket.on('y', function (data) {
+    friend.position.y = data;
+    //console.log('z' + data);
+  });
+  socket.on('z', function (data) {
+    friend.position.z = data;
+    //console.log('z' + data);
+  });
+  socket.on('whole', function (data) {
+    friend.position.x = data.x;
+    friend.position.y = data.y;
+    friend.position.z = data.z;
+    //console.log('z' + data);
+  });
 
   function movePosition(info) {
     obstacles.forEach(function (ob, index) {
@@ -481,13 +478,9 @@
       var more = obstacles.length - info.length;
       for (var i = obstacles.length; i >= obstacles.length - more; i--) {
         scene.remove(obstacles[i]);
-        obstacles[i].traverse(function (obj) {
-          if (obj instanceof THREE.Mesh) {
-            obj.geometry.dispose();
-            obj.material.dispose();
-          }
-          obj = null;
-        });
+        // obstacles[i].geometry.dispose();
+        // obstacles[i].material.dispose();
+        // obstacles[i] = null;
       }
     }
   }

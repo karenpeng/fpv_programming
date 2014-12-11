@@ -38,6 +38,8 @@
     document.getElementById('ruready').style.display = "none";
     exports.realGame = true;
     restart(data);
+    document.getElementById('timer1').style.display = "block";
+    document.getElementById('timer2').style.display = "block";
     clock1Run();
   }
 

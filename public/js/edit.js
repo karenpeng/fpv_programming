@@ -203,6 +203,7 @@
           case 'f':
             if (isHit(1) === null) {
               you.position.z -= UNIT;
+              socket.emit('z', you.position.z);
 
             } else {
               if (!reported) {
@@ -210,61 +211,72 @@
                 reported = true;
               }
               you.position.z = z_copy;
+              socket.emit('z', you.position.z);
             }
             break;
           case 'b':
             if (isHit(0) === null) {
               you.position.z += UNIT;
+              socket.emit('z', you.position.z);
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(0) + ".\n");
                 reported = true;
               }
               you.position.z = z_copy;
+              socket.emit('z', you.position.z);
             }
             break;
           case 'r':
             if (isHit(2) === null) {
               you.position.x += UNIT;
+              socket.emit('x', you.position.x);
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(2) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
+              socket.emit('x', you.position.x);
             }
             break;
           case 'l':
             if (isHit(3) === null) {
               you.position.x -= UNIT;
+              socket.emit('x', you.position.x);
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(3) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
+              socket.emit('x', you.position.x);
             }
             break;
           case 'u':
             if (!isHit(4)) {
               you.position.y += UNIT;
+              socket.emit('y', you.position.y);
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(4) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
+              socket.emit('y', you.position.y);
             }
             break;
           case 'd':
             if (!isHit(5)) {
               you.position.y -= UNIT;
+              socket.emit('y', you.position.y);
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(5) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
+              socket.emit('y', you.position.y);
             }
             break;
           }
@@ -354,6 +366,11 @@
           you.position.x -= (deltaX / TIME_PERIOD);
           you.position.y -= (deltaY / TIME_PERIOD);
           you.position.z -= (deltaZ / TIME_PERIOD);
+          socket.emit('whole', {
+            "x": you.position.x,
+            "y": you.position.y,
+            "z": you.position.z,
+          });
         }, i);
       } else {
         setTimeout(function () {

@@ -43,11 +43,33 @@ io.on('connection', function (socket) {
   socket.on('typing code', function (data) {
     socket.broadcast.emit('code', data);
   });
+
   socket.on('disconnect', function () {
     players--;
-    playerReady--;
-    console.log(playerReady);
+    if (playerReady < 0) {
+      playerReady = 0;
+    }
+    //console.log(playerReady);
   });
+
+  socket.on('x', function (data) {
+    socket.broadcast.emit('x', data);
+    //console.log('z' + data);
+  });
+  socket.on('y', function (data) {
+    socket.broadcast.emit('y', data);
+    //console.log('z' + data);
+  });
+  socket.on('z', function (data) {
+    socket.broadcast.emit('z', data);
+    //console.log('z' + data);
+  });
+
+  socket.on('whole', function (data) {
+    socket.broadcast.emit('whole', data);
+    //console.log('z' + data);
+  });
+
 });
 
 function initObstacles() {
