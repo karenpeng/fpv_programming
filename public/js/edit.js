@@ -352,14 +352,19 @@
   //-----------------------------------------------------------
 
   function result() {
-    if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
+    var turnsout = false;
+    if (you.position.x < -474 && you.position.x > -476 &&
+      you.position.y > 24 && you.position.y < 26 &&
+      you.position.z < -474 && you.position.z > -476) {
+      turnsout = true;
       youWin();
     } else {
       document.getElementById('nope').play();
+      console.log(you.position.x, you.position.y, you.position.z);
       backToSquareOne();
     }
 
-    return (you.position.x === -475 && you.position.y === 25 && you.position.z === -475);
+    return turnsout;
   }
 
   //-----------------------------------------------------------
