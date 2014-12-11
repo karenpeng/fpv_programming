@@ -3,7 +3,7 @@
   //------------------------set up socket--------------------------
   //---------------------------------------------------------------
   exports.weRtogether = false;
-  exports.socket = io.connect('http://localhost');
+  exports.socket = io.connect("http://' + location.host");
 
   socket.on('everybody is here', function () {
     console.log("i'm with you.( ˘ ³˘)♥");
