@@ -2,19 +2,26 @@
   var canvas = document.getElementsByTagName("CANVAS")[0];
   canvas.style.cursor = "url('img/drag.png'), default";
 
+  var back = document.getElementById('back');
   var next = document.getElementById('next');
   var content = document.getElementById('content');
   var processBar = document.getElementById('processBar');
-  var question = document.getElementById('question');
   var level = 0;
+  back.style.display = "none";
 
   //----------------------------------------------------------------
   //---------------------  change instruction   --------------------
   //----------------------------------------------------------------
+  document.getElementById('skip').onclick = startGame;
 
   next.onclick = function () {
     level++;
     //console.log(level)
+    changeContent(level);
+  };
+
+  back.onclick = function () {
+    level--;
     changeContent(level);
   };
 
@@ -23,45 +30,32 @@
     switch (number) {
     case 1:
       strs = level1;
+      back.style.display = "none";
+      document.getElementById('skip').style.display = "none";
       break;
     case 2:
       strs = level2;
-      question.style.display = "block";
+      back.style.display = "block";
+      var question = document.createElement('p');
+      question.innerHTML = "What does this mean?";
+      content.appendChild(question);
       break;
     case 3:
       strs = level3;
+      var question = document.createElement('p');
+      question.innerHTML = "What does this mean?";
+      content.appendChild(question);
       break;
     case 4:
       strs = level4;
-      question.style.display = "none";
+      next.innerHTML = "next";
       break;
     case 5:
       strs = level5;
-      setTimeout(function () {
-        document.getElementById('start').style.display = "block";
-        document.getElementById('blackout').style.display = "block";
-      }, 3000);
+      next.innerHTML = "start game";
       break;
     case 6:
-      strs = level6;
-      document.getElementById('instruction').style.display = "none";
-      document.getElementById('editor2').style.display = "block";
-      if (clock1 !== undefined) {
-        clock1.isTicking = false;
-        clock1 = undefined;
-      }
-      if (clock2 !== undefined) {
-        clock2.isTicking = false;
-        clock2 = undefined;
-      }
-      document.getElementById('timer1').innerHTML = "00:00:00";
-      document.getElementById('timer2').innerHTML = "00:00:00";
-      document.getElementById('timer1').style.display = "none";
-      document.getElementById('timer2').style.display = "none";
-      restart();
-      break;
-    default:
-      str = "";
+      startGame();
       break;
     }
     var str = "";
@@ -71,8 +65,16 @@
       str += "</p>";
     });
     content.innerHTML = str;
-    processBar.style.width = level * 30 + 30 + "px";
+    processBar.style.width = level * 35 + 35 + "px";
 
+  }
+
+  function startGame() {
+    document.getElementById('waiting').style.display = "block";
+    document.getElementById('blackout').style.display = "block";
+    document.getElementById('instruction').style.display = "none";
+    document.getElementById('editor2').style.display = "block";
+    restart();
   }
 
   var level1 = [
@@ -84,7 +86,7 @@
     "up()",
     "down()",
     "That's it.",
-    "Try type them in the editor, when you finish, click the 'run' button."
+    "Try type them in the editor on the right, when you finish, click the 'run' button."
   ];
 
   var level2 = [
@@ -95,7 +97,7 @@
     "for(var i = 0; i < 10; i++){",
     " forward()",
     "}",
-    "Try it in the editor, if you like, try with different iterate times and instrunctions"
+    "Try it in the editor, if you like, try with numbers and instrunctions"
   ];
 
   var level3 = [
@@ -120,13 +122,9 @@
   var level5 = [
     "Clock's Ticking!",
     "In the real game, you need to compete with other to get to the target as soon as possible.",
-    "Wanna give it a try?",
-    "Click 'start' when you're ready."
-  ];
-
-  var level6 = [
-    "Are you ready to for a real game?",
-    "Invite your friend, give them this url"
+    "",
+    "Are you ready?",
+    "Invite your friend, give them this url."
   ];
 
 })(this);

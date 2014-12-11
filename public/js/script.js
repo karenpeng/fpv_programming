@@ -15,6 +15,8 @@
   var objects = [];
   var frameRate = 0;
 
+  var clock1, clock2;
+
   init();
   animate();
 
@@ -272,7 +274,7 @@
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.top = '0px';
     stats.domElement.style.left = '0px';
-    document.body.appendChild(stats.domElement);
+    //document.body.appendChild(stats.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
 
@@ -371,11 +373,12 @@
       upObstacle,
     ];
 
-    things.forEach(function (t) {
-      getRidOf(t);
-    });
+    // things.forEach(function (t) {
+    //   getRidOf(t);
+    // });
 
     init();
+    //clock1Run();
   }
 
   exports.you = you;

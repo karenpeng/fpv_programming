@@ -93,15 +93,28 @@
     background-color: white;
     opacity: 0.9;
   }
-  #next{
+  #skip{
+    background-color: #bbb;
+    width: 230px;
+    margin-left: 10px;
+    font-size: 12px;
+    color: white;
+  }
+  .tutorialButton{
     position: absolute;
     background-color: #A4C402;
     color: white;
-    width: 210px;
+    width: 105px;
     height: 30px;
     bottom: 50px;
+    font-size: 14px;
+  }
+  #back{
     left: 30px;
-    font-size: 16px;
+    background-color: #666;
+  }
+  #next{
+    right: 40px;
   }
   .bar{
     position: absolute;
@@ -111,7 +124,7 @@
   #processBar{
     background-color: #A4C402;
     color: #A4C402;
-    width: 30px;
+    width: 35px;
   }
   #backgroundBar{
     background-color: #ccc;
@@ -128,16 +141,16 @@
     bottom: 100px;
     display: none;
   }
-  #start{
+  #waiting{
     position: absolute;
-    width: 160px;
-    background-color: #dd2222;
+    width: 260px;
     left: 50%;
     top: 50%;
-    margin-left: -80px;
-    color: white;
+    margin-left: -180px;
+    color: green;
     font-size: 18px;
     display: none;
+    text-align: center;
   }
   #timer1{
     position: absolute;
@@ -164,7 +177,7 @@
   #blackout{
     width: 100%;
     height: 100%;
-    background-color: black;
-    opacity: 0.5;
+    background-color: white;
+    opacity: 0.9;
     display: none;
   }

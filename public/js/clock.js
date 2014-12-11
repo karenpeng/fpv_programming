@@ -73,12 +73,10 @@
   //-----------------------------------------------------------------
 
   var clock1, clock2;
-  var start = document.getElementById('start');
 
-  start.onclick = function () {
-    start.style.display = "none";
-    document.getElementById('blackout').style.display = "none";
+  function clock1Run() {
     document.getElementById('timer1').style.display = "block";
+    document.getElementById('timer2').style.display = "block";
     var currentTime = new Date();
     startH = currentTime.getHours();
     startM = currentTime.getMinutes();
@@ -86,9 +84,9 @@
     clock1 = new MyClock(startH, startM, startS, "timer1");
     clock1.update();
     exports.clock1 = clock1;
-  };
+  }
 
-  function startRun() {
+  function clock2Run() {
     if (document.getElementById('timer1').style.display === "block") {
       document.getElementById('timer2').style.display = "block";
       clock1.isTicking = false;
@@ -118,7 +116,8 @@
     clock2.isTicking = false;
   }
 
-  exports.startRun = startRun;
+  exports.clock1Run = clock1Run;
+  exports.clock2Run = clock2Run;
   exports.tryAgain = tryAgain;
 
 })(this);
