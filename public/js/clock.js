@@ -105,6 +105,12 @@
     }
   }
 
+  function bothStop() {
+    clock1.isTicking = false;
+    clock2.isTicking = false;
+  }
+  exports.bothStop = bothStop;
+
   function tryAgain() {
     var currentTime = new Date();
     startH = currentTime.getHours();

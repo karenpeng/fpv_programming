@@ -90,7 +90,7 @@
 
     var material = new THREE.LineBasicMaterial({
       color: 0xffffff,
-      opacity: 0.1,
+      opacity: 0.3,
       transparent: true
     });
 
@@ -452,6 +452,7 @@
     //console.log('z' + data);
   });
 
+  exports.iLose = false;
   socket.on('result', function (data) {
     if (data) {
       youLose();
@@ -459,6 +460,8 @@
   });
 
   function youLose() {
+    bothStop();
+    exports.iLose = true;
     alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
   }
 

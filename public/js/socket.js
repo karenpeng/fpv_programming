@@ -2,12 +2,11 @@
   //---------------------------------------------------------------
   //------------------------set up socket--------------------------
   //---------------------------------------------------------------
-  exports.weRtogether = false;
-  exports.socket = io.connect('http://' + location.host);
+  var socket = io.connect('http://' + location.host);
+  exports.socket = socket;
 
   socket.on('everybody is here', function () {
     console.log("i'm with you.( ˘ ³˘)♥");
-    exports.weRtogether = true;
 
     socket.on("Let's start!", function (data) {
       startGame(data);
@@ -40,16 +39,16 @@
     document.getElementById('countDown').style.display = "block";
     setTimeout(function () {
       document.getElementById('countDown').innerHTML = "3";
-    }, 1000);
+    }, 600);
     setTimeout(function () {
       document.getElementById('countDown').innerHTML = "2";
-    }, 3000);
+    }, 1600);
     setTimeout(function () {
       document.getElementById('countDown').innerHTML = "1";
-    }, 5000);
+    }, 2600);
     setTimeout(function () {
       document.getElementById('countDown').innerHTML = "start";
-    }, 7000);
+    }, 3600);
     setTimeout(function () {
       document.getElementById('blackout').style.display = "none";
       document.getElementById('countDown').style.display = "none";
@@ -59,7 +58,7 @@
       document.getElementById('bg').play();
       restart(data);
       clock1Run();
-    }, 9000);
+    }, 4600);
   }
 
   document.getElementById('ready1').onclick = function () {

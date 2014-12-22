@@ -48,7 +48,7 @@
             var ta = that.tasks.shift();
             var direction = ta[0];
             var lineNum = ta[1];
-            marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
+            marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
             that.move(direction);
           });
 
@@ -56,7 +56,7 @@
           var ta = this.tasks.shift();
           var direction = ta[0];
           var lineNum = ta[1];
-          marker = editor1.session.addMarker(new Range(lineNum, 0, lineNum, 2000), 'highlight', 'fullLine', false);
+          marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
           this.move(direction);
         }
 
@@ -85,7 +85,8 @@
 
     var UNIT = 0.25;
 
-    var sound = document.getElementById('um' + Math.round(Math.random() * 4) + 1);
+    var num = Math.round(Math.random() * 4) + 1;
+    var sound = document.getElementById('um' + num);
     sound.play();
 
     for (var i = 0; i < 50 / UNIT + 1; i++) {
@@ -235,14 +236,18 @@
   //-----------------------------------------------------------
 
   function result() {
-    if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
-      youWin();
-    } else {
-      document.getElementById('nope').play();
-      backToSquareOne();
+    var gameResult = false;
+    if (!iLose) {
+      if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
+        gameResult = true;
+        youWin();
+      } else {
+        document.getElementById('nope').play();
+        backToSquareOne();
+        gameResult = false;
+      }
     }
-
-    return (you.position.x === -475 && you.position.y === 25 && you.position.z === -475);
+    return gameResult;
   }
 
   //-----------------------------------------------------------
@@ -288,6 +293,7 @@
 
   function youWin() {
     document.getElementById('yay').play();
+    bothStop();
     alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
   }
 
