@@ -226,7 +226,7 @@
         var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
 
         if (x === -475 && z === -475 && y < 150) {} else {
-          if (x === -475 && y === 25 & z === 475) {} else {
+          if (x === -475 && y === 25 && z === 475) {} else {
             obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
             obstacles[j].position.x = x;
             obstacles[j].position.y = y;
@@ -418,7 +418,7 @@
     for (var i = children.length - 1; i >= 0; i--) {
       var child = children[i];
       child.clear();
-      this.remove(child);
+
       child = null;
     }
     //this = null;

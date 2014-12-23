@@ -28,11 +28,12 @@ app.get('/:roomNum', function (req, res) {
 });
 
 var lookUpTable = {};
-var playerReady = {};
+// the format of lookUpTable will be:
 // var lookUpTable = {
 //   'someURL': ['socketID1', 'socketID2'],
 //   'otherURL': ['socketID1', 'socketID2']
 // };
+var playerReady = {};
 
 io.on('connection', function (socket) {
 
@@ -57,24 +58,28 @@ io.on('connection', function (socket) {
     playerReady[data.url] ++;
     if (playerReady[data.url] === 2) {
       var info = initObstacles();
-      console.log(io.sockets);
+      // console.log(io.sockets);
       for (var i = 0; i < 2; i++) {
         io.sockets.sockets[i].emit("Let's start!", info);
       }
     }
   });
 
-  socket.on('typing code', function (data) {
+  function sendDataToYourPartner(data, msg) {
     for (var i = 0; i < 2; i++) {
+      //find the partner id of the this socket user
       if (lookUpTable[data.url][i] !== socket.id) {
-        for (var j = 0; j < 2; j++) {
+
+        // find the partner's socket index inside all the sockets
+        for (var j = 0; j < io.sockets.sockets.length; j++) {
+
           if (io.sockets.sockets[j].id === lookUpTable[data.url][i]) {
-            io.sockets.sockets[j].emit("code", data.data);
+            io.sockets.sockets[j].emit(msg, data.data);
           }
         }
       }
     }
-  });
+  }
 
   socket.on('disconnect', function () {
     // players--;
@@ -86,34 +91,29 @@ io.on('connection', function (socket) {
     // console.log(playerReady);
   });
 
-  // socket.on('x', function (data) {
-  //   socket.broadcast.emit('x', data);
-  //   //console.log('z' + data);
-  // });
-  // socket.on('y', function (data) {
-  //   socket.broadcast.emit('y', data);
-  //   //console.log('z' + data);
-  // });
-  // socket.on('z', function (data) {
-  //   if (playing) {
-  //     socket.broadcast.emit('z', data);
-  //   }
-  //   //console.log('z' + data);
-  // });
+  socket.on('typing code', function (data) {
+    sendDataToYourPartner(data, "code");
+  });
 
-  // socket.on('whole', function (data) {
-  //   if (playing) {
-  //     socket.broadcast.emit('whole', data);
-  //   }
-  //   //console.log('z' + data);
-  // });
+  socket.on('x', function (data) {
+    sendDataToYourPartner(data, 'x');
+  });
 
-  // socket.on('result', function (data) {
-  //   if (playing) {
-  //     socket.broadcast.emit('result', data);
-  //   }
-  //   //console.log('z' + data);
-  // });
+  socket.on('y', function (data) {
+    sendDataToYourPartner(data, 'y');
+  });
+
+  socket.on('z', function (data) {
+    sendDataToYourPartner(data, 'z');
+  });
+
+  socket.on('whole', function (data) {
+    sendDataToYourPartner(data, 'whole');
+  });
+
+  socket.on('result', function (data) {
+    sendDataToYourPartner(data, 'result');
+  });
 
 });
 

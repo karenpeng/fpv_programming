@@ -63,6 +63,10 @@
       document.getElementById('blackout').style.display = "none";
       document.getElementById('countDown').style.display = "none";
       exports.realGame = true;
+      editor1.focus();
+      document.getElementById('editor1').style.opacity = '0.9';
+      document.getElementById('console').style.opacity = '0.9';
+      document.getElementById('gap').style.opacity = '0.9';
       document.getElementById('timer1').style.display = "block";
       document.getElementById('timer2').style.display = "block";
       document.getElementById('bg').play();

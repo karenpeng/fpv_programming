@@ -52,7 +52,6 @@
   }
   window.addEventListener('resize', resize, false);
 
-
   //when run is clicked, parse the string input
   document.getElementById('run').onclick = function () {
     //console.log(editor1.getValue())
