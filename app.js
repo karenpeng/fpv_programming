@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 4000;
+var roomNums = [];
 
 var ejs = require('ejs');
 
@@ -14,9 +15,20 @@ app.set('view engine', 'html');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
+  var roomNum = '';
+  for (var i = 0; i < 4; i++) {
+    var num = Math.round(Math.random() * 9);
+    roomNum += num;
+  }
+  roomNums.push(roomNum);
+  var newURL = '/' + roomNum;
+  res.redirect(newURL);
   res.render('index.html');
 });
 
+app.get('/room/:num', function (req, res) {
+  res.render('index.html');
+});
 //how can i set url?
 var players = 0;
 var playerReady = 0;
