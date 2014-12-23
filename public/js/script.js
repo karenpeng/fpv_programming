@@ -211,7 +211,7 @@
     if (info === undefined) {
       console.log("wat");
 
-      for (j = 0; j < 30; j++) {
+      for (j = 0; j < 40; j++) {
         var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
         //var y = 25 * (j % 2 + 1);
         //var y = 25;

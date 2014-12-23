@@ -12,5 +12,6 @@ character turn around??
 indicates direction
 
 //bus:
+three cubes
 
 //values from each loop

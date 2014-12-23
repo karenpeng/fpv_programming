@@ -52,6 +52,7 @@
   }
   window.addEventListener('resize', resize, false);
 
+
   //when run is clicked, parse the string input
   document.getElementById('run').onclick = function () {
     //console.log(editor1.getValue())
@@ -71,7 +72,12 @@
 
   editor1.on("change", function () {
     //console.log(editor1.getValue());
-    socket.emit('typing code', editor1.getValue());
+    if (realGame) {
+      socket.emit('typing code', {
+        'url': myURL,
+        'data': editor1.getValue()
+      });
+    }
   });
 
   socket.on('code', function (data) {

@@ -5,8 +5,17 @@
   var socket = io.connect('http://' + location.host);
   exports.socket = socket;
 
-  socket.on('everybody is here', function () {
-    console.log("i'm with you.( ˘ ³˘)♥");
+  socket.on('who are you', function () {
+    //console.log("i'm with you.( ˘ ³˘)♥");
+    var myRe = /\d\d\d\d\d\d/;
+    var myRoomNum = document.location.href.match(myRe);
+    //var myRoomNum = myRe.exec(document.location.href);
+    exports.myURL = myRoomNum[0];
+
+    socket.emit('i am', {
+      'url': exports.myURL,
+      'data': true
+    });
 
     socket.on("Let's start!", function (data) {
       startGame(data);
@@ -19,10 +28,11 @@
   //---------------------------------------------------------------
 
   exports.realGame = false;
-
-  document.getElementById('skip').onclick = waitingForReady;
+  document.getElementById('skip').onclick = function () {
+    waitingForReady();
+  };
   //this shouldn't be put here
-  //
+
   function waitingForReady() {
     document.getElementById('blackout').style.display = "block";
     document.getElementById('ruready').style.display = "block";
@@ -63,7 +73,10 @@
 
   document.getElementById('ready1').onclick = function () {
     document.getElementById('ready1').style.display = "none";
-    socket.emit("i'm ready");
+    socket.emit("i'm ready", {
+      'url': exports.myURL,
+      'data': true
+    });
   };
 
 })(this);

@@ -28,7 +28,13 @@
       // the last task
       if (!this.tasks.length) {
         transitCamera(false, function () {
-          socket.emit('result', result());
+          var isWin = result();
+          if (realGame && isWin) {
+            socket.emit('result', {
+              'url': myURL,
+              'data': true
+            });
+          }
           editor1.setReadOnly(false);
           editor1.setOptions({
             highlightActiveLine: true,
@@ -98,80 +104,139 @@
           case 'f':
             if (isHit(1) === null) {
               you.position.z -= UNIT;
-              socket.emit('z', you.position.z);
-
+              if (realGame) {
+                socket.emit('z', {
+                  'url': myURL,
+                  'data': you.position.z
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(1) + ".\n");
                 reported = true;
               }
               you.position.z = z_copy;
-              socket.emit('z', you.position.z);
+              if (realGame) {
+                socket.emit('z', {
+                  'url': myURL,
+                  'data': you.position.z
+                });
+              }
             }
             break;
           case 'b':
             if (isHit(0) === null) {
               you.position.z += UNIT;
-              socket.emit('z', you.position.z);
+              if (realGame) {
+                socket.emit('z', {
+                  'url': myURL,
+                  'data': you.position.z
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(0) + ".\n");
                 reported = true;
               }
               you.position.z = z_copy;
-              socket.emit('z', you.position.z);
+              if (realGame) {
+                socket.emit('z', {
+                  'url': myURL,
+                  'data': you.position.z
+                });
+              }
             }
             break;
           case 'r':
             if (isHit(2) === null) {
               you.position.x += UNIT;
-              socket.emit('x', you.position.x);
+              if (realGame) {
+                socket.emit('x', {
+                  'url': myURL,
+                  'data': you.position.x
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(2) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
-              socket.emit('x', you.position.x);
+              if (realGame) {
+                socket.emit('x', {
+                  'url': myURL,
+                  'data': you.position.x
+                });
+              }
             }
             break;
           case 'l':
             if (isHit(3) === null) {
               you.position.x -= UNIT;
-              socket.emit('x', you.position.x);
+              if (realGame) {
+                socket.emit('x', {
+                  'url': myURL,
+                  'data': you.position.x
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(3) + ".\n");
                 reported = true;
               }
               you.position.x = x_copy;
-              socket.emit('x', you.position.x);
+              if (realGame) {
+                socket.emit('x', {
+                  'url': myURL,
+                  'data': you.position.x
+                });
+              }
             }
             break;
           case 'u':
             if (!isHit(4)) {
               you.position.y += UNIT;
-              socket.emit('y', you.position.y);
+              if (realGame) {
+                socket.emit('y', {
+                  'url': myURL,
+                  'data': you.position.y
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(4) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
-              socket.emit('y', you.position.y);
+              if (realGame) {
+                socket.emit('y', {
+                  'url': myURL,
+                  'data': you.position.y
+                });
+              }
             }
             break;
           case 'd':
             if (!isHit(5)) {
               you.position.y -= UNIT;
-              socket.emit('y', you.position.y);
+              if (realGame) {
+                socket.emit('y', {
+                  'url': myURL,
+                  'data': you.position.y
+                });
+              }
             } else {
               if (!reported) {
                 consoleLog.insert("( ﾟヮﾟ) hit " + isHit(5) + ".\n");
                 reported = true;
               }
               you.position.y = y_copy;
-              socket.emit('y', you.position.y);
+              if (realGame) {
+                socket.emit('y', {
+                  'url': myURL,
+                  'data': you.position.y
+                });
+              }
             }
             break;
           }
@@ -268,11 +333,16 @@
           you.position.x -= (deltaX / TIME_PERIOD);
           you.position.y -= (deltaY / TIME_PERIOD);
           you.position.z -= (deltaZ / TIME_PERIOD);
-          socket.emit('whole', {
-            "x": you.position.x,
-            "y": you.position.y,
-            "z": you.position.z,
-          });
+          if (realGame) {
+            socket.emit('whole', {
+              'url': myURL,
+              'data': {
+                "x": you.position.x,
+                "y": you.position.y,
+                "z": you.position.z
+              }
+            });
+          }
         }, i);
       } else {
         setTimeout(function () {
