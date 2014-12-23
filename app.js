@@ -15,18 +15,16 @@ app.set('view engine', 'html');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-  var roomNum = '';
-  for (var i = 0; i < 4; i++) {
+  var roomNum = '/';
+  for (var i = 0; i < 6; i++) {
     var num = Math.round(Math.random() * 9);
     roomNum += num;
   }
-  roomNums.push(roomNum);
-  var newURL = '/' + roomNum;
-  res.redirect(newURL);
-  res.render('index.html');
+  res.redirect(roomNum);
 });
 
-app.get('/room/:num', function (req, res) {
+app.get('/:roomNum', function (req, res) {
+  roomNums.push(req.params.roomNum);
   res.render('index.html');
 });
 //how can i set url?
