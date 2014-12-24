@@ -70,12 +70,12 @@
 
   var level1 = [
     "There're only 6 instructions, which are:",
-    "forward()",
+    "<code>forward()",
     "backward()",
     "left()",
     "right()",
     "up()",
-    "down()",
+    "down()</code>",
     "That's it.",
     "Try type them in the editor on the right, when you finish, click the 'run' button."
   ];
@@ -85,23 +85,23 @@
     "Well, you don't have to type it 10 times.",
     "Here's how a 'loop' can help you:",
     "",
-    "for(var i = 0; i < 10; i++){",
-    " forward()",
-    "}",
+    "<code>for(var i = 0; i < 10; i++){",
+    "&nbspforward()",
+    "}</code>",
     "Try it in the editor, if you like, try with numbers and instrunctions"
   ];
 
   var level3 = [
     "If you make the iterator as a reusable tool, you don't have to remake it over and over again.",
     "Here's how a 'function' works as a 'tool':",
-    "function f(steps){",
-    " for(var i = 0; i < steps; i++){",
-    "   forward()",
-    " }",
-    "}",
+    "<code>function f(steps){",
+    "&nbspfor(var i = 0; i < steps; i++){",
+    "&nbsp&nbspforward()",
+    "&nbsp}",
+    "}</code>",
     "And here's how to 'use' this tool:",
-    "f(4)",
-    "f(6)"
+    "<code>f(4)",
+    "f(6)</code>"
   ];
 
   var level4 = [

@@ -56,6 +56,7 @@ io.on('connection', function (socket) {
       playerReady[data.url] = 0;
     }
     playerReady[data.url] ++;
+    //console.log(playerReady[data.url]);
     if (playerReady[data.url] === 2) {
       var info = initObstacles();
       // console.log(io.sockets);
@@ -82,13 +83,17 @@ io.on('connection', function (socket) {
   }
 
   socket.on('disconnect', function () {
-    // players--;
-    // playerReady--;
-    // if (playerReady <= 0) {
-    //   playerReady = 0;
-    //   playing = false;
-    // }
-    // console.log(playerReady);
+    // console.log('wow');
+    for (var url in lookUpTable) {
+      for (var i = 0; i < lookUpTable[url].length; i++) {
+        if (lookUpTable[url][i] === socket.id) {
+          playerReady[url] --;
+          lookUpTable[url].splice(i, 1);
+        }
+      }
+      console.log(lookUpTable[url]);
+    }
+
   });
 
   socket.on('typing code', function (data) {
