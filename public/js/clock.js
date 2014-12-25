@@ -61,6 +61,8 @@
         that.update();
       });
     } else {
+      //if the clock is not ticking anymore,
+      //just record the time and then stop the clock
       this.recordS = parseInt(s);
       this.recordM = parseInt(m);
       this.recordH = parseInt(h);
@@ -74,6 +76,7 @@
 
   var clock1, clock2;
 
+  //make the clock counting coding time run
   function clock1Run() {
     document.getElementById('timer1').style.display = "block";
     document.getElementById('timer2').style.display = "block";
@@ -86,6 +89,7 @@
     exports.clock1 = clock1;
   }
 
+  //make the clock counting running time run
   function clock2Run() {
     if (document.getElementById('timer1').style.display === "block") {
       document.getElementById('timer2').style.display = "block";
@@ -105,12 +109,14 @@
     }
   }
 
+  //both clocks stop
   function bothStop() {
     clock1.isTicking = false;
     clock2.isTicking = false;
   }
   exports.bothStop = bothStop;
 
+  //make the runing clock stop, coding clock run
   function tryAgain() {
     var currentTime = new Date();
     startH = currentTime.getHours();

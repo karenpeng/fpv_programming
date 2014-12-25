@@ -452,19 +452,6 @@
     //console.log('z' + data);
   });
 
-  exports.iLose = false;
-  socket.on('result', function (data) {
-    if (data) {
-      youLose();
-    }
-  });
-
-  function youLose() {
-    bothStop();
-    exports.iLose = true;
-    alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
-  }
-
   function movePosition(info) {
     obstacles.forEach(function (ob, index) {
       if (info[index] !== undefined) {
@@ -498,6 +485,19 @@
     //     // obstacles[i] = null;
     //   }
     // }
+  }
+
+  exports.iLose = false;
+  socket.on('result', function (data) {
+    if (data) {
+      youLose();
+    }
+  });
+
+  function youLose() {
+    bothStop();
+    exports.iLose = true;
+    alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
   }
 
   exports.you = you;

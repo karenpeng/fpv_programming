@@ -15,3 +15,9 @@ indicates direction
 three cubes
 
 //values from each loop
+
+//win and lose
+
+//show the result: timing
+
+//another round?

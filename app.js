@@ -7,7 +7,7 @@ var port = process.env.PORT || 4000;
 
 var ejs = require('ejs');
 
-app.set("views", __dirname);
+app.set('views', __dirname);
 
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
@@ -40,7 +40,8 @@ io.on('connection', function (socket) {
   socket.emit('who are you');
 
   socket.on('i am', function (data) {
-    //if (lookUpTable[data.url].length < 2) {
+
+    //socket.join(data.url);
     if (lookUpTable[data.url] === undefined) {
       lookUpTable[data.url] = [];
       lookUpTable[data.url].push(socket.id);
@@ -48,21 +49,32 @@ io.on('connection', function (socket) {
       lookUpTable[data.url].push(socket.id);
     }
 
+    console.log('adding ' + lookUpTable[data.url].length);
+
   });
 
   socket.on("i'm ready", function (data) {
-
-    if (playerReady[data.url] === undefined) {
+    //console.log(isNaN(playerReady[data.url]));
+    //why...NAN????
+    if (isNaN(playerReady[data.url])) {
       playerReady[data.url] = 0;
+      console.log("ouch");
     }
     playerReady[data.url] ++;
-    //console.log(playerReady[data.url]);
+    console.log(playerReady[data.url]);
     if (playerReady[data.url] === 2) {
       var info = initObstacles();
       // console.log(io.sockets);
       for (var i = 0; i < 2; i++) {
-        io.sockets.sockets[i].emit("Let's start!", info);
+        var id = lookUpTable[data.url][i];
+        for (var j = 0; j < io.sockets.sockets.length; j++) {
+
+          if (io.sockets.sockets[j].id === id) {
+            io.sockets.sockets[j].emit("Let's start!", info);
+          }
+        }
       }
+      //io.to(data.url).emit("Let's start!", info);
     }
   });
 
@@ -91,13 +103,12 @@ io.on('connection', function (socket) {
           lookUpTable[url].splice(i, 1);
         }
       }
-      console.log(lookUpTable[url]);
     }
 
   });
 
   socket.on('typing code', function (data) {
-    sendDataToYourPartner(data, "code");
+    sendDataToYourPartner(data, 'code');
   });
 
   socket.on('x', function (data) {

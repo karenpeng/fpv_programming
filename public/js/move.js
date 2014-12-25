@@ -32,7 +32,10 @@
           if (realGame && isWin) {
             socket.emit('result', {
               'url': myURL,
-              'data': true
+              'data': {
+                'codingTime': document.getElementById('timer1').innerHTML,
+                'runningTime': document.getElementById('timer2').innerHTML
+              }
             });
           }
           editor1.setReadOnly(false);

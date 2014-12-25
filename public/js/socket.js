@@ -6,11 +6,14 @@
   exports.socket = socket;
 
   socket.on('who are you', function () {
-    //console.log("i'm with you.( ˘ ³˘)♥");
+
     var myRe = /\d\d\d\d\d\d/;
     var myRoomNum = document.location.href.match(myRe);
     //var myRoomNum = myRe.exec(document.location.href);
+
     exports.myURL = myRoomNum[0];
+
+    // exports.myURL = document.location.pathname.slice(1);
 
     socket.emit('i am', {
       'url': exports.myURL,
@@ -31,8 +34,8 @@
   document.getElementById('skip').onclick = function () {
     waitingForReady();
   };
-  //this shouldn't be put here
 
+  //wait for everybody to click on the ready button
   function waitingForReady() {
     document.getElementById('blackout').style.display = "block";
     document.getElementById('ruready').style.display = "block";
@@ -43,6 +46,7 @@
   }
   exports.waitingForReady = waitingForReady;
 
+  //start counting down and then game starts
   function startGame(data) {
     //document.getElementById('waiting').style.display = "block";
     document.getElementById('ruready').style.display = "none";
@@ -75,6 +79,7 @@
     }, 4600);
   }
 
+  //click to start a game
   document.getElementById('ready1').onclick = function () {
     document.getElementById('ready1').style.display = "none";
     socket.emit("i'm ready", {

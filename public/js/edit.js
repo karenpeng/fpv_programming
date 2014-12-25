@@ -5,9 +5,15 @@
   //---------------------------------------------------------------
 
   var Range = ace.require("ace/range").Range;
+
+  function addMarkerRange(lineNum) {
+    return new Range(lineNum, 0, lineNum, 2000);
+  }
+  exports.addMarkerRange = addMarkerRange;
   exports.isRunning = false;
   var editing = false;
 
+  //editor for user to code
   var editor1 = ace.edit("editor1");
   editor1.setTheme("ace/theme/monokai");
   editor1.getSession().setMode("ace/mode/javascript");
@@ -20,16 +26,7 @@
   });
   exports.editor1 = editor1;
 
-  var editor2 = ace.edit("editor2");
-  editor2.setTheme("ace/theme/monokai");
-  editor2.getSession().setMode("ace/mode/javascript");
-  editor2.setReadOnly(true);
-  editor2.setOptions({
-    highlightActiveLine: false,
-    highlightGutterLine: false
-  });
-  editor2.renderer.$cursorLayer.element.style.opacity = 0;
-
+  //console for user
   var consoleLog = ace.edit("console");
   consoleLog.setReadOnly(true);
   consoleLog.setOptions({
@@ -40,10 +37,16 @@
   exports.consoleLog = consoleLog;
   resize();
 
-  function addMarkerRange(lineNum) {
-    return new Range(lineNum, 0, lineNum, 2000);
-  }
-  exports.addMarkerRange = addMarkerRange;
+  //editor to show other user's code
+  var editor2 = ace.edit("editor2");
+  editor2.setTheme("ace/theme/monokai");
+  editor2.getSession().setMode("ace/mode/javascript");
+  editor2.setReadOnly(true);
+  editor2.setOptions({
+    highlightActiveLine: false,
+    highlightGutterLine: false
+  });
+  editor2.renderer.$cursorLayer.element.style.opacity = 0;
 
   function resize() {
     var h = window.innerHeight;
@@ -69,6 +72,19 @@
     editor1.setValue("");
   };
 
+  editor1.on("blur", function () {
+    editing = false;
+  });
+
+  //i'm so sorry i need to hijack the keyboard
+  window.onkeydown = function (e) {
+    if (!editing) {
+      e.preventDefault();
+    }
+  };
+
+  //set up socket event for coding
+
   editor1.on("change", function () {
     //console.log(editor1.getValue());
     if (realGame) {
@@ -84,17 +100,6 @@
     editor2.clearSelection();
   });
 
-  editor1.on("blur", function () {
-    editing = false;
-  });
-
-  //i'm so sorry i need to hijack the keyboard
-  window.onkeydown = function (e) {
-    if (!editing) {
-      e.preventDefault();
-    }
-  };
-
   //---------------------------------------------------------------
   //------------------------    parse    --------------------------
   //---------------------------------------------------------------
@@ -107,6 +112,7 @@
     });
     // console.log(endStr);
 
+    //define a function inside a function b/c only it ueses it
     function replace(str, index) {
       var postStr = str;
       postStr = postStr.replace(/forward\(\)/, "tasks.push(['f'," + index + "])");
@@ -127,6 +133,7 @@
       isRunning = false;
       consoleLog.insert(err + '\n');
       console.log(err);
+      //if there's error, just return, no need to pass to taskManager
       return;
     }
 
