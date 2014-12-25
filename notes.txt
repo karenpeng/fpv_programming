@@ -7,14 +7,11 @@ how could i generate random url for player couple?
 //interface
 what's game and what's tutorial
 
-//character
-character turn around??
-indicates direction
-
-//bus:
+//bugs:
 three cubes
 
 //values from each loop
+//slider for time??
 
 //win and lose
 

@@ -75,6 +75,10 @@
       document.getElementById('timer2').style.display = "block";
       document.getElementById('bg').play();
       restart(data);
+      socket.emit("i'm playing", {
+        'url': exports.myURL,
+        'data': true
+      });
       clock1Run();
     }, 4600);
   }

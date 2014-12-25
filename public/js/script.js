@@ -445,11 +445,9 @@
     friend.position.z = data;
     //console.log('z' + data);
   });
-  socket.on('whole', function (data) {
-    friend.position.x = data.x;
-    friend.position.y = data.y;
-    friend.position.z = data.z;
-    //console.log('z' + data);
+
+  socket.on('moveTarget', function (data) {
+    console.log(data);
   });
 
   function movePosition(info) {
@@ -504,5 +502,6 @@
   exports.camera = camera;
   exports.isHit = isHit;
   exports.restart = restart;
+  exports.target = target;
 
 })(this);

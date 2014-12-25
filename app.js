@@ -34,6 +34,9 @@ var lookUpTable = {};
 //   'otherURL': ['socketID1', 'socketID2']
 // };
 var playerReady = {};
+var gameTime = {};
+var playing = {};
+var refreshIntervalId = {};
 
 io.on('connection', function (socket) {
 
@@ -54,45 +57,46 @@ io.on('connection', function (socket) {
   });
 
   socket.on("i'm ready", function (data) {
-    //console.log(isNaN(playerReady[data.url]));
-    //why...NAN????
-    if (isNaN(playerReady[data.url])) {
-      playerReady[data.url] = 0;
-      console.log("ouch");
-    }
-    playerReady[data.url] ++;
-    console.log(playerReady[data.url]);
-    if (playerReady[data.url] === 2) {
-      var info = initObstacles();
-      // console.log(io.sockets);
-      for (var i = 0; i < 2; i++) {
-        var id = lookUpTable[data.url][i];
-        for (var j = 0; j < io.sockets.sockets.length; j++) {
 
-          if (io.sockets.sockets[j].id === id) {
-            io.sockets.sockets[j].emit("Let's start!", info);
-          }
-        }
+    if (socketIsInLookUpTable(data.url, socket.id)) {
+
+      //console.log(isNaN(playerReady[data.url]));
+      //why...NAN????
+      if (isNaN(playerReady[data.url])) {
+        playerReady[data.url] = 0;
       }
-      //io.to(data.url).emit("Let's start!", info);
+      playerReady[data.url] ++;
+
+      console.log("player ready " + playerReady[data.url]);
+
+      if (playerReady[data.url] === 2) {
+
+        var info = initObstacles();
+
+        sendDataToPair(data.url, "Let's start!", info);
+        //io.to(data.url).emit("Let's start!", info);
+      }
+
     }
   });
 
-  function sendDataToYourPartner(data, msg) {
-    for (var i = 0; i < 2; i++) {
-      //find the partner id of the this socket user
-      if (lookUpTable[data.url][i] !== socket.id) {
+  socket.on("i'm playing", function (data) {
 
-        // find the partner's socket index inside all the sockets
-        for (var j = 0; j < io.sockets.sockets.length; j++) {
+    if (socketIsInLookUpTable(data.url, socket.id)) {
 
-          if (io.sockets.sockets[j].id === lookUpTable[data.url][i]) {
-            io.sockets.sockets[j].emit(msg, data.data);
-          }
-        }
+      if (isNaN(playing[data.url])) {
+        playing[data.url] = 0;
       }
+      playing[data.url] ++;
+
+      console.log("playing " + playing[data.url]);
+
+      if (playing[data.url] === 2) {
+        moveTargetEvery30Secends(data.url);
+      }
+
     }
-  }
+  });
 
   socket.on('disconnect', function () {
     // console.log('wow');
@@ -100,12 +104,66 @@ io.on('connection', function (socket) {
       for (var i = 0; i < lookUpTable[url].length; i++) {
         if (lookUpTable[url][i] === socket.id) {
           playerReady[url] --;
+          playing[url] --;
           lookUpTable[url].splice(i, 1);
+          break;
         }
       }
     }
 
   });
+
+  function socketIsInLookUpTable(url, id) {
+    for (var i = 0; i < lookUpTable[url].length; i++) {
+      if (lookUpTable[url][i] === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function sendDataToPair(url, msg, data) {
+    var id1 = lookUpTable[url][0];
+    var id2 = lookUpTable[url][1];
+    for (var j = 0; j < io.sockets.sockets.length; j++) {
+      if (io.sockets.sockets[j].id === id1 || io.sockets.sockets[j].id === id2) {
+        io.sockets.sockets[j].emit(msg, data);
+      }
+    }
+  }
+
+  function moveTargetEvery30Secends(url) {
+    var choices = ['d', 'u', 'l', 'r', 'b', 'f'];
+    if (isNaN(refreshIntervalId[url])) {
+      refreshIntervalId[url] = setInterval(function () {
+        var steps = Math.round(Math.random() * 3) + 1;
+        var instructions = [];
+        for (var i = 0; i < steps; i++) {
+          instructions.push(choices[Math.round(Math.random() * 5)]);
+        }
+        sendDataToPair(url, 'moveTarget', instructions);
+      }, 30000);
+    }
+  }
+
+  function sendDataToYourPartner(data, msg) {
+    var partnerId;
+    for (var i = 0; i < 2; i++) {
+      //find the partner id of the this socket user
+      if (lookUpTable[data.url][i] !== socket.id) {
+        partnerId = lookUpTable[data.url][i];
+        break;
+      }
+    }
+    // find the partner's socket index inside all the sockets
+    for (var j = 0; j < io.sockets.sockets.length; j++) {
+
+      if (io.sockets.sockets[j].id === partnerId) {
+        io.sockets.sockets[j].emit(msg, data.data);
+        break;
+      }
+    }
+  }
 
   socket.on('typing code', function (data) {
     sendDataToYourPartner(data, 'code');
@@ -123,12 +181,9 @@ io.on('connection', function (socket) {
     sendDataToYourPartner(data, 'z');
   });
 
-  socket.on('whole', function (data) {
-    sendDataToYourPartner(data, 'whole');
-  });
-
   socket.on('result', function (data) {
     sendDataToYourPartner(data, 'result');
+    clearInterval(refreshIntervalId[data.url]);
   });
 
 });

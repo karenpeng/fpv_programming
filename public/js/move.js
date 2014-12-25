@@ -3,6 +3,7 @@
   //------------------------ task manager --------------------------
   //----------------------------------------------------------------
   var taskManager = new TaskManager();
+  var taskManagerTarget = new TaskManager();
   var marker = null;
 
   function TaskManager() {
@@ -28,16 +29,7 @@
       // the last task
       if (!this.tasks.length) {
         transitCamera(false, function () {
-          var isWin = result();
-          if (realGame && isWin) {
-            socket.emit('result', {
-              'url': myURL,
-              'data': {
-                'codingTime': document.getElementById('timer1').innerHTML,
-                'runningTime': document.getElementById('timer2').innerHTML
-              }
-            });
-          }
+          result();
           editor1.setReadOnly(false);
           editor1.setOptions({
             highlightActiveLine: true,
@@ -92,7 +84,7 @@
     var z_copy = you.position.z;
     var reported = false;
 
-    var UNIT = 0.25;
+    var UNIT = 0.4;
 
     var num = Math.round(Math.random() * 4) + 1;
     var sound = document.getElementById('um' + num);
@@ -264,9 +256,9 @@
     var TIME_PERIOD = 400;
     var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
-      deltaX = camera.position.x - 50;
-      deltaY = camera.position.y - 80;
-      deltaZ = camera.position.z - 130;
+      deltaX = camera.position.x - 100;
+      deltaY = camera.position.y - 160;
+      deltaZ = camera.position.z - 260;
       you.idle = false;
       you.add(camera);
 
@@ -304,58 +296,16 @@
   //-----------------------------------------------------------
 
   function result() {
-    var gameResult = false;
     if (!iLose) {
-      if (you.position.x === -475 && you.position.y === 25 && you.position.z === -475) {
-        gameResult = true;
+      if (you.position.x < target.position.x + 1 && you.position.x > target.position.x - 1 &&
+        you.position.y < target.position.y + 50 && you.position.y > target.position.y - 50 &&
+        you.position.z < target.position.z + 1 && you.position.z > target.position.z - 1) {
         youWin();
       } else {
         document.getElementById('nope').play();
-        backToSquareOne();
-        gameResult = false;
-      }
-    }
-    return gameResult;
-  }
-
-  //-----------------------------------------------------------
-  //-------------------- back to square one -------------------
-  //-----------------------------------------------------------
-
-  function backToSquareOne(callback) {
-    //shakeHead();
-    consoleLog.insert('Miss target. Back to square one. T-T\n');
-    var deltaX = you.position.x - 475;
-    var deltaY = you.position.y - 25;
-    var deltaZ = you.position.z - 475;
-    var TIME_PERIOD = 400;
-
-    for (var i = 0; i < TIME_PERIOD + 1; i++) {
-      if (i < TIME_PERIOD) {
-        setTimeout(function () {
-          you.position.x -= (deltaX / TIME_PERIOD);
-          you.position.y -= (deltaY / TIME_PERIOD);
-          you.position.z -= (deltaZ / TIME_PERIOD);
-          if (realGame) {
-            socket.emit('whole', {
-              'url': myURL,
-              'data': {
-                "x": you.position.x,
-                "y": you.position.y,
-                "z": you.position.z
-              }
-            });
-          }
-        }, i);
-      } else {
-        setTimeout(function () {
-          if (callback) {
-            callback();
-          }
-          if (realGame) {
-            tryAgain();
-          }
-        }, TIME_PERIOD + 300);
+        if (realGame) {
+          tryAgain();
+        }
       }
     }
   }
@@ -367,6 +317,15 @@
   function youWin() {
     document.getElementById('yay').play();
     bothStop();
+    if (realGame) {
+      socket.emit('result', {
+        'url': myURL,
+        'data': {
+          'codingTime': document.getElementById('timer1').innerHTML,
+          'runningTime': document.getElementById('timer2').innerHTML
+        }
+      });
+    }
     alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
   }
 
