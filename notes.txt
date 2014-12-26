@@ -1,19 +1,19 @@
-//gaming:
-restart??? TODO: dispose stuff
-
-//server
-how could i generate random url for player couple?
-
-//interface
-what's game and what's tutorial
-
-//bugs:
-three cubes
+要把红方块随机放位置
+然后搞个算法，越靠近重点障碍物越多
+翊宇 • 1 min
+障碍物也要懂么
+动
+Now
+彭嘉颖
+何翊宇
+也可以啊，现在这样太简单了吧
 
 //values from each loop
 //slider for time??
 
 //win and lose
+赢了就不能走了啊
+
 
 //show the result: timing
 

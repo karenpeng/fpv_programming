@@ -176,9 +176,16 @@
       color: 0xff0000
     });
     target = new THREE.Mesh(cubeGeo, material);
-    target.position.x = -375;
-    target.position.y = 25;
-    target.position.z = -375;
+    target.position.x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
+    var ran = Math.random();
+    if (ran < 0.5) {
+      target.position.y = 25;
+    } else if (ran < 0.9) {
+      target.position.y = 75;
+    } else {
+      target.position.y = 125;
+    }
+    target.position.z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
     target.name = "target";
     scene.add(target);
     //objects.push(target);
@@ -216,17 +223,18 @@
         //var y = 25 * (j % 2 + 1);
         //var y = 25;
         var y;
-        if (Math.random() > 0.7) {
+        var ran = Math.random();
+        if (ran > 0.7) {
           y = 25 + Math.floor(Math.random() * 6) * 50;
-        } else if (Math.random() > 0.4) {
+        } else if (ran > 0.4) {
           y = 25;
         } else {
           y = 75;
         }
         var z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
 
-        if (x === -375 && z === -375 && y < 150) {} else {
-          if (x === -375 && y === 25 && z === 375) {} else {
+        if (x === target.position.x && y === target.position.y && z === target.position.z) {} else {
+          if (x === you.position.x && z === you.position.y && y === you.position.z) {} else {
             obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
             obstacles[j].position.x = x;
             obstacles[j].position.y = y;
@@ -451,9 +459,6 @@
     // you.position.y = 56;
     friend.position.y = 25;
     friend.position.z = 375;
-    target.position.x = -375;
-    target.position.y = 25;
-    target.position.z = -375;
     scene.remove(you);
     scene.add(friend);
     scene.add(you);
@@ -488,15 +493,17 @@
     }, 1200);
   });
 
-  function movePosition(info) {
+  function movePosition(data) {
     obstacles.forEach(function (ob, index) {
-      if (info[index] !== undefined) {
-        ob.position.x = info[index].x;
-        ob.position.y = info[index].y;
-        ob.position.z = info[index].z;
-      }
+      ob.position.x = data.obs[index].x;
+      ob.position.y = data.obs[index].y;
+      ob.position.z = data.obs[index].z;
       //obstacles.push(inf);
     });
+
+    target.position.x = data.tar.x;
+    target.position.y = data.tar.y;
+    target.position.z = data.tar.z;
     // if (info.length > obstacles.length) {
     //   var less = info.length - obstacles.length;
     //   for (var i = obstacles.length; i < obstacles.length + less; i++) {
