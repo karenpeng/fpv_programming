@@ -6,7 +6,7 @@
   var next = document.getElementById('next');
   var content = document.getElementById('content');
   var processBar = document.getElementById('processBar');
-  var level = 0;
+  exports.level = 0;
   back.style.display = "none";
 
   //----------------------------------------------------------------
@@ -14,14 +14,14 @@
   //----------------------------------------------------------------
 
   next.onclick = function () {
-    level++;
+    exports.level++;
     //console.log(level)
-    changeContent(level);
+    changeContent(exports.level);
   };
 
   back.onclick = function () {
-    level--;
-    changeContent(level);
+    exports.level--;
+    changeContent(exports.level);
   };
 
   function changeContent(number) {
@@ -71,7 +71,7 @@
       str += "</p>";
     });
     content.innerHTML = str;
-    processBar.style.width = level * 30 + 30 + "px";
+    processBar.style.width = exports.level * 30 + 30 + "px";
 
   }
 
@@ -139,7 +139,7 @@
     "Tutorial 5: target",
     "<p></p>",
     "Target will Move!",
-    "The target will move a little bit every 30 seconds",
+    "The target will move a little bit every 30 seconds.",
     "Sorry this is reality, you need to keep pace with it."
   ];
 
