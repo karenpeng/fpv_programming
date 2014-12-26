@@ -115,12 +115,12 @@
     //define a function inside a function b/c only it ueses it
     function replace(str, index) {
       var postStr = str;
-      postStr = postStr.replace(/forward\(\)/, "tasks.push(['f'," + index + "])");
-      postStr = postStr.replace(/backward\(\)/, "tasks.push(['b'," + index + "])");
-      postStr = postStr.replace(/left\(\)/, "tasks.push(['l'," + index + "])");
-      postStr = postStr.replace(/right\(\)/, "tasks.push(['r'," + index + "])");
-      postStr = postStr.replace(/up\(\)/, "tasks.push(['u'," + index + "])");
-      postStr = postStr.replace(/down\(\)/, "tasks.push(['d'," + index + "])");
+      postStr = postStr.replace(/forward\(\)/g, "tasks.push(['f'," + index + "])");
+      postStr = postStr.replace(/backward\(\)/g, "tasks.push(['b'," + index + "])");
+      postStr = postStr.replace(/left\(\)/g, "tasks.push(['l'," + index + "])");
+      postStr = postStr.replace(/right\(\)/g, "tasks.push(['r'," + index + "])");
+      postStr = postStr.replace(/up\(\)/g, "tasks.push(['u'," + index + "])");
+      postStr = postStr.replace(/down\(\)/g, "tasks.push(['d'," + index + "])");
       //making it as separate line again
       postStr += '\n';
       return postStr;
