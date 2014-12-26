@@ -86,6 +86,8 @@
   ];
 
   var level1 = [
+    "Tutorial 1: instruntion",
+    "<p></p>",
     "There're only 6 instructions, which are:",
     "<code>forward()",
     "backward()",
@@ -98,10 +100,12 @@
   ];
 
   var level2 = [
+    "Tutorial 2: loop",
+    "<p></p>",
     "What if you want to move it forward ten steps?",
     "Well, you don't have to type it 10 times.",
     "Here's how a 'loop' can help you:",
-    "",
+    "<p></p>",
     "<code>for(var i = 0; i < 10; i++){",
     "&nbspforward()",
     "}</code>",
@@ -109,6 +113,8 @@
   ];
 
   var level3 = [
+    "Tutorial 3: function",
+    "<p></p>",
     "If you make the iterator as a reusable tool, you don't have to remake it over and over again.",
     "Here's how a 'function' works as a 'tool':",
     "<code>function f(steps){",
@@ -122,12 +128,16 @@
   ];
 
   var level4 = [
+    "Tutorial 4: obstacle",
+    "<p></p>",
     "There's always obstacles:)",
     "See the CAT cubes? They're obstacles which will get in your way.",
     "Try to go through them and see what happens."
   ];
 
   var level5 = [
+    "Tutorial 5: target",
+    "<p></p>",
     "Target will Move!",
     "The target will move a little bit every 30 seconds",
     "Sorry this is reality, you need to keep pace with it."
@@ -135,7 +145,7 @@
 
   var level6 = [
     "Are you ready?",
-    "",
+    "<p></p>",
     "In the real game, you need to get to the target as soon as possible， competing with your friend."
   ];
 

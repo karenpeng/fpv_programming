@@ -80,6 +80,8 @@
   function clock1Run() {
     document.getElementById('timer1').style.display = "block";
     document.getElementById('timer2').style.display = "block";
+    document.getElementById('timer1').style.color = "#dd2222";
+    document.getElementById('timer2').style.color = "#bcbcbc";
     var currentTime = new Date();
     startH = currentTime.getHours();
     startM = currentTime.getMinutes();
@@ -93,6 +95,9 @@
   function clock2Run() {
     if (document.getElementById('timer1').style.display === "block") {
       document.getElementById('timer2').style.display = "block";
+      document.getElementById('timer1').style.color = "#bcbcbc";
+      document.getElementById('timer2').style.color = "#a4c402";
+
       clock1.isTicking = false;
       var currentTime = new Date();
       startH = currentTime.getHours();
@@ -113,6 +118,8 @@
   function bothStop() {
     clock1.isTicking = false;
     clock2.isTicking = false;
+    document.getElementById('timer1').style.color = "#bcbcbc";
+    document.getElementById('timer2').style.color = "#bcbcbc";
   }
   exports.bothStop = bothStop;
 
@@ -126,6 +133,8 @@
     clock1.isTicking = true;
     clock1.update();
     clock2.isTicking = false;
+    document.getElementById('timer1').style.color = "#dd2222";
+    document.getElementById('timer2').style.color = "#bcbcbc";
   }
 
   exports.clock1Run = clock1Run;

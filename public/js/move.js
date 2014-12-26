@@ -339,14 +339,14 @@
     var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
       deltaX = camera.position.x - 100;
-      deltaY = camera.position.y - 160;
+      deltaY = camera.position.y - 200;
       deltaZ = camera.position.z - 260;
       you.idle = false;
       you.add(camera);
 
     } else {
       deltaX = camera.position.x - 500;
-      deltaY = camera.position.y - 800;
+      deltaY = camera.position.y - 1000;
       deltaZ = camera.position.z - 1300;
       you.remove(camera);
     }
