@@ -25,10 +25,10 @@
     //console.log(marker)
     if (!editor) {
       if (this.tasksNum > 0) {
-        var ta = this.tasks.shift();
-        this.moveSimple(target, ta);
-        return;
+        var tas = this.tasks.shift();
+        this.simpleMove(target, tas);
       }
+      return;
     }
 
     if (marker) {
@@ -91,7 +91,7 @@
   };
 
   //move one grid
-  TaskManager.prototype.moveSimple = function (obj, direction) {
+  TaskManager.prototype.simpleMove = function (obj, direction) {
     var x_copy = obj.position.x;
     var y_copy = obj.position.y;
     var z_copy = obj.position.z;
@@ -160,13 +160,13 @@
     }
   };
 
-  TaskManager.prototype.move = function (obj, direction, editor) {
+  TaskManager.prototype.move = function (obj, direction) {
     var x_copy = obj.position.x;
     var y_copy = obj.position.y;
     var z_copy = obj.position.z;
     var reported = false;
 
-    var UNIT = 0.4;
+    var UNIT = 0.35;
 
     var num = Math.round(Math.random() * 4) + 1;
     var sound = document.getElementById('um' + num);
@@ -181,19 +181,19 @@
           case 'f':
             if (isHit(obj.position, 1) === null) {
               obj.position.z -= UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('z', {
                   'url': myURL,
-                  'data': obj.position.z
+                  'data': you.position.z
                 });
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
                 reported = true;
               }
               obj.position.z = z_copy;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -204,7 +204,7 @@
           case 'b':
             if (isHit(obj.position, 0) === null) {
               obj.position.z += UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -212,11 +212,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
                 reported = true;
               }
               obj.position.z = z_copy;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -227,7 +227,7 @@
           case 'r':
             if (isHit(obj.position, 2) === null) {
               obj.position.x += UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -235,11 +235,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
                 reported = true;
               }
               obj.position.x = x_copy;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -250,7 +250,7 @@
           case 'l':
             if (isHit(obj.position, 3) === null) {
               obj.position.x -= UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -258,11 +258,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + "( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
                 reported = true;
               }
               obj.position.x = x_copy;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -273,7 +273,7 @@
           case 'u':
             if (!isHit(obj.position, 4)) {
               obj.position.y += UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -281,11 +281,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
                 reported = true;
               }
               obj.position.y = y_copy;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -296,7 +296,7 @@
           case 'd':
             if (!isHit(obj.position, 5)) {
               obj.position.y -= UNIT;
-              if (realGame && editor) {
+              if (realGame) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -304,11 +304,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
+                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
                 reported = true;
               }
               obj.position.y = y_copy;
-              if (realGame && eidtor) {
+              if (realGame) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y

@@ -198,7 +198,7 @@ io.on('connection', function (socket) {
 
 function initObstacles() {
   var obsInfo = [];
-  for (j = 0; j < 40; j++) {
+  for (j = 0; j < 30; j++) {
     var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
     //var y = 25 * (j % 2 + 1);
     //var y = 25;

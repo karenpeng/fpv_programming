@@ -27,9 +27,13 @@
   function changeContent(number) {
     var strs;
     switch (number) {
+    case 0:
+      strs = level0;
+      back.style.display = "none";
+      break;
     case 1:
       strs = level1;
-      back.style.display = "none";
+      back.style.display = "block";
       document.getElementById('skip').style.display = "none";
       break;
     case 2:
@@ -47,15 +51,18 @@
       break;
     case 4:
       strs = level4;
-      next.innerHTML = "next";
       break;
     case 5:
       strs = level5;
-      next.innerHTML = "start game";
+      next.innerHTML = "next";
       break;
     case 6:
-      waitingForReady();
+      strs = level6;
+      next.innerHTML = "start game";
       break;
+    case 7:
+      waitingForReady();
+      return;
     }
     var str = "";
     strs.forEach(function (l) {
@@ -64,9 +71,19 @@
       str += "</p>";
     });
     content.innerHTML = str;
-    processBar.style.width = level * 35 + 35 + "px";
+    processBar.style.width = level * 30 + 30 + "px";
 
   }
+
+  var level0 = [
+    "Welcome!",
+    "See the yellow cube? That's your character.",
+    "And the red cube? That's your target.",
+    "To play this game, you need to move your character to the target.",
+    "To do that, you need to write some instructions for your character.",
+    "Wanna learn how to do it?",
+    "Let's go!!!"
+  ];
 
   var level1 = [
     "There're only 6 instructions, which are:",
@@ -111,11 +128,15 @@
   ];
 
   var level5 = [
-    "Clock's Ticking!",
-    "In the real game, you need to compete with other to get to the target as soon as possible.",
-    "",
+    "Target will Move!",
+    "The target will move a little bit every 30 seconds",
+    "Sorry this is reality, you need to keep pace with it."
+  ];
+
+  var level6 = [
     "Are you ready?",
-    "Invite your friend, give them this url."
+    "",
+    "In the real game, you need to get to the target as soon as possible， competing with your friend."
   ];
 
 })(this);

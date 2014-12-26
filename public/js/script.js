@@ -177,7 +177,7 @@
     });
     target = new THREE.Mesh(cubeGeo, material);
     target.position.x = -375;
-    target.position.y = 50;
+    target.position.y = 25;
     target.position.z = -375;
     target.name = "target";
     scene.add(target);
@@ -211,7 +211,7 @@
     if (info === undefined) {
       console.log("wat");
 
-      for (j = 0; j < 40; j++) {
+      for (j = 0; j < 30; j++) {
         var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
         //var y = 25 * (j % 2 + 1);
         //var y = 25;
@@ -391,13 +391,7 @@
     }
 
     frameRate++;
-    //var now = new Date().getTime();
-    //target.position.y = Math.sin(now * 0.002) * 20 + 45;
-    // if (you.idle) {
-    //   you.position.y += Math.sin(now * 0.002);
-    // } else {
-    //   you.position.y = 25;
-    // }
+
     stats.update();
     controls.update();
   }
@@ -427,9 +421,18 @@
   function restart(data) {
     // scene.clear();
     // init(data);
-    friend = you.clone();
-    friend.material.color.setHex(0x00ff00);
+    //friend = you.clone();
+    material = new THREE.MeshLambertMaterial({
+      color: 0x00ff00
+    });
+    friend = new THREE.Mesh(cubeGeo, material);
+    friend.position.x = 375;
+    // you.position.y = 56;
+    friend.position.y = 25;
+    friend.position.z = 375;
+    scene.remove(you);
     scene.add(friend);
+    scene.add(you);
     movePosition(data);
   }
 
@@ -448,7 +451,17 @@
 
   socket.on('moveTarget', function (data) {
     console.log(data);
-    taskManagerTarget.executeTasks(target, data);
+    target.material.color.setHex(0xff8888);
+    setTimeout(function () {
+      target.material.color.setHex(0xff0000);
+    }, 400);
+    setTimeout(function () {
+      target.material.color.setHex(0xff8888);
+    }, 800);
+    setTimeout(function () {
+      target.material.color.setHex(0xff0000);
+      taskManagerTarget.executeTasks(target, data);
+    }, 1200);
   });
 
   function movePosition(info) {
@@ -460,9 +473,6 @@
       }
       //obstacles.push(inf);
     });
-    you.position.x = 475;
-    you.position.y = 25;
-    you.position.z = 475;
     // if (info.length > obstacles.length) {
     //   var less = info.length - obstacles.length;
     //   for (var i = obstacles.length; i < obstacles.length + less; i++) {
