@@ -166,7 +166,7 @@
     var z_copy = obj.position.z;
     var reported = false;
 
-    var UNIT = 0.35;
+    var UNIT = 0.36;
 
     var num = Math.round(Math.random() * 4) + 1;
     var sound = document.getElementById('um' + num);

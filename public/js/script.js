@@ -392,7 +392,7 @@
 
     var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
 
-    if (frameRate % 1800 === 0 && frameRate !== 0 && !realGame && level > 3) {
+    if (!realGame && frameRate % 1800 === 0 && frameRate !== 0 && level > 3) {
       var steps = Math.round(Math.random() * 3) + 1;
       var instructions = [];
       for (var i = 0; i < steps; i++) {
@@ -451,6 +451,9 @@
     // you.position.y = 56;
     friend.position.y = 25;
     friend.position.z = 375;
+    target.position.x = -375;
+    target.position.y = 25;
+    target.position.z = -375;
     scene.remove(you);
     scene.add(friend);
     scene.add(you);
