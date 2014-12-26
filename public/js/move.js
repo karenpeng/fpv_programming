@@ -398,8 +398,8 @@
 
   function youWin() {
     document.getElementById('yay').play();
-    bothStop();
     if (realGame) {
+      bothStop();
       socket.emit('result', {
         'url': myURL,
         'data': {

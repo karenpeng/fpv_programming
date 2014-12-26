@@ -374,7 +374,7 @@
 
     var intersects = raycaster.intersectObjects(objects);
 
-    if (intersects.length > 0 && intersects[0].distance < 25) {
+    if (intersects.length > 0 && intersects[0].distance < 24.5) {
 
       //console.log(intersects[0].object.name + " " + intersects[0].distance);
       return intersects[0].object.name;
