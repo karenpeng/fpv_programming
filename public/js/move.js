@@ -3,20 +3,32 @@
   //------------------------ task manager --------------------------
   //----------------------------------------------------------------
   var taskManager = new TaskManager();
-  var taskManagerTarget = new TaskManager();
   var marker = null;
 
   function TaskManager() {
     this.tasks = [];
   }
 
-  TaskManager.prototype.executeTasks = function (tasks) {
+  TaskManager.prototype.executeTasks = function (obj, tasks, editor) {
+    this.obj = obj;
     this.tasks = tasks;
     this.tasksNum = tasks.length;
-    this._execute();
+    if (editor === undefined) {
+      this._execute();
+    } else {
+      this._execute(editor);
+    }
   };
 
+  //method overload...
   TaskManager.prototype._execute = function () {
+    if (this.tasksNum > 0) {
+      var ta = this.tasks.shift();
+      this.move(target, ta);
+    }
+  };
+
+  TaskManager.prototype._execute = function (editor) {
     //console.log(marker)
     if (marker) {
       editor1.session.removeMarker(marker);
@@ -50,7 +62,7 @@
             var direction = ta[0];
             var lineNum = ta[1];
             marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
-            that.move(direction);
+            that.move(that.obj, direction);
           });
 
         } else {
@@ -58,7 +70,7 @@
           var direction = ta[0];
           var lineNum = ta[1];
           marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
-          this.move(direction);
+          this.move(this.obj, direction);
         }
 
         editor1.setReadOnly(true);
@@ -78,10 +90,79 @@
   };
 
   //move one grid
-  TaskManager.prototype.move = function (direction) {
-    var x_copy = you.position.x;
-    var y_copy = you.position.y;
-    var z_copy = you.position.z;
+  TaskManager.prototype.move = function (obj, direction) {
+    var x_copy = obj.position.x;
+    var y_copy = obj.position.y;
+    var z_copy = obj.position.z;
+
+    var UNIT = 0.4;
+
+    for (var i = 0; i < 50 / UNIT + 1; i++) {
+
+      if (i < 50 / UNIT) {
+        setTimeout(function () {
+          //if (!isHit()) {
+          switch (direction) {
+          case 'f':
+            if (isHit(obj.position, 1) === null) {
+              obj.position.z -= UNIT;
+            } else {
+              obj.position.z = z_copy;
+            }
+            break;
+          case 'b':
+            if (isHit(obj.position, 0) === null) {
+              obj.position.z += UNIT;
+            } else {
+              obj.position.z = z_copy;
+            }
+            break;
+          case 'r':
+            if (isHit(obj.position, 2) === null) {
+              obj.position.x += UNIT;
+            } else {
+              obj.position.x = x_copy;
+            }
+            break;
+          case 'l':
+            if (isHit(obj.position, 3) === null) {
+              obj.position.x -= UNIT;
+            } else {
+              obj.position.x = x_copy;
+            }
+            break;
+          case 'u':
+            if (!isHit(obj.position, 4)) {
+              obj.position.y += UNIT;
+            } else {
+              obj.position.y = y_copy;
+            }
+            break;
+          case 'd':
+            if (!isHit(obj.position, 5)) {
+              obj.position.y -= UNIT;
+            } else {
+              obj.position.y = y_copy;
+            }
+            break;
+          }
+        }, i);
+
+      } else {
+        //moved one grid, execute the next task
+        var that = this;
+        setTimeout(function () {
+          that._execute();
+        }, 50 / UNIT + 1000);
+
+      }
+    }
+  };
+
+  TaskManager.prototype.move = function (obj, direction, editor) {
+    var x_copy = obj.position.x;
+    var y_copy = obj.position.y;
+    var z_copy = obj.position.z;
     var reported = false;
 
     var UNIT = 0.4;
@@ -97,21 +178,21 @@
           //if (!isHit()) {
           switch (direction) {
           case 'f':
-            if (isHit(1) === null) {
-              you.position.z -= UNIT;
-              if (realGame) {
+            if (isHit(obj.position, 1) === null) {
+              obj.position.z -= UNIT;
+              if (realGame && editor) {
                 socket.emit('z', {
                   'url': myURL,
-                  'data': you.position.z
+                  'data': obj.position.z
                 });
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(1) + ".\n");
+                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
                 reported = true;
               }
-              you.position.z = z_copy;
-              if (realGame) {
+              obj.position.z = z_copy;
+              if (realGame && editor) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -120,9 +201,9 @@
             }
             break;
           case 'b':
-            if (isHit(0) === null) {
-              you.position.z += UNIT;
-              if (realGame) {
+            if (isHit(obj.position, 0) === null) {
+              obj.position.z += UNIT;
+              if (realGame && editor) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -130,11 +211,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(0) + ".\n");
+                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
                 reported = true;
               }
-              you.position.z = z_copy;
-              if (realGame) {
+              obj.position.z = z_copy;
+              if (realGame && editor) {
                 socket.emit('z', {
                   'url': myURL,
                   'data': you.position.z
@@ -143,9 +224,9 @@
             }
             break;
           case 'r':
-            if (isHit(2) === null) {
-              you.position.x += UNIT;
-              if (realGame) {
+            if (isHit(obj.position, 2) === null) {
+              obj.position.x += UNIT;
+              if (realGame && editor) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -153,11 +234,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(2) + ".\n");
+                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
                 reported = true;
               }
-              you.position.x = x_copy;
-              if (realGame) {
+              obj.position.x = x_copy;
+              if (realGame && editor) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -166,9 +247,9 @@
             }
             break;
           case 'l':
-            if (isHit(3) === null) {
-              you.position.x -= UNIT;
-              if (realGame) {
+            if (isHit(obj.position, 3) === null) {
+              obj.position.x -= UNIT;
+              if (realGame && editor) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -176,11 +257,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(3) + ".\n");
+                consoleLog.insert(obj + "( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
                 reported = true;
               }
-              you.position.x = x_copy;
-              if (realGame) {
+              obj.position.x = x_copy;
+              if (realGame && editor) {
                 socket.emit('x', {
                   'url': myURL,
                   'data': you.position.x
@@ -189,9 +270,9 @@
             }
             break;
           case 'u':
-            if (!isHit(4)) {
-              you.position.y += UNIT;
-              if (realGame) {
+            if (!isHit(obj.position, 4)) {
+              obj.position.y += UNIT;
+              if (realGame && editor) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -199,11 +280,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(4) + ".\n");
+                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
                 reported = true;
               }
-              you.position.y = y_copy;
-              if (realGame) {
+              obj.position.y = y_copy;
+              if (realGame && editor) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -212,9 +293,9 @@
             }
             break;
           case 'd':
-            if (!isHit(5)) {
-              you.position.y -= UNIT;
-              if (realGame) {
+            if (!isHit(obj.position, 5)) {
+              obj.position.y -= UNIT;
+              if (realGame && editor) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -222,11 +303,11 @@
               }
             } else {
               if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(5) + ".\n");
+                consoleLog.insert(obj + " ( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
                 reported = true;
               }
-              you.position.y = y_copy;
-              if (realGame) {
+              obj.position.y = y_copy;
+              if (realGame && eidtor) {
                 socket.emit('y', {
                   'url': myURL,
                   'data': you.position.y
@@ -241,7 +322,7 @@
         //moved one grid, execute the next task
         var that = this;
         setTimeout(function () {
-          that._execute();
+          that._execute(true);
         }, 50 / UNIT + 1000);
 
       }

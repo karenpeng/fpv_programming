@@ -352,7 +352,7 @@
 
   }
 
-  function isHit(_index) {
+  function isHit(obj, _index) {
 
     var rays = [
       //backward
@@ -370,7 +370,7 @@
 
     ];
 
-    raycaster.ray.set(you.position, rays[_index]);
+    raycaster.ray.set(obj, rays[_index]);
 
     var intersects = raycaster.intersectObjects(objects);
 
@@ -448,6 +448,7 @@
 
   socket.on('moveTarget', function (data) {
     console.log(data);
+    taskManager.executeTasks(target, data);
   });
 
   function movePosition(info) {

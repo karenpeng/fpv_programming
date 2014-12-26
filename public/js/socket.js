@@ -7,13 +7,14 @@
 
   socket.on('who are you', function () {
 
-    var myRe = /\d\d\d\d\d\d/;
-    var myRoomNum = document.location.href.match(myRe);
-    //var myRoomNum = myRe.exec(document.location.href);
+    // var myRe = /\d\d\d\d\d\d/;
+    // var myRoomNum = document.location.href.match(myRe);
+    // var myRoomNum = myRe.exec(document.location.href);
 
-    exports.myURL = myRoomNum[0];
+    //exports.myURL = myRoomNum[0];
 
-    // exports.myURL = document.location.pathname.slice(1);
+    exports.myURL = document.location.pathname.slice(1);
+    console.log(exports.URL);
 
     socket.emit('i am', {
       'url': exports.myURL,
@@ -73,7 +74,7 @@
       document.getElementById('gap').style.opacity = '0.9';
       document.getElementById('timer1').style.display = "block";
       document.getElementById('timer2').style.display = "block";
-      document.getElementById('bg').play();
+      //document.getElementById('bg').play();
       restart(data);
       socket.emit("i'm playing", {
         'url': exports.myURL,

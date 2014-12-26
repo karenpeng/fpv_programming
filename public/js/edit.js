@@ -138,7 +138,7 @@
     }
 
     try {
-      taskManager.executeTasks(tasks);
+      taskManager.executeTasks(you, tasks, true);
     } catch (err) {
       isRunning = false;
       consoleLog.insert(err + '\n');

@@ -16,7 +16,12 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
   var roomNum = '/';
-  for (var i = 0; i < 6; i++) {
+  // var a = Math.round(Math.random() * 25) + 97;
+  // var b = Math.round(Math.random() * 25) + 97;
+  // var c = Math.round(Math.random() * 25) + 97;
+  // var d = Math.round(Math.random() * 25) + 97;
+  // roomNum += String.fromCharCode(a, b, c, d);
+  for (var i = 0; i < 4; i++) {
     var num = Math.round(Math.random() * 9);
     roomNum += num;
   }
@@ -44,10 +49,13 @@ io.on('connection', function (socket) {
 
   socket.on('i am', function (data) {
 
+    //console.log(data.url);
+
     //socket.join(data.url);
     if (lookUpTable[data.url] === undefined) {
       lookUpTable[data.url] = [];
       lookUpTable[data.url].push(socket.id);
+
     } else if (lookUpTable[data.url].length < 2) {
       lookUpTable[data.url].push(socket.id);
     }
