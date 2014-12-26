@@ -3,6 +3,7 @@
   //------------------------ task manager --------------------------
   //----------------------------------------------------------------
   var taskManager = new TaskManager();
+  var taskManagerTarget = new TaskManager();
   var marker = null;
 
   function TaskManager() {
@@ -13,23 +14,23 @@
     this.obj = obj;
     this.tasks = tasks;
     this.tasksNum = tasks.length;
-    if (editor === undefined) {
+    if (!editor) {
       this._execute();
     } else {
       this._execute(editor);
     }
   };
 
-  //method overload...
-  TaskManager.prototype._execute = function () {
-    if (this.tasksNum > 0) {
-      var ta = this.tasks.shift();
-      this.move(target, ta);
-    }
-  };
-
   TaskManager.prototype._execute = function (editor) {
     //console.log(marker)
+    if (!editor) {
+      if (this.tasksNum > 0) {
+        var ta = this.tasks.shift();
+        this.moveSimple(target, ta);
+        return;
+      }
+    }
+
     if (marker) {
       editor1.session.removeMarker(marker);
       marker = null;
@@ -90,7 +91,7 @@
   };
 
   //move one grid
-  TaskManager.prototype.move = function (obj, direction) {
+  TaskManager.prototype.moveSimple = function (obj, direction) {
     var x_copy = obj.position.x;
     var y_copy = obj.position.y;
     var z_copy = obj.position.z;
@@ -411,5 +412,6 @@
   }
 
   exports.taskManager = taskManager;
+  exports.taskManagerTarget = taskManagerTarget;
 
 })(this);

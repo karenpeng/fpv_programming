@@ -391,8 +391,8 @@
     }
 
     frameRate++;
-    var now = new Date().getTime();
-    target.position.y = Math.sin(now * 0.002) * 20 + 45;
+    //var now = new Date().getTime();
+    //target.position.y = Math.sin(now * 0.002) * 20 + 45;
     // if (you.idle) {
     //   you.position.y += Math.sin(now * 0.002);
     // } else {
@@ -448,7 +448,7 @@
 
   socket.on('moveTarget', function (data) {
     console.log(data);
-    taskManager.executeTasks(target, data);
+    taskManagerTarget.executeTasks(target, data);
   });
 
   function movePosition(info) {
