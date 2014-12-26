@@ -73,7 +73,7 @@
 
     // grid
 
-    var size = 500,
+    var size = 400,
       step = 50;
 
     var geometry = new THREE.Geometry();
@@ -103,12 +103,12 @@
     vector = new THREE.Vector3();
     raycaster = new THREE.Raycaster();
 
-    geometry = new THREE.PlaneBufferGeometry(1000, 1000);
+    geometry = new THREE.PlaneBufferGeometry(800, 800);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
 
     plane = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff,
-      map: THREE.ImageUtils.loadTexture("img/test_ground.jpg")
+      map: THREE.ImageUtils.loadTexture("img/test_ground5.jpg")
         //,
         // transparent: true,
         // opacity: 0.2
@@ -121,52 +121,52 @@
     objects.push(plane);
 
     //back wall
-    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry = new THREE.PlaneBufferGeometry(800, 400);
     backWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     backWall.name = "backBounce";
-    backWall.position.z = -500;
-    backWall.position.y = 250;
+    backWall.position.z = -400;
+    backWall.position.y = 200;
     backWall.visible = false;
     scene.add(backWall);
     objects.push(backWall);
 
     //left wall
-    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry = new THREE.PlaneBufferGeometry(800, 400);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 2));
     leftWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     leftWall.name = "leftBounce";
-    leftWall.position.x = -500;
-    leftWall.position.y = 250;
+    leftWall.position.x = -400;
+    leftWall.position.y = 200;
     leftWall.visible = false;
     scene.add(leftWall);
     objects.push(leftWall);
 
     //right wall
-    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry = new THREE.PlaneBufferGeometry(800, 400);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationY(-Math.PI / 2));
     rightWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     rightWall.name = "rightBounce";
-    rightWall.position.x = 500;
-    rightWall.position.y = 250;
+    rightWall.position.x = 400;
+    rightWall.position.y = 200;
     rightWall.visible = false;
     scene.add(rightWall);
     objects.push(rightWall);
 
     //front wall
-    geometry = new THREE.PlaneBufferGeometry(1000, 500);
+    geometry = new THREE.PlaneBufferGeometry(800, 400);
     geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI));
     frontWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
     frontWall.name = "frontBounce";
-    frontWall.position.y = 250;
-    frontWall.position.z = 500;
+    frontWall.position.y = 200;
+    frontWall.position.z = 400;
     frontWall.visible = false;
     scene.add(frontWall);
     objects.push(frontWall);
@@ -176,9 +176,9 @@
       color: 0xff0000
     });
     target = new THREE.Mesh(cubeGeo, material);
-    target.position.x = -475;
+    target.position.x = -375;
     target.position.y = 50;
-    target.position.z = -475;
+    target.position.z = -375;
     target.name = "target";
     scene.add(target);
     //objects.push(target);
@@ -191,10 +191,10 @@
       color: 0xffff00
     });
     you = new THREE.Mesh(cubeGeo, material);
-    you.position.x = 475;
+    you.position.x = 375;
     // you.position.y = 56;
     you.position.y = 25;
-    you.position.z = 475;
+    you.position.z = 375;
     you.idle = true;
     you.direction = 'front';
     scene.add(you);
@@ -212,7 +212,7 @@
       console.log("wat");
 
       for (j = 0; j < 40; j++) {
-        var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+        var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
         //var y = 25 * (j % 2 + 1);
         //var y = 25;
         var y;
@@ -223,10 +223,10 @@
         } else {
           y = 75;
         }
-        var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+        var z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
 
-        if (x === -475 && z === -475 && y < 150) {} else {
-          if (x === -475 && y === 25 && z === 475) {} else {
+        if (x === -375 && z === -375 && y < 150) {} else {
+          if (x === -375 && y === 25 && z === 375) {} else {
             obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
             obstacles[j].position.x = x;
             obstacles[j].position.y = y;

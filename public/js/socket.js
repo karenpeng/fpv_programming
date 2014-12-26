@@ -14,7 +14,6 @@
     //exports.myURL = myRoomNum[0];
 
     exports.myURL = document.location.pathname.slice(1);
-    console.log(exports.URL);
 
     socket.emit('i am', {
       'url': exports.myURL,

@@ -141,7 +141,7 @@ io.on('connection', function (socket) {
   }
 
   function moveTargetEvery30Secends(url) {
-    var choices = ['d', 'u', 'l', 'r', 'b', 'f'];
+    var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
     if (isNaN(refreshIntervalId[url])) {
       refreshIntervalId[url] = setInterval(function () {
         var steps = Math.round(Math.random() * 3) + 1;
@@ -199,7 +199,7 @@ io.on('connection', function (socket) {
 function initObstacles() {
   var obsInfo = [];
   for (j = 0; j < 40; j++) {
-    var x = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+    var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
     //var y = 25 * (j % 2 + 1);
     //var y = 25;
     var y;
@@ -210,10 +210,10 @@ function initObstacles() {
     } else {
       y = 75;
     }
-    var z = -475 + Math.floor(Math.pow(Math.random(), 2) * 20) * 50;
+    var z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
 
-    if (x === -475 && z === -475 && y < 150) {} else {
-      if (x === -475 && y === 25 & z === 475) {} else {
+    if (x === -375 && z === -375 && y < 150) {} else {
+      if (x === -375 && y === 25 && z === 375) {} else {
         obsInfo.push({
           "x": x,
           "y": y,
