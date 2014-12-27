@@ -44,6 +44,8 @@ var playing = {};
 var refreshIntervalId = {};
 
 io.on('connection', function (socket) {
+  var info = require('./init.js').initTargetandObstacles();
+  socket.emit('init', info);
 
   socket.emit('who are you');
 
@@ -79,7 +81,7 @@ io.on('connection', function (socket) {
 
       if (playerReady[data.url] === 2) {
 
-        var info = initTargetandObstacles();
+        var info = require('./init.js').initTargetandObstacles();
 
         sendDataToPair(data.url, "Let's start!", info);
         //io.to(data.url).emit("Let's start!", info);
@@ -150,8 +152,16 @@ io.on('connection', function (socket) {
           instructions.push(choices[Math.round(Math.random() * 5)]);
         }
         sendDataToPair(url, 'moveTarget', instructions);
+
+        // now i know i can't send function via socket
+        // sendDataToPair(url, 'test', foo);
+
       }, 30000);
     }
+  }
+
+  function foo() {
+    console.log('empty');
   }
 
   function sendDataToYourPartner(data, msg) {
@@ -195,62 +205,5 @@ io.on('connection', function (socket) {
   });
 
 });
-
-function initTargetandObstacles() {
-  var tarX = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-  var tarY;
-  var ran = Math.random();
-  if (ran < 0.5) {
-    tarY = 25;
-  } else if (ran < 0.9) {
-    tarY = 75;
-  } else {
-    tarY = 125;
-  }
-  var tarZ = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-
-  var obs = initObstacles(tarX, tarY, tarZ);
-
-  return {
-    'tar': {
-      "x": tarX,
-      "y": tarY,
-      "z": tarZ
-    },
-    'obs': obs
-  };
-}
-
-function initObstacles(tarX, tarY, tarZ) {
-  var obsInfo = [];
-  for (j = 0; j < 30; j++) {
-    var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-    //var y = 25 * (j % 2 + 1);
-    //var y = 25;
-    var y;
-    var ran = Math.random();
-    if (ran > 0.7) {
-      y = 25 + Math.floor(Math.random() * 6) * 50;
-    } else if (ran > 0.4) {
-      y = 25;
-    } else {
-      y = 75;
-    }
-    var z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-
-    if (x === tarX && y === tarY && z === tarZ) {} else {
-      if (x === -375 && y === 25 && z === 375) {} else {
-        obsInfo.push({
-          "x": x,
-          "y": y,
-          "z": z
-        });
-      }
-    }
-
-  }
-
-  return obsInfo;
-}
 
 server.listen(port);

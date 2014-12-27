@@ -31,7 +31,7 @@
     document.body.appendChild(container);
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(500, 1000, 1300);
+    camera.position.set(500, 800, 1000);
     camera.lookAt(new THREE.Vector3());
 
     scene = new THREE.Scene();
@@ -171,41 +171,36 @@
     scene.add(frontWall);
     objects.push(frontWall);
 
-    //target
-    material = new THREE.MeshLambertMaterial({
-      color: 0xff0000
-    });
-    target = new THREE.Mesh(cubeGeo, material);
-    target.position.x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-    var ran = Math.random();
-    if (ran < 0.5) {
-      target.position.y = 25;
-    } else if (ran < 0.9) {
-      target.position.y = 75;
-    } else {
-      target.position.y = 125;
-    }
-    target.position.z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-    target.name = "target";
-    scene.add(target);
-    //objects.push(target);
-
     //you
-    // loader = new THREE.JSONLoader();
-    // you = new Guy();
-    // you.loadThings();
     material = new THREE.MeshLambertMaterial({
       color: 0xffff00
     });
     you = new THREE.Mesh(cubeGeo, material);
     you.position.x = 375;
-    // you.position.y = 56;
     you.position.y = 25;
     you.position.z = 375;
-    you.idle = true;
-    you.direction = 'front';
     scene.add(you);
+    //you and target can go through each other
     //objects.push(you);
+
+    //friend
+    material = new THREE.MeshLambertMaterial({
+      color: 0x00ff00
+    });
+    friend = new THREE.Mesh(cubeGeo, material);
+    friend.position.x = 375;
+    friend.position.y = 25;
+    friend.position.z = 375;
+
+    //target
+    material = new THREE.MeshLambertMaterial({
+      color: 0xff0000
+    });
+    target = new THREE.Mesh(cubeGeo, material);
+    target.name = "target";
+    scene.add(target);
+    //you and target can go through each other
+    //objects.push(target);
 
     //obstacles
     obstacleMaterial = new THREE.MeshLambertMaterial({
@@ -214,111 +209,12 @@
       // map: THREE.ImageUtils.loadTexture("img/sheep" + Math.round(Math.random()) + ".png")
       map: THREE.ImageUtils.loadTexture("img/meow.jpg")
     });
-
-    if (info === undefined) {
-      console.log("wat");
-
-      for (j = 0; j < 30; j++) {
-        var x = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-        //var y = 25 * (j % 2 + 1);
-        //var y = 25;
-        var y;
-        var ran = Math.random();
-        if (ran > 0.7) {
-          y = 25 + Math.floor(Math.random() * 6) * 50;
-        } else if (ran > 0.4) {
-          y = 25;
-        } else {
-          y = 75;
-        }
-        var z = -375 + Math.floor(Math.pow(Math.random(), 2) * 16) * 50;
-
-        if (x === target.position.x && y === target.position.y && z === target.position.z) {} else {
-          if (x === you.position.x && z === you.position.y && y === you.position.z) {} else {
-            obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
-            obstacles[j].position.x = x;
-            obstacles[j].position.y = y;
-            obstacles[j].position.z = z;
-            obstacles[j].name = "cat";
-            //obstacles.push(obstacle);
-            scene.add(obstacles[j]);
-            objects.push(obstacles[j]);
-          }
-        }
-
-        // if (Math.random() > 0.5 && obstacles[j]) {
-        //   va++;
-        //   obstacles[19 + va] = obstacles[j].clone();
-        //   obstacles[19 + va].position.y = 75;
-        //   if (Math.random() > 0.5) {
-        //     obstacles[19 + va].position.x += 50;
-        //   }
-        //   obstacles[19 + va].name = "cat";
-        //   //obstacles.push(obstacle);
-        //   scene.add(obstacles[19 + va]);
-        //   objects.push(obstacles[19 + va]);
-        // }
-
-      }
-
-    } else {
-
-      obstacles.forEach(function (ob, index) {
-        if (info[index] !== undefined) {
-          ob.position.x = info[index].x;
-          ob.position.y = info[index].y;
-          ob.position.z = info[index].z;
-        }
-        //obstacles.push(inf);
-
-      });
-
-      if (info.length > obstacles.length) {
-        var less = info.length - obstacles.length;
-        for (var i = 0; i < less; i++) {
-          obstacles[i] = new THREE.Mesh(cubeGeo, obstacleMaterial);
-          obstacles[i].position.x = info.x;
-          obstacles[i].position.y = info.y;
-          obstacles[i].position.z = info.z;
-          obstacles[i].name = "cat";
-          //obstacles.push(obstacle);
-          scene.add(obstacles[i]);
-          objects.push(obstacles[i]);
-        }
-      } else {
-        var more = obstacles.length - info.length;
-        for (var i = obstacles.length; i < more; i++) {
-          scene.remove(obstacles[i]);
-          obstacles[i].forEach(function (obj) {
-            if (obj instanceof THREE.Mesh) {
-              obj.geometry.dispose();
-              obj.material.dispose();
-            }
-            obj = null;
-          });
-        }
-      }
+    for (var j = 0; j < 24; j++) {
+      obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
+      obstacles[j].name = "cat";
+      scene.add(obstacles[j]);
+      objects.push(obstacles[j]);
     }
-
-    // obstacles.forEach(function (o) {
-    //   obstacle = new THREE.Mesh(cubeGeo, obstacleMaterial);
-    //   obstacle.position.x = o.x;
-    //   obstacle.position.y = o.y;
-    //   obstacle.position.z = o.z;
-    //   obstacle.name = "cat";
-    //   obstacles.push(obstacle);
-    //   scene.add(obstacle);
-    //   objects.push(obstacle);
-    // });
-    //
-    // //for testing
-    // var c = new THREE.Mesh(cubeGeo, cubeMaterial);
-    // c.position.x = 425;
-    // c.position.y = 25;
-    // c.position.z = 475;
-    // c.name = "obstacle";
-    // scene.add(c);
-    // objects.push(c);
 
     // Lights
 
@@ -406,17 +302,7 @@
       for (var i = 0; i < steps; i++) {
         instructions.push(choices[Math.round(Math.random() * 5)]);
       }
-      target.material.color.setHex(0xff8888);
-      setTimeout(function () {
-        target.material.color.setHex(0xff0000);
-      }, 400);
-      setTimeout(function () {
-        target.material.color.setHex(0xff8888);
-      }, 800);
-      setTimeout(function () {
-        target.material.color.setHex(0xff0000);
-        taskManagerTarget.executeTasks(target, instructions);
-      }, 1200);
+      flashandMoveTarget(instructions);
     }
 
     frameRate++;
@@ -431,54 +317,32 @@
 
   }
 
-  THREE.Object3D.prototype.clear = function () {
-    if (this instanceof THREE.Mesh) {
-      this.geometry.dispose();
-      this.material.dispose();
-      //this = null;
-    }
-    var children = this.children;
-    for (var i = children.length - 1; i >= 0; i--) {
-      var child = children[i];
-      child.clear();
-
-      child = null;
-    }
-    //this = null;
-  };
-
   function restart(data) {
-    // scene.clear();
-    // init(data);
-    //friend = you.clone();
-    material = new THREE.MeshLambertMaterial({
-      color: 0x00ff00
-    });
-    friend = new THREE.Mesh(cubeGeo, material);
-    friend.position.x = 375;
-    // you.position.y = 56;
-    friend.position.y = 25;
-    friend.position.z = 375;
     scene.remove(you);
     scene.add(friend);
     scene.add(you);
     movePosition(data);
   }
 
+  socket.on('init', function (data) {
+    movePosition(data);
+  });
+
   socket.on('x', function (data) {
     friend.position.x = data;
-    //console.log('z' + data);
   });
   socket.on('y', function (data) {
     friend.position.y = data;
-    //console.log('z' + data);
   });
   socket.on('z', function (data) {
     friend.position.z = data;
-    //console.log('z' + data);
   });
 
   socket.on('moveTarget', function (data) {
+    flashandMoveTarget(data);
+  });
+
+  function flashandMoveTarget(data) {
     console.log(data);
     target.material.color.setHex(0xff8888);
     setTimeout(function () {
@@ -491,40 +355,18 @@
       target.material.color.setHex(0xff0000);
       taskManagerTarget.executeTasks(target, data);
     }, 1200);
-  });
+  }
 
   function movePosition(data) {
     obstacles.forEach(function (ob, index) {
       ob.position.x = data.obs[index].x;
       ob.position.y = data.obs[index].y;
       ob.position.z = data.obs[index].z;
-      //obstacles.push(inf);
     });
 
     target.position.x = data.tar.x;
     target.position.y = data.tar.y;
     target.position.z = data.tar.z;
-    // if (info.length > obstacles.length) {
-    //   var less = info.length - obstacles.length;
-    //   for (var i = obstacles.length; i < obstacles.length + less; i++) {
-    //     obstacles[i] = new THREE.Mesh(cubeGeo, obstacleMaterial);
-    //     obstacles[i].position.x = info.x;
-    //     obstacles[i].position.y = info.y;
-    //     obstacles[i].position.z = info.z;
-    //     obstacles[i].name = "cat";
-    //     //obstacles.push(obstacle);
-    //     scene.add(obstacles[i]);
-    //     objects.push(obstacles[i]);
-    //   }
-    // } else {
-    //   var more = obstacles.length - info.length;
-    //   for (var i = obstacles.length; i >= obstacles.length - more; i--) {
-    //     scene.remove(obstacles[i]);
-    //     // obstacles[i].geometry.dispose();
-    //     // obstacles[i].material.dispose();
-    //     // obstacles[i] = null;
-    //   }
-    // }
   }
 
   exports.iLose = false;

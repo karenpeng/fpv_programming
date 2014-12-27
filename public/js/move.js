@@ -316,15 +316,15 @@
     var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
       deltaX = camera.position.x - 100;
-      deltaY = camera.position.y - 200;
-      deltaZ = camera.position.z - 260;
+      deltaY = camera.position.y - 160;
+      deltaZ = camera.position.z - 200;
       you.idle = false;
       you.add(camera);
 
     } else {
       deltaX = camera.position.x - 500;
-      deltaY = camera.position.y - 1000;
-      deltaZ = camera.position.z - 1300;
+      deltaY = camera.position.y - 800;
+      deltaZ = camera.position.z - 1000;
       you.remove(camera);
     }
 
