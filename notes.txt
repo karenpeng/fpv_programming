@@ -4,7 +4,6 @@
 //win and lose
 赢了就不能走了啊
 
-
 //show the result: timing
 
 //another round?

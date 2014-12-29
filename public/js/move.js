@@ -315,6 +315,7 @@
     var TIME_PERIOD = 400;
     var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
+
       deltaX = camera.position.x - 100;
       deltaY = camera.position.y - 160;
       deltaZ = camera.position.z - 200;
@@ -322,6 +323,7 @@
       you.add(camera);
 
     } else {
+
       deltaX = camera.position.x - 500;
       deltaY = camera.position.y - 800;
       deltaZ = camera.position.z - 1000;
@@ -344,6 +346,7 @@
           if (callback) {
             callback();
           }
+
         }, TIME_PERIOD + 500);
       }
     }

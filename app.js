@@ -44,6 +44,7 @@ var playing = {};
 var refreshIntervalId = {};
 
 io.on('connection', function (socket) {
+
   var info = require('./init.js').initTargetandObstacles();
   socket.emit('init', info);
 
@@ -146,7 +147,7 @@ io.on('connection', function (socket) {
     var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
     if (isNaN(refreshIntervalId[url])) {
       refreshIntervalId[url] = setInterval(function () {
-        var steps = Math.round(Math.random() * 3) + 1;
+        var steps = Math.round(Math.random() * 2) + 1;
         var instructions = [];
         for (var i = 0; i < steps; i++) {
           instructions.push(choices[Math.round(Math.random() * 5)]);

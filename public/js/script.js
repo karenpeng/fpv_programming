@@ -35,20 +35,10 @@
     camera.lookAt(new THREE.Vector3());
 
     scene = new THREE.Scene();
-    controls = new THREE.TrackballControls(camera);
+    controls = new THREE.OrbitControls(camera);
 
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
-
-    controls.noZoom = false;
-    controls.noPan = false;
-
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.3;
-
-    controls.keys = [65, 83, 68];
-    controls.addEventListener('change', render);
+    controls.damping = 0.2;
+    //controls.addEventListener('change', render);
 
     // roll-over helpers
 
@@ -212,6 +202,7 @@
     for (var j = 0; j < 24; j++) {
       obstacles[j] = new THREE.Mesh(cubeGeo, obstacleMaterial);
       obstacles[j].name = "cat";
+      obstacles[j].position.y = 25;
       scene.add(obstacles[j]);
       objects.push(obstacles[j]);
     }
@@ -235,24 +226,25 @@
     container.appendChild(renderer.domElement);
 
     //STATS
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    stats.domElement.style.left = '0px';
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // stats.domElement.style.left = '0px';
     //document.body.appendChild(stats.domElement);
 
     window.addEventListener('resize', onWindowResize, false);
 
-    render();
+    //render();
 
   }
 
   function onWindowResize() {
-
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    controls.handleResize();
+
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+    //render();
 
   }
 
@@ -290,14 +282,16 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    if (frameRate % 2 === 0) {
+    if (frameRate % 3 === 0) {
       render();
+      controls.update();
+      //stats.update();
     }
 
     var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
 
     if (!realGame && frameRate % 1800 === 0 && frameRate !== 0 && level > 3) {
-      var steps = Math.round(Math.random() * 3) + 1;
+      var steps = Math.round(Math.random() * 2) + 1;
       var instructions = [];
       for (var i = 0; i < steps; i++) {
         instructions.push(choices[Math.round(Math.random() * 5)]);
@@ -307,8 +301,6 @@
 
     frameRate++;
 
-    stats.update();
-    controls.update();
   }
 
   function render() {
@@ -383,9 +375,9 @@
   }
 
   exports.you = you;
+  exports.target = target;
   exports.camera = camera;
   exports.isHit = isHit;
   exports.restart = restart;
-  exports.target = target;
 
 })(this);
