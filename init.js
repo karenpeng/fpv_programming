@@ -1,4 +1,4 @@
-var getSimilarValue = require('./MyMath.js').getSimilarValue;
+var getSimilarValue = require('./myMath.js').getSimilarValue;
 
 module.exports = {
   initTargetandObstacles: function () {
@@ -7,6 +7,7 @@ module.exports = {
     var ran = Math.random();
     if (ran < 0.6) {
       tarY = 25;
+
     } else if (ran < 0.9) {
       tarY = 75;
     } else {
