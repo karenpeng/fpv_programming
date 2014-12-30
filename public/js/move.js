@@ -312,7 +312,7 @@
   //-----------------------------------------------------------
 
   function transitCamera(timeSpeed, callback) {
-    var TIME_PERIOD = 400;
+    var TIME_PERIOD = 360;
     var deltaX, deltaY, deltaZ;
     if (timeSpeed) {
 

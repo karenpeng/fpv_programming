@@ -280,7 +280,6 @@
   }
 
   function animate() {
-    requestAnimationFrame(animate);
 
     if (frameRate % 3 === 0) {
       render();
@@ -300,6 +299,8 @@
     }
 
     frameRate++;
+
+    requestAnimationFrame(animate);
 
   }
 
