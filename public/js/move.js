@@ -380,15 +380,40 @@
     document.getElementById('yay').play();
     if (realGame) {
       bothStop();
+      document.getElementById('blackout').style = 'block';
+      var time1 = document.getElementById('timer1').innerHTML;
+      var time2 = document.getElementById('timer2').innerHTML;
+      var time3 = document.getElementById('timer3').innerHTML;
+
+      var getTime = function (str) {
+        var pattern = /\d\d/g;
+        var matchResult = str.match(pattern);
+        //console.log(matchResult);
+        return (matchResult);
+      };
+
+      var totalTime = "";
+      for (var i = 0; i < 3; i++) {
+        totalTime += (getTime(time1)[i] + getTime(time2)[i]);
+        if (i === 2) return;
+        totalTime += ":";
+      }
+
+      document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
+      document.getElementById('result').style = 'block';
+
       socket.emit('result', {
         'url': myURL,
         'data': {
-          'codingTime': document.getElementById('timer1').innerHTML,
-          'runningTime': document.getElementById('timer2').innerHTML
+          'codingTime': time1,
+          'runningTime': time2,
+          'totalTime': totalTime,
+          'runTimes': time3
         }
       });
+    } else {
+      alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
     }
-    alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
   }
 
   exports.taskManager = taskManager;

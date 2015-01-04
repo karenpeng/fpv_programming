@@ -80,6 +80,7 @@
   function clock1Run() {
     document.getElementById('timer1').style.display = "block";
     document.getElementById('timer2').style.display = "block";
+    document.getElementById('timer3').style.display = "block";
     document.getElementById('timer1').style.color = "#dd2222";
     document.getElementById('timer2').style.color = "#bcbcbc";
     var currentTime = new Date();
@@ -96,7 +97,7 @@
     if (document.getElementById('timer1').style.display === "block") {
       document.getElementById('timer2').style.display = "block";
       document.getElementById('timer1').style.color = "#bcbcbc";
-      document.getElementById('timer2').style.color = "#a4c402";
+      document.getElementById('timer2').style.color = "#dd2222";
 
       clock1.isTicking = false;
       var currentTime = new Date();

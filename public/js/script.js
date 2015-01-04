@@ -364,15 +364,17 @@
 
   exports.iLose = false;
   socket.on('result', function (data) {
-    if (data) {
-      youLose();
-    }
+    document.getElementById('blackout').style = 'block';
+    document.getElementById('resultResult').innerHTML = "(ಥ﹏ಥ)YOU LOSE";
+    document.getElementById('unimportant').innerHTML = "beaten by a record of";
+    document.getElementById('data').innerHTML = (data.totalTime + " with " + data.time3 + " run times");
+    youLose();
   });
 
   function youLose() {
     bothStop();
     exports.iLose = true;
-    alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
+    //alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
   }
 
   exports.you = you;

@@ -45,7 +45,7 @@ var refreshIntervalId = {};
 
 io.on('connection', function (socket) {
 
-  var info = require('./init.js').initTargetandObstacles();
+  var info = require('./serverJs/init.js').initTargetandObstacles();
   socket.emit('init', info);
 
   socket.emit('who are you');
@@ -82,7 +82,7 @@ io.on('connection', function (socket) {
 
       if (playerReady[data.url] === 2) {
 
-        var info = require('./init.js').initTargetandObstacles();
+        var info = require('./serverJs/init.js').initTargetandObstacles();
 
         sendDataToPair(data.url, "Let's start!", info);
         //io.to(data.url).emit("Let's start!", info);
@@ -161,9 +161,9 @@ io.on('connection', function (socket) {
     }
   }
 
-  function foo() {
-    console.log('empty');
-  }
+  // function foo() {
+  //   console.log('empty');
+  // }
 
   function sendDataToYourPartner(data, msg) {
     var partnerId;

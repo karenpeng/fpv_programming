@@ -56,7 +56,7 @@
     background-color: #222;
     opacity: 0.6;
   }
-  #run{
+  .bu{
     width: 170px;
     height: 30px;
     font-size: 14px;
@@ -156,7 +156,7 @@
     position: absolute;
     width: 200px;
     left: 50%;
-    margin-left: -160px;
+    margin-left: -200px;
     color: #dd2222;
     font-size: 22px;
     top: -10px;
@@ -168,18 +168,29 @@
     position: absolute;
     width: 200px;
     left: 50%;
-    margin-left: -40px;
+    margin-left: -80px;
     color: #bcbcbc;
     font-size: 22px;
     top: -10px;
     text-align: center;
     display: none;
   }
+
+  #timer3{
+    position: absolute;
+    width: 200px;
+    left: 50%;
+    color: #A4C402;
+    font-size: 22px;
+    top: -10px;
+    text-align: center;
+    display: none;
+  }
+
   #blackout{
     width: 100%;
     height: 100%;
     background-color: white;
-    opacity: 0.9;
     display: none;
   }
   #ruready{
@@ -227,4 +238,24 @@
     font-size: 60;
     color: red;
     display: none;
+  }
+
+  #result{
+    position: absolute;
+    width: 1000px;
+    height: 400px;
+    left: 50%;
+    top: 50%;
+    margin-left: -500px;
+    margin-top: -200px;
+    text-align: center;
+    display: none;
+  }
+
+  #resultResult{
+    font-size: 40px;
+  }
+
+  .data{
+    font-size: 24px;
   }
