@@ -73,7 +73,7 @@
       document.getElementById('gap').style.opacity = '0.9';
       document.getElementById('timer1').style.display = "block";
       document.getElementById('timer2').style.display = "block";
-      //document.getElementById('bg').play();
+      document.getElementById('bg').play();
       restart(data);
       socket.emit("i'm playing", {
         'url': exports.myURL,
@@ -92,12 +92,13 @@
     });
   };
 
-  document.getElementById('reload').onclick = function () {
-    location.reload();
-    socket.emit("i'm ready", {
+  document.getElementById('anotherRound').onclick = function () {
+    socket.emit('reduce me', {
       'url': exports.myURL,
       'data': true
     });
+    waitingForReady();
+    document.getElementById('giveURL').display = 'none';
   };
 
 })(this);
