@@ -92,4 +92,12 @@
     });
   };
 
+  document.getElementById('reload').onclick = function () {
+    location.reload();
+    socket.emit("i'm ready", {
+      'url': exports.myURL,
+      'data': true
+    });
+  };
+
 })(this);

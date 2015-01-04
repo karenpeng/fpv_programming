@@ -336,7 +336,7 @@
   });
 
   function flashandMoveTarget(data) {
-    console.log(data);
+    //console.log(data);
     target.material.color.setHex(0xff8888);
     setTimeout(function () {
       target.material.color.setHex(0xff0000);
