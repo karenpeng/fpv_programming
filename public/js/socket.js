@@ -83,6 +83,15 @@
         'data': true
       });
       clock1Run();
+      clock2.startH = 0;
+      clock2.startM = 0;
+      clock2.startS = 0;
+      clock2.recordH = 0;
+      clock2.recordM = 0;
+      clock2.recordS = 0;
+      document.getElementById('timer2').innerHTML = '00:00:00';
+      runTimes = 0;
+      document.getElementById('timer3').innerHTML = '0';
     }, 4600);
   }
 
@@ -95,7 +104,6 @@
         'data': true
       });
     }, 1000);
-
   };
 
   document.getElementById('anotherRound').onclick = function () {
@@ -103,6 +111,7 @@
       'url': exports.myURL,
       'data': true
     });
+    document.getElementById('ready1').style.display = "block";
     document.getElementById('giveURL').style.display = 'none';
     document.getElementById('result').style.display = 'none';
     waitingForReady();

@@ -314,6 +314,12 @@
     scene.remove(you);
     scene.add(friend);
     scene.add(you);
+    friend.position.x = 375;
+    friend.position.y = 25;
+    friend.position.z = 375;
+    you.position.x = 375;
+    you.position.y = 25;
+    you.position.z = 375;
     movePosition(data);
   }
 
@@ -367,7 +373,7 @@
     document.getElementById('blackout').style.display = 'block';
     document.getElementById('resultResult').innerHTML = "(ಥ﹏ಥ)YOU LOSE";
     document.getElementById('unimportant').innerHTML = "beaten by a record of";
-    document.getElementById('data').innerHTML = (data.totalTime + " with " + data.time3 + " run times");
+    document.getElementById('data').innerHTML = (data.totalTime + " with " + data.runTimes + " run times");
     document.getElementById('result').style.display = 'block';
     youLose();
   });

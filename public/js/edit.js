@@ -55,7 +55,7 @@
   }
   window.addEventListener('resize', resize, false);
 
-  var runTime = 0;
+  exports.runTime = 0;
   //when run is clicked, parse the string input
   document.getElementById('run').onclick = function () {
     //console.log(editor1.getValue())
@@ -64,8 +64,8 @@
       isRunning = true;
       parse(editor1.session.doc.getAllLines());
       if (realGame) {
-        runTime++;
-        document.getElementById('timer3').innerHTML = runTime;
+        exports.runTime++;
+        document.getElementById('timer3').innerHTML = exports.runTime;
         clock2Run();
       }
     }

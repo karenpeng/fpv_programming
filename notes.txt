@@ -1,4 +1,3 @@
-//win and lose
-赢了就不能走了啊
+//another round:
 
-another round?
+the problem of the clock
