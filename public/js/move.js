@@ -380,7 +380,7 @@
     document.getElementById('yay').play();
     if (realGame) {
       bothStop();
-      document.getElementById('blackout').style = 'block';
+      document.getElementById('blackout').style.display = 'block';
       var time1 = document.getElementById('timer1').innerHTML;
       var time2 = document.getElementById('timer2').innerHTML;
       var time3 = document.getElementById('timer3').innerHTML;
@@ -393,14 +393,21 @@
       };
 
       var totalTime = "";
+      var t1 = getTime(time1);
+      var t2 = getTime(time2);
       for (var i = 0; i < 3; i++) {
-        totalTime += (getTime(time1)[i] + getTime(time2)[i]);
-        if (i === 2) return;
-        totalTime += ":";
+        var t = (parseInt(t1[i]) + parseInt(t2[i]));
+        if (t < 10) {
+          t += '0';
+        }
+        totalTime += t;
+        if (i !== 2) {
+          totalTime += ":";
+        }
       }
 
       document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
-      document.getElementById('result').style = 'block';
+      document.getElementById('result').style.display = 'block';
 
       socket.emit('result', {
         'url': myURL,

@@ -97,8 +97,9 @@
       'url': exports.myURL,
       'data': true
     });
+    document.getElementById('giveURL').style.display = 'none';
+    document.getElementById('result').style.display = 'none';
     waitingForReady();
-    document.getElementById('giveURL').display = 'none';
   };
 
 })(this);
