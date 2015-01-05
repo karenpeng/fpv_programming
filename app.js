@@ -124,13 +124,6 @@ io.on('connection', function (socket) {
 
   });
 
-  socket.on('reduce me', function (data) {
-    if (socketIsInLookUpTable(data.url, socket.id)) {
-      if (playerReady[data.url] > 0) playerReady[data.url] --;
-      if (playing[data.url] > 0) playing[data.url] --;
-    }
-  });
-
   function socketIsInLookUpTable(url, id) {
     for (var i = 0; i < lookUpTable[url].length; i++) {
       if (lookUpTable[url][i] === id) {
@@ -210,6 +203,14 @@ io.on('connection', function (socket) {
   socket.on('result', function (data) {
     sendDataToYourPartner(data, 'result');
     clearInterval(refreshIntervalId[data.url]);
+  });
+
+  socket.on('reduce me', function (data) {
+    if (socketIsInLookUpTable(data.url, socket.id)) {
+      if (playerReady[data.url] > 0) playerReady[data.url] --;
+      if (playing[data.url] > 0) playing[data.url] --;
+      console.log('reduce ' + playerReady[data.url] + playing[data.url]);
+    }
   });
 
 });

@@ -89,10 +89,13 @@
   //click to start a game
   document.getElementById('ready1').onclick = function () {
     document.getElementById('ready1').style.display = "none";
-    socket.emit("i'm ready", {
-      'url': exports.myURL,
-      'data': true
-    });
+    setTimeout(function () {
+      socket.emit("i'm ready", {
+        'url': exports.myURL,
+        'data': true
+      });
+    }, 1000);
+
   };
 
   document.getElementById('anotherRound').onclick = function () {
