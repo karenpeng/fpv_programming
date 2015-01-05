@@ -43,6 +43,8 @@
     document.getElementById('editor2').style.display = "block";
     editor1.setValue("");
     consoleLog.setValue("");
+    document.getElementById('bg').pause();
+    //document.getElementById('bgSource').setAttribute("src", "");
   }
   exports.waitingForReady = waitingForReady;
 
@@ -73,6 +75,7 @@
       document.getElementById('gap').style.opacity = '0.9';
       document.getElementById('timer1').style.display = "block";
       document.getElementById('timer2').style.display = "block";
+      //document.getElementById('bgSource').setAttribute("src", "sound/ComeAndFindMe.wav");
       document.getElementById('bg').play();
       restart(data);
       socket.emit("i'm playing", {
