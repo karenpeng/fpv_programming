@@ -114,7 +114,7 @@ io.on('connection', function (socket) {
     for (var url in lookUpTable) {
       for (var i = 0; i < lookUpTable[url].length; i++) {
         if (lookUpTable[url][i] === socket.id) {
-          if (playReady[url] > 0) playerReady[url] --;
+          if (playerReady[url] > 0) playerReady[url] --;
           if (playing[url] > 0) playing[url] --;
           lookUpTable[url].splice(i, 1);
           break;
@@ -126,7 +126,7 @@ io.on('connection', function (socket) {
 
   socket.on('reduce me', function (data) {
     if (socketIsInLookUpTable(data.url, socket.id)) {
-      if (playReady[data.url] > 0) playerReady[data.url] --;
+      if (playerReady[data.url] > 0) playerReady[data.url] --;
       if (playing[data.url] > 0) playing[data.url] --;
     }
   });
