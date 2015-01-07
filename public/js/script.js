@@ -312,6 +312,7 @@
 
   function restart(data) {
     scene.remove(you);
+    //will this add you twice when restart?
     scene.add(friend);
     scene.add(you);
     friend.position.x = 375;
@@ -375,6 +376,7 @@
     document.getElementById('unimportant').innerHTML = "beaten by a record of";
     document.getElementById('data').innerHTML = (data.totalTime + " with " + data.runTimes + " run times");
     document.getElementById('result').style.display = 'block';
+    consoleLog.setValue("");
     youLose();
   });
 

@@ -72,26 +72,24 @@
       editor1.focus();
       document.getElementById('editor1').style.opacity = '0.9';
       document.getElementById('console').style.opacity = '0.9';
+
       document.getElementById('gap').style.opacity = '0.9';
       document.getElementById('timer1').style.display = "block";
       document.getElementById('timer2').style.display = "block";
+      clockStartOver();
+      runTimes = 0;
+      document.getElementById('timer3').innerHTML = '0';
+
       //document.getElementById('bgSource').setAttribute("src", "sound/ComeAndFindMe.wav");
       document.getElementById('bg').play();
+
       restart(data);
       socket.emit("i'm playing", {
         'url': exports.myURL,
         'data': true
       });
       clock1Run();
-      clock2.startH = 0;
-      clock2.startM = 0;
-      clock2.startS = 0;
-      clock2.recordH = 0;
-      clock2.recordM = 0;
-      clock2.recordS = 0;
-      document.getElementById('timer2').innerHTML = '00:00:00';
-      runTimes = 0;
-      document.getElementById('timer3').innerHTML = '0';
+
     }, 4600);
   }
 

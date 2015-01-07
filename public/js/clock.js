@@ -124,6 +124,32 @@
   }
   exports.bothStop = bothStop;
 
+  //start over
+  function clockStartOver() {
+    if (clock1) {
+      clock1.startH = 0;
+      clock1.startM = 0;
+      clock1.startS = 0;
+      clock1.recordH = 0;
+      clock1.recordM = 0;
+      clock1.recordS = 0;
+      clock1.isTicking = false;
+      clock1 = null;
+    }
+    if (clock2) {
+      clock2.startH = 0;
+      clock2.startM = 0;
+      clock2.startS = 0;
+      clock2.recordH = 0;
+      clock2.recordM = 0;
+      clock2.recordS = 0;
+      clock2.isTicking = false;
+      clock2 = null;
+    }
+    document.getElementById('timer1').innerHTML = '00:00:00';
+    document.getElementById('timer2').innerHTML = '00:00:00';
+  }
+
   //make the runing clock stop, coding clock run
   function tryAgain() {
     var currentTime = new Date();
@@ -141,5 +167,6 @@
   exports.clock1Run = clock1Run;
   exports.clock2Run = clock2Run;
   exports.tryAgain = tryAgain;
+  exports.clockStartOver = clockStartOver;
 
 })(this);

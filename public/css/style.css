@@ -7,6 +7,9 @@
   p, button{
     font-family: 'Open Sans', sans-serif;
   }
+  p{
+    color: #222;
+  }
   button:hover{
     cursor: pointer;
   }
@@ -283,6 +286,7 @@
 
   #resultResult{
     font-size: 40px;
+    color: red;
   }
 
   #data{

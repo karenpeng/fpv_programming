@@ -409,6 +409,8 @@
       document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
       document.getElementById('result').style.display = 'block';
 
+      consoleLog.setValue("");
+
       socket.emit('result', {
         'url': myURL,
         'data': {
