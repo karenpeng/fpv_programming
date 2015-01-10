@@ -117,6 +117,12 @@ io.on('connection', function (socket) {
           if (playerReady[url] > 0) playerReady[url] --;
           if (playing[url] > 0) playing[url] --;
           lookUpTable[url].splice(i, 1);
+
+          if (lookUpTable[url].length === 0) {
+            delete lookUpTable[url];
+            delete playerReady[url];
+            delete playing[url];
+          }
           break;
         }
       }
