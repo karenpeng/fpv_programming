@@ -122,7 +122,6 @@
     document.getElementById('timer1').style.color = "#bcbcbc";
     document.getElementById('timer2').style.color = "#bcbcbc";
   }
-  exports.bothStop = bothStop;
 
   //start over
   function clockStartOver() {
@@ -167,6 +166,7 @@
   exports.clock1Run = clock1Run;
   exports.clock2Run = clock2Run;
   exports.tryAgain = tryAgain;
+  exports.bothStop = bothStop;
   exports.clockStartOver = clockStartOver;
 
 })(this);
