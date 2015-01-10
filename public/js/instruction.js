@@ -7,7 +7,7 @@
   var content = document.getElementById('content');
   var processBar = document.getElementById('processBar');
   exports.level = 0;
-  back.style.display = "none";
+  back.style.visibility = "hidden";
 
   //----------------------------------------------------------------
   //---------------------  change instruction   --------------------
@@ -29,16 +29,16 @@
     switch (number) {
     case 0:
       strs = level0;
-      back.style.display = "none";
+      back.style.visibility = "hidden";
       break;
     case 1:
       strs = level1;
-      back.style.display = "block";
-      document.getElementById('skip').style.display = "none";
+      back.style.visibility = "visible";
+      document.getElementById('skip').style.visibility = "hidden";
       break;
     case 2:
       strs = level2;
-      back.style.display = "block";
+      back.style.visibility = "visible";
       var question = document.createElement('p');
       question.innerHTML = "What does this mean?";
       content.appendChild(question);

@@ -78,9 +78,9 @@
 
   //make the clock counting coding time run
   function clock1Run() {
-    document.getElementById('timer1').style.display = "block";
-    document.getElementById('timer2').style.display = "block";
-    document.getElementById('timer3').style.display = "block";
+    document.getElementById('timer1').style.visibility = "visible";
+    document.getElementById('timer2').style.visibility = "visible";
+    document.getElementById('timer3').style.visibility = "visible";
     document.getElementById('timer1').style.color = "#dd2222";
     document.getElementById('timer2').style.color = "#bcbcbc";
     var currentTime = new Date();
@@ -95,7 +95,7 @@
   //make the clock counting running time run
   function clock2Run() {
     if (document.getElementById('timer1').style.display === "block") {
-      document.getElementById('timer2').style.display = "block";
+      document.getElementById('timer2').style.visibility = "visible";
       document.getElementById('timer1').style.color = "#bcbcbc";
       document.getElementById('timer2').style.color = "#dd2222";
 
