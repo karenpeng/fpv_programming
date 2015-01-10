@@ -360,7 +360,7 @@
   function result() {
     if (!iLose) {
       if (you.position.x < target.position.x + 1 && you.position.x > target.position.x - 1 &&
-        you.position.y < target.position.y + 50 && you.position.y > target.position.y - 50 &&
+        you.position.y < target.position.y + 1 && you.position.y > target.position.y - 1 &&
         you.position.z < target.position.z + 1 && you.position.z > target.position.z - 1) {
         youWin();
       } else {
@@ -381,30 +381,30 @@
     if (realGame) {
       bothStop();
       document.getElementById('blackout').style.display = 'block';
-      var time1 = document.getElementById('timer1').innerHTML;
-      var time2 = document.getElementById('timer2').innerHTML;
+      var time1 = document.getElementById('timer1').innerHTML.split(':');
+      var time2 = document.getElementById('timer2').innerHTML.split(':');
       var time3 = document.getElementById('timer3').innerHTML;
 
-      var getTime = function (str) {
-        var pattern = /\d\d/g;
-        var matchResult = str.match(pattern);
-        //console.log(matchResult);
-        return (matchResult);
-      };
-
-      var totalTime = "";
-      var t1 = getTime(time1);
-      var t2 = getTime(time2);
-      for (var i = 0; i < 3; i++) {
-        var t = (parseInt(t1[i]) + parseInt(t2[i]));
-        if (t < 10) {
-          t += '0';
+      var sumTime = [];
+      
+      for (var i = 2; i >= 0; i--) {
+        if(sumTime[i]){
+          sumTime[i] += (parseInt(time1[i]) + parseInt(time2[i]));
+        }else{
+          sumTime[i] = (parseInt(time1[i]) + parseInt(time2[i]));
         }
-        totalTime += t;
-        if (i !== 2) {
-          totalTime += ":";
+
+        if( sumTime[i] >= 60 && i > 0 ){
+          sumTime[i] -= 60;
+          sumTime[i+1] = 1;
+        }
+        if (sumTime[i] < 10) {
+          sumTime[i] = '0' + sumTime[i];
+          if(sumTime[i] === 0) sumTime[i] = '0' + sumTime[i];
         }
       }
+      
+      var totalTime = sumTime.join(':');
 
       document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
       document.getElementById('result').style.display = 'block';
