@@ -122,12 +122,12 @@
             }
             break;
           case 'u':
-            if (!isHit(obj.position, 4)) {
+            if (!isHit(obj.position, 4) === null) {
               obj.position.y += UNIT;
             }
             break;
           case 'd':
-            if (!isHit(obj.position, 5)) {
+            if (!isHit(obj.position, 5) === null) {
               obj.position.y -= UNIT;
             }
             break;
@@ -149,7 +149,7 @@
 
     var reported = false;
 
-    var UNIT = 0.36;
+    var UNIT = 0.4;
 
     var num = Math.round(Math.random() * 4) + 1;
     var sound = document.getElementById('um' + num);
@@ -380,7 +380,7 @@
     document.getElementById('yay').play();
     if (realGame) {
       bothStop();
-      document.getElementById('blackout').style.visibility = "visible";
+      document.getElementById('blackout').style.display = "block";
       var time1 = document.getElementById('timer1').innerHTML.split(':');
       var time2 = document.getElementById('timer2').innerHTML.split(':');
       var time3 = document.getElementById('timer3').innerHTML;
@@ -407,7 +407,7 @@
       var totalTime = sumTime.join(':');
 
       document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
-      document.getElementById('result').style.visibility = "visible";
+      document.getElementById('result').style.display = "block";
 
       consoleLog.setValue("");
 

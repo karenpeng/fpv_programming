@@ -25,7 +25,7 @@
   init();
   animate();
 
-  function init(info) {
+  function init(info, callback) {
 
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -35,6 +35,7 @@
     camera.lookAt(new THREE.Vector3());
 
     scene = new THREE.Scene();
+
     controls = new THREE.OrbitControls(camera);
 
     controls.damping = 0.2;
@@ -281,10 +282,19 @@
 
   function animate() {
 
+    if (frameRate === 0) {
+      //turn the scene around so as to show the scene coudl be rotated by users
+      scene.rotation.y = -2;
+    }
+
     if (frameRate % 3 === 0) {
       render();
       controls.update();
       //stats.update();
+    }
+
+    if (frameRate > 60) {
+      rotateScene();
     }
 
     var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
@@ -324,6 +334,42 @@
     movePosition(data);
   }
 
+  function flashandMoveTarget(data) {
+    //console.log(data);
+    target.material.color.setHex(0xff8888);
+    setTimeout(function () {
+      target.material.color.setHex(0xff0000);
+    }, 400);
+    setTimeout(function () {
+      target.material.color.setHex(0xff8888);
+    }, 800);
+    setTimeout(function () {
+      target.material.color.setHex(0xff0000);
+      taskManagerTarget.executeTasks(target, data);
+    }, 1200);
+  }
+
+  function movePosition(data) {
+    //
+    scene.rotation.y = -2;
+    obstacles.forEach(function (ob, index) {
+      ob.position.x = data.obs[index].x;
+      ob.position.y = data.obs[index].y;
+      ob.position.z = data.obs[index].z;
+    });
+
+    target.position.x = data.tar.x;
+    target.position.y = data.tar.y;
+    target.position.z = data.tar.z;
+  }
+
+  function rotateScene() {
+    if (scene.rotation.y < 0) {
+      scene.rotation.y += 0.05;
+    }
+  }
+  exports.scene = scene;
+
   socket.on('init', function (data) {
     movePosition(data);
   });
@@ -342,40 +388,13 @@
     flashandMoveTarget(data);
   });
 
-  function flashandMoveTarget(data) {
-    //console.log(data);
-    target.material.color.setHex(0xff8888);
-    setTimeout(function () {
-      target.material.color.setHex(0xff0000);
-    }, 400);
-    setTimeout(function () {
-      target.material.color.setHex(0xff8888);
-    }, 800);
-    setTimeout(function () {
-      target.material.color.setHex(0xff0000);
-      taskManagerTarget.executeTasks(target, data);
-    }, 1200);
-  }
-
-  function movePosition(data) {
-    obstacles.forEach(function (ob, index) {
-      ob.position.x = data.obs[index].x;
-      ob.position.y = data.obs[index].y;
-      ob.position.z = data.obs[index].z;
-    });
-
-    target.position.x = data.tar.x;
-    target.position.y = data.tar.y;
-    target.position.z = data.tar.z;
-  }
-
   exports.iLose = false;
   socket.on('result', function (data) {
-    document.getElementById('blackout').style.visibility = "visible";
+    document.getElementById('blackout').style.display = "block";
     document.getElementById('resultResult').innerHTML = "(ಥ﹏ಥ)YOU LOSE";
     document.getElementById('unimportant').innerHTML = "beaten by a record of";
     document.getElementById('data').innerHTML = (data.totalTime + " with " + data.runTimes + " run times");
-    document.getElementById('result').style.visibility = "visible";
+    document.getElementById('result').style.display = "block";
     consoleLog.setValue("");
     youLose();
   });
