@@ -250,7 +250,7 @@
             }
             break;
           case 'u':
-            if (!isHit(obj.position, 4)) {
+            if (!isHit(obj.position, 4) === null) {
               obj.position.y += UNIT;
               if (realGame) {
                 socket.emit('y', {
@@ -272,7 +272,7 @@
             }
             break;
           case 'd':
-            if (!isHit(obj.position, 5)) {
+            if (!isHit(obj.position, 5) === null) {
               obj.position.y -= UNIT;
               if (realGame) {
                 socket.emit('y', {
