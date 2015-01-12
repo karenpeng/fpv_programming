@@ -25,7 +25,7 @@
   init();
   animate();
 
-  function init(info, callback) {
+  function init(info) {
 
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -368,7 +368,6 @@
       scene.rotation.y += 0.05;
     }
   }
-  exports.scene = scene;
 
   socket.on('init', function (data) {
     movePosition(data);
