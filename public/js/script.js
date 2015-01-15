@@ -116,7 +116,7 @@
     backWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
-    backWall.name = "backBounce";
+    backWall.name = "backBound";
     backWall.position.z = -400;
     backWall.position.y = 200;
     backWall.visible = false;
@@ -129,7 +129,7 @@
     leftWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
-    leftWall.name = "leftBounce";
+    leftWall.name = "leftBound";
     leftWall.position.x = -400;
     leftWall.position.y = 200;
     leftWall.visible = false;
@@ -142,7 +142,7 @@
     rightWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
-    rightWall.name = "rightBounce";
+    rightWall.name = "rightBound";
     rightWall.position.x = 400;
     rightWall.position.y = 200;
     rightWall.visible = false;
@@ -155,7 +155,7 @@
     frontWall = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({
       color: 0xffffff
     }));
-    frontWall.name = "frontBounce";
+    frontWall.name = "frontBound";
     frontWall.position.y = 200;
     frontWall.position.z = 400;
     frontWall.visible = false;
@@ -297,9 +297,8 @@
       rotateScene();
     }
 
-
     if (!realGame && frameRate % 1800 === 0 && frameRate !== 0 && level > 3) {
-      moveTarget();	  
+      moveTarget();
     }
 
     frameRate++;
@@ -314,16 +313,16 @@
 
   }
 
-  function moveTarget(){ 
-   var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
+  function moveTarget() {
+    var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
 
-   var steps = Math.round(Math.random() * 2) + 1;
-      var instructions = [];
-      for (var i = 0; i < steps; i++) {
-        instructions.push(choices[Math.round(Math.random() * 5)]);
-      }
-      flashandMoveTarget(instructions);
-   }
+    var steps = Math.round(Math.random() * 2) + 1;
+    var instructions = [];
+    for (var i = 0; i < steps; i++) {
+      instructions.push(choices[Math.round(Math.random() * 5)]);
+    }
+    flashandMoveTarget(instructions);
+  }
 
   function restart(data) {
     scene.remove(you);
@@ -337,6 +336,7 @@
     you.position.y = 25;
     you.position.z = 375;
     movePosition(data);
+    exports.iLose = false;
   }
 
   function flashandMoveTarget(data) {
