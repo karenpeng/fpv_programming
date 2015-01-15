@@ -51,6 +51,7 @@
       break;
     case 4:
       strs = level4;
+      moveTarget();
       break;
     case 5:
       strs = level5;
@@ -128,19 +129,19 @@
   ];
 
   var level4 = [
-    "Tutorial 4: obstacle",
-    "<p></p>",
-    "There's always obstacles:)",
-    "See the CAT cubes? They're obstacles which will get in your way.",
-    "Try to go through them and see what happens."
-  ];
-
-  var level5 = [
-    "Tutorial 5: target",
+    "Tutorial 4: target",
     "<p></p>",
     "Target will Move!",
     "The target will move a little bit every 30 seconds.",
     "Sorry this is reality, you need to keep pace with it."
+  ];
+
+  var level5 = [
+    "Tutorial 5: obstacle",
+    "<p></p>",
+    "There's always obstacles:)",
+    "See the CAT cubes? They're obstacles which will get in your way.",
+    "Try to go through them and see what happens."
   ];
 
   var level6 = [

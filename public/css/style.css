@@ -92,6 +92,10 @@
     margin: 12px;
   }
 
+  #content{
+    margin-top: 40px;
+  }
+
   #instruction{
     position: absolute;
     left: 0;

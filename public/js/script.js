@@ -297,15 +297,9 @@
       rotateScene();
     }
 
-    var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
 
     if (!realGame && frameRate % 1800 === 0 && frameRate !== 0 && level > 3) {
-      var steps = Math.round(Math.random() * 2) + 1;
-      var instructions = [];
-      for (var i = 0; i < steps; i++) {
-        instructions.push(choices[Math.round(Math.random() * 5)]);
-      }
-      flashandMoveTarget(instructions);
+      moveTarget();	  
     }
 
     frameRate++;
@@ -319,6 +313,17 @@
     renderer.render(scene, camera);
 
   }
+
+  function moveTarget(){ 
+   var choices = ['d', 'l', 'f', 'r', 'b', 'u'];
+
+   var steps = Math.round(Math.random() * 2) + 1;
+      var instructions = [];
+      for (var i = 0; i < steps; i++) {
+        instructions.push(choices[Math.round(Math.random() * 5)]);
+      }
+      flashandMoveTarget(instructions);
+   }
 
   function restart(data) {
     scene.remove(you);
@@ -409,5 +414,6 @@
   exports.camera = camera;
   exports.isHit = isHit;
   exports.restart = restart;
-
+  exports.moveTarget = moveTarget;
+  exports.flashandMoveTarget = flashandMoveTarget;
 })(this);
