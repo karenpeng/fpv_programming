@@ -1,300 +1,300 @@
 (function (exports) {
-  //----------------------------------------------------------------
-  //------------------------ task manager --------------------------
-  //----------------------------------------------------------------
-  var taskManager = new TaskManager();
-  var taskManagerTarget = new TaskManager();
-  var marker = null;
+    //----------------------------------------------------------------
+    //------------------------ task manager --------------------------
+    //----------------------------------------------------------------
+    var taskManager = new TaskManager();
+    var taskManagerTarget = new TaskManager();
+    var marker = null;
 
-  function TaskManager() {
-    this.tasks = [];
-  }
-
-  TaskManager.prototype.executeTasks = function (obj, tasks, editor) {
-    this.obj = obj;
-    this.tasks = tasks;
-    this.tasksNum = tasks.length;
-    if (!editor) {
-      this._execute();
-    } else {
-      this._execute(editor);
-    }
-  };
-
-  TaskManager.prototype._execute = function (editor) {
-    //console.log(marker)
-    if (!editor) {
-      if (this.tasksNum > 0) {
-        var tas = this.tasks.shift();
-        this.simpleMove(target, tas);
-      }
-      return;
+    function TaskManager() {
+      this.tasks = [];
     }
 
-    if (marker) {
-      editor1.session.removeMarker(marker);
-      marker = null;
-    }
-
-    //only if there's task to complete
-    if (this.tasksNum > 0) {
-
-      // the last task
-      if (!this.tasks.length) {
-        transitCamera(false, function () {
-          result();
-          editor1.setReadOnly(false);
-          editor1.setOptions({
-            highlightActiveLine: true,
-            highlightGutterLine: true
-          });
-          editor1.renderer.$cursorLayer.element.style.opacity = 1;
-          isRunning = false;
-        });
-        return;
-
+    TaskManager.prototype.executeTasks = function (obj, tasks, editor) {
+      this.obj = obj;
+      this.tasks = tasks;
+      this.tasksNum = tasks.length;
+      if (!editor) {
+        this._execute();
       } else {
+        this._execute(editor);
+      }
+    };
 
-        //the first task
-        if (this.tasks.length === this.tasksNum) {
-          var that = this;
-          transitCamera(true, function () {
-            var ta = that.tasks.shift();
+    TaskManager.prototype._execute = function (editor) {
+      //console.log(marker)
+      if (!editor) {
+        if (this.tasksNum > 0) {
+          var tas = this.tasks.shift();
+          this.simpleMove(target, tas);
+        }
+        return;
+      }
+
+      if (marker) {
+        editor1.session.removeMarker(marker);
+        marker = null;
+      }
+
+      //only if there's task to complete
+      if (this.tasksNum > 0) {
+
+        // the last task
+        if (!this.tasks.length) {
+          transitCamera(false, function () {
+            result();
+            editor1.setReadOnly(false);
+            editor1.setOptions({
+              highlightActiveLine: true,
+              highlightGutterLine: true
+            });
+            editor1.renderer.$cursorLayer.element.style.opacity = 1;
+            isRunning = false;
+          });
+          return;
+
+        } else {
+
+          //the first task
+          if (this.tasks.length === this.tasksNum) {
+            var that = this;
+            transitCamera(true, function () {
+              var ta = that.tasks.shift();
+              var direction = ta[0];
+              var lineNum = ta[1];
+              marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
+              that.move(that.obj, direction);
+            });
+
+          } else {
+            var ta = this.tasks.shift();
             var direction = ta[0];
             var lineNum = ta[1];
             marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
-            that.move(that.obj, direction);
-          });
+            this.move(this.obj, direction);
+          }
 
-        } else {
-          var ta = this.tasks.shift();
-          var direction = ta[0];
-          var lineNum = ta[1];
-          marker = editor1.session.addMarker(addMarkerRange(lineNum), 'highlight', 'fullLine', false);
-          this.move(this.obj, direction);
+          editor1.setReadOnly(true);
+          editor1.setOptions({
+            highlightActiveLine: false,
+            highlightGutterLine: false
+          });
+          editor1.renderer.$cursorLayer.element.style.opacity = 0;
+          // document.getElementById('editor1').style.opacity = '0.7';
         }
 
-        editor1.setReadOnly(true);
-        editor1.setOptions({
-          highlightActiveLine: false,
-          highlightGutterLine: false
-        });
-        editor1.renderer.$cursorLayer.element.style.opacity = 0;
-        // document.getElementById('editor1').style.opacity = '0.7';
-      }
-
-      //if there's no tasks, no need to zoom the camera
-    } else {
-      //nothing is running
-      isRunning = false;
-    }
-  };
-
-  //move one grid
-  TaskManager.prototype.simpleMove = function (obj, direction) {
-
-    var UNIT = 0.4;
-
-    for (var i = 0; i < 50 / UNIT + 1; i++) {
-
-      if (i < 50 / UNIT) {
-        setTimeout(function () {
-          //if (!isHit()) {
-          switch (direction) {
-          case 'f':
-            if (isHit(obj.position, 1) === null) {
-              obj.position.z -= UNIT;
-            }
-            break;
-          case 'b':
-            if (isHit(obj.position, 0) === null) {
-              obj.position.z += UNIT;
-            }
-            break;
-          case 'r':
-            if (isHit(obj.position, 2) === null) {
-              obj.position.x += UNIT;
-            }
-            break;
-          case 'l':
-            if (isHit(obj.position, 3) === null) {
-              obj.position.x -= UNIT;
-            }
-            break;
-          case 'u':
-            if (!isHit(obj.position, 4) === null) {
-              obj.position.y += UNIT;
-            }
-            break;
-          case 'd':
-            if (!isHit(obj.position, 5) === null) {
-              obj.position.y -= UNIT;
-            }
-            break;
-          }
-        }, i);
-
+        //if there's no tasks, no need to zoom the camera
       } else {
-        //moved one grid, execute the next task
-        var that = this;
-        setTimeout(function () {
-          that._execute();
-        }, 50 / UNIT + 1000);
-
+        //nothing is running
+        isRunning = false;
       }
-    }
-  };
+    };
 
-  TaskManager.prototype.move = function (obj, direction) {
+    //move one grid
+    TaskManager.prototype.simpleMove = function (obj, direction) {
 
-    var reported = false;
+      var UNIT = 0.4;
 
-    var UNIT = 0.4;
+      for (var i = 0; i < 50 / UNIT + 1; i++) {
 
-    var num = Math.round(Math.random() * 4) + 1;
-    var sound = document.getElementById('um' + num);
-    sound.play();
-
-    for (var i = 0; i < 50 / UNIT + 1; i++) {
-
-      if (i < 50 / UNIT) {
-        setTimeout(function () {
-
-          switch (direction) {
-          case 'f':
-            if (isHit(obj.position, 1) === null) {
-              obj.position.z -= UNIT;
-              if (realGame) {
-                socket.emit('z', {
-                  'url': myURL,
-                  'data': you.position.z
-                });
+        if (i < 50 / UNIT) {
+          setTimeout(function () {
+            //if (!isHit()) {
+            switch (direction) {
+            case 'f':
+              if (isHit(obj.position, 1) === null) {
+                obj.position.z -= UNIT;
               }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
-                reported = true;
+              break;
+            case 'b':
+              if (isHit(obj.position, 0) === null) {
+                obj.position.z += UNIT;
               }
-              if (realGame) {
-                socket.emit('z', {
-                  'url': myURL,
-                  'data': you.position.z
-                });
+              break;
+            case 'r':
+              if (isHit(obj.position, 2) === null) {
+                obj.position.x += UNIT;
               }
+              break;
+            case 'l':
+              if (isHit(obj.position, 3) === null) {
+                obj.position.x -= UNIT;
+              }
+              break;
+            case 'u':
+              if (isHit(obj.position, 4) === null) {
+                obj.position.y += UNIT;
+              }
+              break;
+            case 'd':
+              if (isHit(obj.position, 5) === null) {
+                obj.position.y -= UNIT;
+              }
+              break;
             }
-            break;
-          case 'b':
-            if (isHit(obj.position, 0) === null) {
-              obj.position.z += UNIT;
-              if (realGame) {
-                socket.emit('z', {
-                  'url': myURL,
-                  'data': you.position.z
-                });
+          }, i);
+
+        } else {
+          //moved one grid, execute the next task
+          var that = this;
+          setTimeout(function () {
+            that._execute();
+          }, 50 / UNIT + 1000);
+
+        }
+      }
+    };
+
+    TaskManager.prototype.move = function (obj, direction) {
+
+      var reported = false;
+
+      var UNIT = 0.4;
+
+      var num = Math.round(Math.random() * 4) + 1;
+      var sound = document.getElementById('um' + num);
+      sound.play();
+
+      for (var i = 0; i < 50 / UNIT + 1; i++) {
+
+        if (i < 50 / UNIT) {
+          setTimeout(function () {
+
+              switch (direction) {
+              case 'f':
+                if (isHit(obj.position, 1) === null) {
+                  obj.position.z -= UNIT;
+                  if (realGame) {
+                    socket.emit('z', {
+                      'url': myURL,
+                      'data': you.position.z
+                    });
+                  }
+                } else {
+                  if (!reported) {
+                    consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
+                    reported = true;
+                  }
+                  if (realGame) {
+                    socket.emit('z', {
+                      'url': myURL,
+                      'data': you.position.z
+                    });
+                  }
+                }
+                break;
+              case 'b':
+                if (isHit(obj.position, 0) === null) {
+                  obj.position.z += UNIT;
+                  if (realGame) {
+                    socket.emit('z', {
+                      'url': myURL,
+                      'data': you.position.z
+                    });
+                  }
+                } else
+                if (!reported) {
+                  consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
+                  reported = true;
+                }
+                if (realGame) {
+                  socket.emit('z', {
+                    'url': myURL,
+                    'data': you.position.z
+                  });
+                }
               }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
-                reported = true;
+              break;
+            case 'r':
+              if (isHit(obj.position, 2) === null) {
+                obj.position.x += UNIT;
+                if (realGame) {
+                  socket.emit('x', {
+                    'url': myURL,
+                    'data': you.position.x
+                  });
+                }
+              } else {
+                if (!reported) {
+                  consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
+                  reported = true;
+                }
+                if (realGame) {
+                  socket.emit('x', {
+                    'url': myURL,
+                    'data': you.position.x
+                  });
+                }
               }
-              if (realGame) {
-                socket.emit('z', {
-                  'url': myURL,
-                  'data': you.position.z
-                });
+              break;
+            case 'l':
+              if (isHit(obj.position, 3) === null) {
+                obj.position.x -= UNIT;
+                if (realGame) {
+                  socket.emit('x', {
+                    'url': myURL,
+                    'data': you.position.x
+                  });
+                }
+              } else {
+                if (!reported) {
+                  consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
+                  reported = true;
+                }
+                if (realGame) {
+                  socket.emit('x', {
+                    'url': myURL,
+                    'data': you.position.x
+                  });
+                }
               }
+              break;
+            case 'u':
+              if (isHit(obj.position, 4) === null) {
+                obj.position.y += UNIT;
+                if (realGame) {
+                  socket.emit('y', {
+                    'url': myURL,
+                    'data': you.position.y
+                  });
+                }
+              } else {
+                if (!reported) {
+                  consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
+                  reported = true;
+                }
+                if (realGame) {
+                  socket.emit('y', {
+                    'url': myURL,
+                    'data': you.position.y
+                  });
+                }
+              }
+              break;
+            case 'd':
+              if (isHit(obj.position, 5) === null) {
+                obj.position.y -= UNIT;
+                if (realGame) {
+                  socket.emit('y', {
+                    'url': myURL,
+                    'data': you.position.y
+                  });
+                }
+              } else {
+                if (!reported) {
+                  consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
+                  reported = true;
+                }
+                if (realGame) {
+                  socket.emit('y', {
+                    'url': myURL,
+                    'data': you.position.y
+                  });
+                }
+              }
+              break;
             }
-            break;
-          case 'r':
-            if (isHit(obj.position, 2) === null) {
-              obj.position.x += UNIT;
-              if (realGame) {
-                socket.emit('x', {
-                  'url': myURL,
-                  'data': you.position.x
-                });
-              }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
-                reported = true;
-              }
-              if (realGame) {
-                socket.emit('x', {
-                  'url': myURL,
-                  'data': you.position.x
-                });
-              }
-            }
-            break;
-          case 'l':
-            if (isHit(obj.position, 3) === null) {
-              obj.position.x -= UNIT;
-              if (realGame) {
-                socket.emit('x', {
-                  'url': myURL,
-                  'data': you.position.x
-                });
-              }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
-                reported = true;
-              }
-              if (realGame) {
-                socket.emit('x', {
-                  'url': myURL,
-                  'data': you.position.x
-                });
-              }
-            }
-            break;
-          case 'u':
-            if (!isHit(obj.position, 4) === null) {
-              obj.position.y += UNIT;
-              if (realGame) {
-                socket.emit('y', {
-                  'url': myURL,
-                  'data': you.position.y
-                });
-              }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
-                reported = true;
-              }
-              if (realGame) {
-                socket.emit('y', {
-                  'url': myURL,
-                  'data': you.position.y
-                });
-              }
-            }
-            break;
-          case 'd':
-            if (!isHit(obj.position, 5) === null) {
-              obj.position.y -= UNIT;
-              if (realGame) {
-                socket.emit('y', {
-                  'url': myURL,
-                  'data': you.position.y
-                });
-              }
-            } else {
-              if (!reported) {
-                consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
-                reported = true;
-              }
-              if (realGame) {
-                socket.emit('y', {
-                  'url': myURL,
-                  'data': you.position.y
-                });
-              }
-            }
-            break;
-          }
-        }, i);
+          }, i);
 
       } else {
         //moved one grid, execute the next task
@@ -425,7 +425,6 @@
     }
   }
 
-  exports.taskManager = taskManager;
-  exports.taskManagerTarget = taskManagerTarget;
+  exports.taskManager = taskManager; exports.taskManagerTarget = taskManagerTarget;
 
 })(this);
