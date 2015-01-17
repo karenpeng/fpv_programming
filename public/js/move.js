@@ -175,12 +175,6 @@
                     consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 1) + ".\n");
                     reported = true;
                   }
-                  if (realGame) {
-                    socket.emit('z', {
-                      'url': myURL,
-                      'data': you.position.z
-                    });
-                  }
                 }
                 break;
               case 'b':
@@ -196,12 +190,6 @@
                 if (!reported) {
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
                   reported = true;
-                }
-                if (realGame) {
-                  socket.emit('z', {
-                    'url': myURL,
-                    'data': you.position.z
-                  });
                 }
               }
               break;
@@ -219,12 +207,6 @@
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 2) + ".\n");
                   reported = true;
                 }
-                if (realGame) {
-                  socket.emit('x', {
-                    'url': myURL,
-                    'data': you.position.x
-                  });
-                }
               }
               break;
             case 'l':
@@ -240,12 +222,6 @@
                 if (!reported) {
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 3) + ".\n");
                   reported = true;
-                }
-                if (realGame) {
-                  socket.emit('x', {
-                    'url': myURL,
-                    'data': you.position.x
-                  });
                 }
               }
               break;
@@ -263,12 +239,6 @@
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 4) + ".\n");
                   reported = true;
                 }
-                if (realGame) {
-                  socket.emit('y', {
-                    'url': myURL,
-                    'data': you.position.y
-                  });
-                }
               }
               break;
             case 'd':
@@ -284,12 +254,6 @@
                 if (!reported) {
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 5) + ".\n");
                   reported = true;
-                }
-                if (realGame) {
-                  socket.emit('y', {
-                    'url': myURL,
-                    'data': you.position.y
-                  });
                 }
               }
               break;
@@ -425,6 +389,7 @@
     }
   }
 
-  exports.taskManager = taskManager; exports.taskManagerTarget = taskManagerTarget;
+  exports.taskManager = taskManager; 
+  exports.taskManagerTarget = taskManagerTarget;
 
 })(this);
