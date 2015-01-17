@@ -14,15 +14,13 @@
       this.obj = obj;
       this.tasks = tasks;
       this.tasksNum = tasks.length;
-      if (!editor) {
-        this._execute();
-      } else {
-        this._execute(editor);
-      }
+      this._execute(editor);
     };
 
     TaskManager.prototype._execute = function (editor) {
       //console.log(marker)
+      
+      //if the moving object is target, just do simpleMove
       if (!editor) {
         if (this.tasksNum > 0) {
           var tas = this.tasks.shift();
@@ -90,7 +88,7 @@
       }
     };
 
-    //move one grid
+    //target move one grid
     TaskManager.prototype.simpleMove = function (obj, direction) {
 
       var UNIT = 0.4;
@@ -145,6 +143,7 @@
       }
     };
 
+    //player move one grid
     TaskManager.prototype.move = function (obj, direction) {
 
       var reported = false;
@@ -186,7 +185,7 @@
                       'data': you.position.z
                     });
                   }
-                } else
+                } else {
                 if (!reported) {
                   consoleLog.insert("( ﾟヮﾟ) hit " + isHit(obj.position, 0) + ".\n");
                   reported = true;
