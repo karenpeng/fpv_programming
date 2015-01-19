@@ -103,20 +103,20 @@
   var level2 = [
     "Tutorial 2: loop",
     "<p></p>",
-    "What if you want to move it forward ten steps?",
-    "Well, you don't have to type it 10 times.",
+    "What if you want to move it forward four steps?",
+    "Well, you don't have to type it 4 times.",
     "Here's how a 'loop' can help you:",
     "<p></p>",
-    "<code>for(var i = 0; i < 10; i++){",
+    "<code>for(var i = 0; i < 4; i++){",
     "&nbspforward();",
     "}</code>",
-    "Try it in the editor, if you like, try with numbers and instrunctions"
+    "Try it in the editor, if you like, try different numbers."
   ];
 
   var level3 = [
     "Tutorial 3: function",
     "<p></p>",
-    "If you make the iterator as a reusable tool, you don't have to remake it over and over again.",
+    "If you make the loop as a reusable tool, you don't have to remake it over and over again.",
     "Here's how a 'function' works as a 'tool':",
     "<code>function f(steps){",
     "&nbspfor(var i = 0; i < steps; i++){",
