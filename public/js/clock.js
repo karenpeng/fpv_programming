@@ -165,10 +165,52 @@
     document.getElementById('timer2').style.color = "#bcbcbc";
   }
 
+  /*
+  well this is bad, maybe i don't need two separate clocks, maybe i just need one and that's it.
+   */
+  function addTimeUp() {
+
+    var time1 = document.getElementById('timer1').innerHTML.split(':');
+    var time2 = document.getElementById('timer2').innerHTML.split(':');
+    var time3 = document.getElementById('timer3').innerHTML;
+
+    var sumTime = [];
+
+    for (var i = 2; i >= 0; i--) {
+      if (sumTime[i]) {
+        sumTime[i] += (parseInt(time1[i]) + parseInt(time2[i]));
+      } else {
+        sumTime[i] = (parseInt(time1[i]) + parseInt(time2[i]));
+      }
+
+      if (sumTime[i] >= 60 && i > 0) {
+        sumTime[i] -= 60;
+        sumTime[i - 1] = 1;
+      }
+      if (sumTime[i] < 10) {
+        sumTime[i] = '0' + sumTime[i];
+        if (sumTime[i] === 0) sumTime[i] = '0' + sumTime[i];
+      }
+    }
+
+    var totalTime = sumTime.join(':');
+
+    document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
+    document.getElementById('result').style.display = "block";
+
+    return {
+      'codingTime': time1,
+      'runningTime': time2,
+      'totalTime': totalTime,
+      'runTimes': time3
+    };
+  }
+
   exports.clock1Run = clock1Run;
   exports.clock2Run = clock2Run;
   exports.tryAgain = tryAgain;
   exports.bothStop = bothStop;
   exports.clockStartOver = clockStartOver;
+  exports.addTimeUp = addTimeUp;
 
 })(this);

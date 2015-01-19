@@ -345,56 +345,15 @@
       bothStop();
       document.getElementById('blackout').style.display = "block";
 
-      var time1 = document.getElementById('timer1').innerHTML.split(':');
-      var time2 = document.getElementById('timer2').innerHTML.split(':');
-      var time3 = document.getElementById('timer3').innerHTML;
-
       consoleLog.setValue("");
 
       socket.emit('result', {
         'url': myURL,
-        'data': addTimeUp(time1, time2, time3);
+        'data': addTimeUp()
       });
     } else {
       alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
     }
-  }
-
-  /*
-  well this is bad, maybe i don't need two separate clocks, maybe i just need one and that's it.
-   */
-  function addTimeUp(time1, time2, time3) {
-
-    var sumTime = [];
-
-    for (var i = 2; i >= 0; i--) {
-      if (sumTime[i]) {
-        sumTime[i] += (parseInt(time1[i]) + parseInt(time2[i]));
-      } else {
-        sumTime[i] = (parseInt(time1[i]) + parseInt(time2[i]));
-      }
-
-      if (sumTime[i] >= 60 && i > 0) {
-        sumTime[i] -= 60;
-        sumTime[i - 1] = 1;
-      }
-      if (sumTime[i] < 10) {
-        sumTime[i] = '0' + sumTime[i];
-        if (sumTime[i] === 0) sumTime[i] = '0' + sumTime[i];
-      }
-    }
-
-    var totalTime = sumTime.join(':');
-
-    document.getElementById('data').innerHTML = (totalTime + " with " + time3 + " run times");
-    document.getElementById('result').style.display = "block";
-
-    return {
-      'codingTime': time1,
-      'runningTime': time2,
-      'totalTime': totalTime,
-      'runTimes': time3
-    };
   }
 
   exports.taskManager = taskManager;
