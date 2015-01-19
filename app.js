@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 var port = process.env.PORT || 4000;
+var fmt = require('util').format;
 
 var ejs = require('ejs');
 
@@ -41,6 +42,7 @@ var lookUpTable = {};
 var playerReady = {};
 var gameTime = {};
 var playing = {};
+var playerReadyReset = {};
 var refreshIntervalId = {};
 
 io.on('connection', function (socket) {
@@ -103,6 +105,7 @@ io.on('connection', function (socket) {
       console.log("playing " + playing[data.url]);
 
       if (playing[data.url] === 2) {
+        playerReadyReset[data.url] = false;
         moveTargetEvery30Secends(data.url);
       }
 
@@ -114,14 +117,16 @@ io.on('connection', function (socket) {
     for (var url in lookUpTable) {
       for (var i = 0; i < lookUpTable[url].length; i++) {
         if (lookUpTable[url][i] === socket.id) {
-          if (playerReady[url] > 0) playerReady[url] --;
-          if (playing[url] > 0) playing[url] --;
+          playerReady[url] --;
+          playing[url] --;
           lookUpTable[url].splice(i, 1);
+          console.log('reducing lookUpTable length to ' + lookUpTable[url].length);
 
           if (lookUpTable[url].length === 0) {
             delete lookUpTable[url];
-            delete playerReady[url];
-            delete playing[url];
+            if (playerReady[url] !== undefined) delete playerReady[url];
+            if (playing[url] !== undefined) delete playing[url];
+            if (playerReadyReset[url] !== undefined) delete playerReadyReset[url];
           }
           break;
         }
@@ -213,12 +218,20 @@ io.on('connection', function (socket) {
 
   socket.on('reduce me', function (data) {
     if (socketIsInLookUpTable(data.url, socket.id)) {
-      if (playerReady[data.url] > 0) playerReady[data.url] --;
-      if (playing[data.url] > 0) playing[data.url] --;
-      console.log('reduce ' + playerReady[data.url] + playing[data.url]);
+      if (playerReadyReset[data.url] === undefined) {
+        playerReadyReset[data.url] = false;
+      }
+      if (!playerReadyReset[data.url]) {
+        playerReady[data.url] = 0;
+        playing[data.url] = 0;
+        playerReadyReset[data.url] = true;
+      }
+      console.log('reduce ' + playerReady[data.url] + ' ' + playing[data.url]);
     }
   });
 
 });
 
-server.listen(port);
+server.listen(port, function () {
+  console.log(fmt('start server on localhost: %s', port));
+});

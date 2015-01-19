@@ -343,14 +343,19 @@
     document.getElementById('yay').play();
     if (realGame) {
       bothStop();
-      document.getElementById('blackout').style.display = "block";
 
       consoleLog.setValue("");
 
+      var winData = addTimeUp();
       socket.emit('result', {
         'url': myURL,
-        'data': addTimeUp()
+        'data': winData
       });
+      document.getElementById('blackout').style.display = "block";
+      document.getElementById('resultResult').innerHTML = "ᕕ( ᐛ )ᕗ YOU WIN!!!";
+      document.getElementById('unimportant').innerHTML = "with a record of";
+      document.getElementById('data').innerHTML = (winData.totalTime + " with " + winData.runTimes + " run times");
+      document.getElementById('result').style.display = "block";
     } else {
       alert("ᕕ( ᐛ )ᕗ YOU WIN!!!");
     }

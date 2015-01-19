@@ -104,7 +104,7 @@
       startH = currentTime.getHours();
       startM = currentTime.getMinutes();
       startS = currentTime.getSeconds();
-      if (clock2 === undefined) {
+      if (clock2 === undefined || clock2 === null) {
         clock2 = new MyClock(startH, startM, startS, "timer2");
       } else {
         clock2.setStart(startH, startM, startS);
@@ -118,7 +118,7 @@
   //both clocks stop
   function bothStop() {
     clock1.isTicking = false;
-    clock2.isTicking = false;
+    if (clock2) clock2.isTicking = false;
     document.getElementById('timer1').style.color = "#bcbcbc";
     document.getElementById('timer2').style.color = "#bcbcbc";
   }

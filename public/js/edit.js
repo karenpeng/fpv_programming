@@ -135,7 +135,7 @@
     } catch (err) {
       isRunning = false;
       consoleLog.insert(err + '\n');
-      console.log(err);
+      //console.log(err);
       //if there's error, just return, no need to pass to taskManager
       return;
     }
@@ -145,7 +145,7 @@
     } catch (err) {
       isRunning = false;
       consoleLog.insert(err + '\n');
-      console.log(err);
+      //console.log(err);
     }
   }
 

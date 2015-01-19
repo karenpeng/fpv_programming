@@ -392,23 +392,6 @@
     flashandMoveTarget(data);
   });
 
-  exports.iLose = false;
-  socket.on('result', function (data) {
-    document.getElementById('blackout').style.display = "block";
-    document.getElementById('resultResult').innerHTML = "(ಥ﹏ಥ)YOU LOSE";
-    document.getElementById('unimportant').innerHTML = "beaten by a record of";
-    document.getElementById('data').innerHTML = (data.totalTime + " with " + data.runTimes + " run times");
-    document.getElementById('result').style.display = "block";
-    consoleLog.setValue("");
-    youLose();
-  });
-
-  function youLose() {
-    bothStop();
-    exports.iLose = true;
-    //alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
-  }
-
   exports.you = you;
   exports.target = target;
   exports.camera = camera;

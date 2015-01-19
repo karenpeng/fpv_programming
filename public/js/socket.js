@@ -29,7 +29,7 @@
   //---------------------------------------------------------------
   //------------------------ start a game -------------------------
   //---------------------------------------------------------------
-
+  exports.iLose = false;
   exports.realGame = false;
   document.getElementById('skip').onclick = function () {
     waitingForReady();
@@ -81,7 +81,7 @@
       document.getElementById('timer3').innerHTML = '0';
 
       //document.getElementById('bgSource').setAttribute("src", "sound/ComeAndFindMe.wav");
-      document.getElementById('bg').play();
+      //document.getElementById('bg').play();
 
       restart(data);
       socket.emit("i'm playing", {
@@ -114,5 +114,21 @@
     document.getElementById('result').style.display = "none";
     waitingForReady();
   };
+
+  socket.on('result', function (data) {
+    youLose(data);
+  });
+
+  function youLose(data) {
+    bothStop();
+    exports.iLose = true;
+    document.getElementById('blackout').style.display = "block";
+    document.getElementById('resultResult').innerHTML = "(ಥ﹏ಥ)YOU LOSE";
+    document.getElementById('unimportant').innerHTML = "beaten by a record of";
+    document.getElementById('data').innerHTML = (data.totalTime + " with " + data.runTimes + " run times");
+    document.getElementById('result').style.display = "block";
+    consoleLog.setValue("");
+    //alert("SORRY YOU LOSE... (ಥ﹏ಥ)");
+  }
 
 })(this);
