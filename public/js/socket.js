@@ -81,7 +81,7 @@
       document.getElementById('timer3').innerHTML = '0';
 
       //document.getElementById('bgSource').setAttribute("src", "sound/ComeAndFindMe.wav");
-      document.getElementById('bg').play();
+      //document.getElementById('bg').play();
 
       restart(data);
       socket.emit("i'm playing", {

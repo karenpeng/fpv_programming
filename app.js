@@ -40,7 +40,6 @@ var lookUpTable = {};
 //   'otherURL': ['socketID1', 'socketID2']
 // };
 var playerReady = {};
-var gameTime = {};
 var playing = {};
 var playerReadyReset = {};
 var refreshIntervalId = {};
@@ -122,11 +121,20 @@ io.on('connection', function (socket) {
           lookUpTable[url].splice(i, 1);
           console.log('reducing lookUpTable length to ' + lookUpTable[url].length);
 
+          if (refreshIntervalId[data.url] !== undefined) {
+            clearInterval(refreshIntervalId[data.url]);
+            delete refreshIntervalId[data.url];
+          };
+
           if (lookUpTable[url].length === 0) {
             delete lookUpTable[url];
             if (playerReady[url] !== undefined) delete playerReady[url];
             if (playing[url] !== undefined) delete playing[url];
             if (playerReadyReset[url] !== undefined) delete playerReadyReset[url];
+            if (refreshIntervalId[data.url] !== undefined) {
+              clearInterval(refreshIntervalId[data.url]);
+              delete refreshIntervalId[data.url];
+            };
           }
           break;
         }
@@ -212,8 +220,8 @@ io.on('connection', function (socket) {
   });
 
   socket.on('result', function (data) {
-    sendDataToYourPartner(data, 'result');
     clearInterval(refreshIntervalId[data.url]);
+    sendDataToYourPartner(data, 'result');
   });
 
   socket.on('reduce me', function (data) {
