@@ -73,7 +73,10 @@ io.on('connection', function (socket) {
     if (socketIsInLookUpTable(data.url, socket.id)) {
 
       //console.log(isNaN(playerReady[data.url]));
-      //why...NAN????
+      /*
+      !important:  number use isNaN()
+                   non-number variable uses undefined
+       */
       if (isNaN(playerReady[data.url])) {
         playerReady[data.url] = 0;
       }
@@ -121,9 +124,10 @@ io.on('connection', function (socket) {
           lookUpTable[url].splice(i, 1);
           console.log('reducing lookUpTable length to ' + lookUpTable[url].length);
 
-          if (refreshIntervalId[data.url] !== undefined) {
-            clearInterval(refreshIntervalId[data.url]);
-            delete refreshIntervalId[data.url];
+          if (refreshIntervalId[url] !== undefined) {
+            clearInterval(refreshIntervalId[url]);
+            delete refreshIntervalId[url];
+            console.log('get rid of setInterval');
           };
 
           if (lookUpTable[url].length === 0) {
@@ -131,9 +135,9 @@ io.on('connection', function (socket) {
             if (playerReady[url] !== undefined) delete playerReady[url];
             if (playing[url] !== undefined) delete playing[url];
             if (playerReadyReset[url] !== undefined) delete playerReadyReset[url];
-            if (refreshIntervalId[data.url] !== undefined) {
-              clearInterval(refreshIntervalId[data.url]);
-              delete refreshIntervalId[data.url];
+            if (refreshIntervalId[url] !== undefined) {
+              clearInterval(refreshIntervalId[url]);
+              delete refreshIntervalId[url];
             };
           }
           break;
@@ -221,6 +225,7 @@ io.on('connection', function (socket) {
 
   socket.on('result', function (data) {
     clearInterval(refreshIntervalId[data.url]);
+    delete refreshIntervalId[data.url];
     sendDataToYourPartner(data, 'result');
   });
 
